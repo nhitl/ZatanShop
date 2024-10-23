@@ -1,5 +1,5 @@
 <?php
-// add_to_cart.php
+// add_to_cart.php nhi
 include 'dbconnect.php'; // Kết nối cơ sở dữ liệu
 
 session_start(); // Khởi tạo phiên làm việc
