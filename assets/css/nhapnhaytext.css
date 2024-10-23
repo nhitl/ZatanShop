@@ -1,0 +1,46 @@
+@keyframes flash {
+  0% { color: red; }
+  50% { color: orange; }
+  100% { color: red; }
+}
+
+#new-products {
+  position: relative;
+  padding-bottom: 20px; /* Khoảng cách cho đường kẻ */
+}
+
+#new-products h2 {
+  font-family: 'Pacifico', cursive; /* Sử dụng font chữ Roboto */
+  text-align: center;
+  border-bottom: 2px solid red; /* Đường kẻ dưới chân chữ */
+  padding-bottom: 5px; /* Khoảng cách giữa chữ và đường kẻ */
+  animation: flash 0.5s infinite; /* Hiệu ứng nhấp nháy cho chữ */
+}
+
+
+.card-body {
+  text-align: center;
+  
+}
+
+@keyframes flashh {
+  0% { color: rgb(0, 255, 64); }
+  50% { color: rgb(0, 110, 255); }
+  100% { color: rgb(0, 255, 64);; }
+}
+
+#best-selling-products {
+  position: relative;
+  padding-bottom: 20px; /* Khoảng cách cho đường kẻ */
+}
+
+#best-selling-products h2 {
+  font-family: 'Pacifico', cursive; /* Sử dụng font chữ Roboto */
+  text-align: center;
+  border-bottom: 2px solid red; /* Đường kẻ dưới chân chữ */
+  padding-bottom: 5px; /* Khoảng cách giữa chữ và đường kẻ */
+  animation: flashh 0.5s infinite; /* Hiệu ứng nhấp nháy cho chữ */
+}
+
+
+

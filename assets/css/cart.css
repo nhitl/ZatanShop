@@ -1,0 +1,70 @@
+.cart-item img {
+    width: 150px;
+    height: auto;
+}
+
+
+
+.cart-item {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.cart-item .item-actions {
+    text-align: right;
+}
+
+.original-price {
+    text-decoration: line-through;
+
+    font-size: 14px;
+    color: #888;
+    /* Màu xám nhạt cho giá gốc đã bị gạch ngang */
+}
+
+.discounted-price {
+    color: red;
+    /* Màu đỏ cho giá sau giảm */
+    font-weight: bold;
+}
+
+.no-discount-price {
+    font-weight: bold;
+    color: red;
+}
+
+.quantity-control {
+    display: flex;
+    align-items: center;
+}
+
+.quantity-control .btn {
+    background-color: #007710;
+    border: none;
+    color: #fff;
+    width: 30px;
+    font-size: 16px;
+    /* Kích thước chữ trong nút */
+}
+
+.quantity-control .quantity-input {
+    width: 50px;
+    /* Chiều rộng của trường nhập liệu */
+    text-align: center;
+    /* Căn giữa chữ trong trường nhập liệu */
+    border: 1px solid #ddd;
+    /* Viền nhẹ cho trường nhập liệu */
+    font-size: 16px;
+    /* Kích thước chữ trong trường nhập liệu */
+    border-radius: 4px;
+    /* Bo tròn viền trường nhập liệu */
+}
+
+.quantity-control .btn:disabled {
+    background-color: #ccc;
+    /* Màu nền cho nút bị vô hiệu hóa */
+    cursor: not-allowed;
+    /* Hiệu ứng con trỏ cho nút bị vô hiệu hóa */
+}

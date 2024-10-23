@@ -1,0 +1,101 @@
+
+*, ::after, ::before {
+    box-sizing: border-box;
+}
+.swiper-container {
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    overflow: hidden;
+    list-style: none;
+    padding: 0;
+    z-index: 1;
+}
+
+.swiper-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    display: flex;
+    transition-property: transform;
+    box-sizing: content-box;
+}
+.gallery-top {
+    box-shadow: 0 0px 2px 0 rgba(60, 64, 67, 0.1), 0 0px 6px 0px rgba(60, 64, 67, 0.25);
+    border-radius: 5px;
+}
+.gallery-top .swiper-slide {
+    padding-bottom: 100%;
+    display: block;
+    height: 0;
+    background: #fff;
+    overflow: hidden;
+    border-radius: 5px;
+}
+.gallery-top .swiper-slide img {
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 99%;
+    max-height: 100%;
+    width: auto !important;
+    height: auto !important;
+    position: absolute;
+    border-radius: 5px;
+}
+.gallery-thumbs {
+    margin-top: 10px !important;
+    background: #fff;
+    border-radius: 5px;
+    padding: 10px;
+}
+.gallery-thumbs .swiper-slide {
+    border: 2px solid #ebebeb;
+    cursor: pointer;
+    background: #fff;
+    border-radius: 5px;
+    overflow: hidden;
+}
+.gallery-thumbs .swiper-slide.swiper-slide-thumb-active {
+    border-color: #003cbf;
+}
+
+.gallery-thumbs .swiper-slide .p-100 {
+    padding-bottom: 100%;
+    display: block;
+    height: 0;
+    background: #fff;
+    overflow: hidden;
+    border-radius: 5px;
+}
+
+.gallery-thumbs .swiper-slide .p-100 img {
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 99%;
+    max-height: 100%;
+    width: auto !important;
+    height: auto !important;
+    position: absolute;
+    border-radius: 5px;
+}
+
+.swiper-button-next, .swiper-button-prev {
+    background: rgba(233, 233, 233, 0.74);
+    width: 30px !important;
+    height: 60px !important;
+    border: 0;
+    transform: translate(0, -50%);
+    margin-top: 0 !important;
+}
+
+.swiper-button-prev {
+    left: 3px !important;
+    border-radius: 0 100px 100px 0;
+}
+.swiper-button-next {
+    right: 3px !important;
+    border-radius: 100px 0 0 100px;
+}

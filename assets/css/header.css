@@ -1,0 +1,468 @@
+a {
+    text-decoration: none;
+}
+
+body,
+p,
+span,
+div,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    text-decoration: none;
+}
+
+ul,
+ol {
+    text-decoration: none;
+}
+
+
+.header {
+    display: block;
+}
+
+img {
+    border: 0 none;
+    max-width: 100%;
+    height: auto;
+}
+
+ul {
+    list-style: none outside;
+    margin-bottom: 0px;
+    padding-left: 0px;
+}
+
+
+header.header .main-header {
+    padding: 8px 0;
+    background-color: #126644;
+    background-image: url(//bizweb.dktcdn.net/100/506/650/themes/944598/assets/header_pattent.png?1713533632009);
+}
+
+.container,
+.container-fluid {
+    width: 100%;
+    max-width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.row {
+    margin-right: -10px;
+    margin-left: -10px;
+}
+
+header.header .main-header .align-items-center .header-logo a {
+    position: relative;
+    display: inline-block;
+    width: 300px;
+    max-width: 240px;
+    height: auto;
+    aspect-ratio: 300 / 96;
+    margin: 0 auto;
+}
+
+
+/* thông báo */
+header.header .topbar {
+    padding: 3px 0;
+    position: relative;
+    background: #004e3e;
+    border-bottom: 1px solid rgba(253, 201, 125, 0.4);
+}
+
+.header-promo {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.notification {
+    position: relative;
+    display: inline-block;
+}
+
+.notification .fa-bell {
+    font-size: 20px;
+    color: #dab166;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(0.7);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+
+
+.header .notification-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.header .notification-item {
+    color: #fff;
+    font-size: 14px;
+    transform: scale(0.9);
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    /* Hiệu ứng mờ dần và mở rộng */
+    display: none;
+    /* Ẩn mục thông báo ban đầu */
+    animation: fadeInOut 7s ease-in-out infinite;
+    font-weight: 400;
+}
+
+@keyframes fadeInOut {
+    0% {
+        opacity: 0;
+        /* Bắt đầu từ trạng thái mờ */
+    }
+
+    30% {
+        opacity: 1;
+        /* Hiển thị hoàn toàn giữa animation */
+    }
+
+    100% {
+        opacity: 1;
+        /* Kết thúc với trạng thái mờ */
+    }
+}
+
+.notification-title {
+    font-size: 16px;
+    color: #dab166;
+    /* Thay đổi màu chữ theo ý muốn */
+    font-weight: bold;
+    /* Đảm bảo tiêu đề vẫn đậm nếu cần */
+}
+
+
+.header .notification-item.active {
+    opacity: 1;
+    display: block;
+    /* Hiển thị mục thông báo hiện tại */
+}
+
+
+.header-hotline {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+header.header .topbar .header-hotline a .text-box {
+    color: #fff;
+    margin-left: 8px;
+    flex-grow: 1;
+    line-height: 16px;
+    position: relative;
+    text-align: right;
+}
+
+header.header .topbar .header-hotline a .text-box .acc-text-small {
+    width: 100%;
+    font-size: 0.8rem;
+    display: block;
+    text-decoration: none;
+}
+
+header.header .topbar .header-hotline a .text-box .acc-text {
+    text-decoration: none;
+    font-size: 1.1rem;
+    width: 100%;
+    font-weight: 700;
+}
+
+@media (max-width: 992px) {
+    .header-hotline {
+        display: none;
+        /* Ẩn trên màn hình nhỏ */
+    }
+}
+
+.header .fa-phone-volume {
+    font-size: 24px;
+    color: #bbc900;
+}
+
+/* timkiem */
+.header .search-form {
+    border: none;
+    outline: none;
+    margin-bottom: 0px;
+    position: relative;
+    width: 100%;
+    background: #fff;
+    border-radius: 4px;
+}
+
+.header .search-input:focus {
+    border: none;
+    outline: none;
+    /* Loại bỏ đường viền khi có tiêu điểm */
+    box-shadow: none;
+    /* Loại bỏ bóng đổ khi có tiêu điểm */
+}
+
+.header .search-button {
+    background-color: #ddb66e;
+}
+
+/* header main right */
+/* Căn phải các thẻ a trong location-stores */
+.header .location-stores {
+    display: flex;
+    justify-content: flex-end;
+    /* Đẩy các thẻ a về phía bên phải */
+    gap: 15px;
+}
+
+/* Định dạng các thẻ a */
+.header .location-stores a {
+    text-decoration: none;
+    /* Loại bỏ gạch chân */
+    color: #000;
+    /* Màu chữ mặc định */
+    display: flex;
+    /* Đặt các phần tử theo cột */
+    flex-direction: column;
+    /* Icon ở trên, title ở dưới */
+    align-items: center;
+    /* Căn giữa theo chiều ngang */
+    justify-content: center;
+    /* Căn giữa theo chiều dọc */
+}
+
+/* Định dạng box-icon */
+.header .box-icon {
+    margin-bottom: 5px;
+    /* Khoảng cách giữa icon và title */
+}
+
+.header .box-icon i {
+    font-size: 24px;
+    /* Kích cỡ icon */
+    color: #fff;
+    /* Màu của icon (thay đổi theo ý muốn) */
+}
+
+/* Định dạng item-title */
+.header .item-title {
+    font-size: 12px;
+    /* Kích cỡ chữ */
+    color: #fff;
+    /* Màu chữ (thay đổi theo ý muốn) */
+}
+
+/* Ẩn item-title trên màn hình nhỏ */
+@media (max-width: 767.98px) {
+    .header .item-title {
+        display: none;
+        /* Ẩn tiêu đề trên màn hình nhỏ */
+    }
+}
+
+/* Định vị số đếm sản phẩm trên biểu tượng giỏ hàng */
+.header .box-icon .count {
+    font-size: 10px;
+    /* Kích cỡ chữ */
+    color: #333;
+    /* Màu chữ */
+    background-color: #dab166;
+    /* Màu nền (đỏ) cho số đếm */
+    padding: 2px 6px;
+    /* Khoảng đệm cho số đếm */
+    border-radius: 50%;
+    /* Làm tròn số đếm */
+}
+
+/* Căn chỉnh số đếm trên icon */
+.position-absolute {
+    position: absolute;
+    /* Đặt vị trí tuyệt đối */
+}
+
+
+.header .header-menu {
+    position: relative;
+    background: #004e3e;
+    border-top: 1px solid rgba(253, 201, 125, 0.4);
+}
+
+.header .navbar-toggler-icon i {
+    color: #fff;
+    font-size: 24px;
+}
+
+.location-stores .navbar-toggler {
+    position: relative;
+    top: -5px;
+    /* Di chuyển button lên trên */
+}
+
+.navbar {
+    padding: 0 0;
+}
+
+.navbar-toggler {
+    display: none;
+}
+
+@media (max-width: 991px) {
+    .navbar-toggler {
+        display: block;
+    }
+}
+
+@media (min-width: 768px) {
+    .location-stores .navbar-toggler {
+        position: relative;
+        top: -10px;
+        /* Di chuyển button lên trên */
+    }
+}
+
+
+.header .nav-link {
+    position: relative;
+    /* Đặt position để dùng ::before */
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: bold;
+    transition: color 0.3s ease;
+    overflow: hidden;
+    /* Ẩn phần nền thừa */
+}
+
+.header .nav-link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    /* Nền bắt đầu từ bên trái ngoài cùng */
+    width: 100%;
+    height: 100%;
+    background-color: rgba(99, 47, 13, 0.1);
+    /* Nền cam nhạt trong suốt */
+    border: 2px solid #dab166;
+    /* Thêm viền màu cam */
+    border-radius: 10px;
+    /* Tạo bo góc */
+    transition: left 0.5s ease, box-shadow 0.3s ease, border 0.5s ease;
+    /* Hiệu ứng di chuyển và shadow */
+    z-index: 0;
+    /* Đảm bảo nền nằm dưới nội dung text */
+}
+
+/* Hiệu ứng khi hover */
+.header .nav-link:hover::before,
+.header .nav-link.active::before {
+    /* Áp dụng cùng hiệu ứng cho trạng thái active */
+    left: 0;
+    /* Nền chạy vào từ trái sang phải */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    /* Shadow rõ ràng hơn */
+    border-color: #dab166;
+    /* Đảm bảo viền cam xuất hiện */
+}
+
+/* Thay đổi màu chữ khi hover và active */
+.header .nav-link:hover,
+.header .nav-link.active {
+    color: #dab166;
+    /* Đổi màu chữ */
+    z-index: 1;
+    /* Đảm bảo chữ nằm trên nền */
+}
+
+/* Màu cho link khi active (hiệu ứng giống hover) */
+.header .nav-link.active {
+    background-color: transparent;
+    /* Giữ nền trong suốt */
+}
+
+
+
+/* Điều chỉnh offcanvas cho các màn hình nhỏ hơn */
+@media (max-width: 991px) {
+    /* Đảm bảo logo và nút đóng hiển thị hợp lý */
+    .offcanvas-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 20px;
+    }
+
+    .offcanvas-logo {
+        max-width: 100%;
+        /* Đảm bảo logo không bị vỡ trên màn hình nhỏ */
+        height: auto;
+    }
+
+    .offcanvas .btn-close {
+        font-size: 1.5rem;
+        /* Điều chỉnh kích thước của nút đóng */
+    }
+
+    /* Điều chỉnh khoảng cách giữa các mục menu */
+    .offcanvas{
+    background-color: #004e3e;
+    text-align: left;
+    max-width: 80%;
+    }
+
+    .offcanvas-body .nav-item {
+        margin: 10px 0;
+        /* Tạo khoảng cách giữa các mục menu */
+    }
+
+    .offcanvas-body .nav-link {
+        font-size: 1.2rem;
+        padding: 10px;
+        border-radius: 5px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+        /* Thêm hiệu ứng hover */
+    }
+
+    /* Hiệu ứng hover cho các mục menu */
+    .offcanvas-body .nav-link:hover {
+        background-color: rgba(99, 47, 13, 0.1);
+        /* Màu nền khi hover */
+        color: #dab166;
+        /* Màu chữ khi hover */
+    }
+
+    /* Định dạng cho mục đang active */
+    .offcanvas-body .nav-link.active {
+        background-color: rgba(99, 47, 13, 0.2);
+        /* Màu nền cho mục đang active */
+        color: #dab166;
+        font-weight: bold;
+        /* Tạo độ dày cho chữ active */
+    }
+
+    /* Căn giữa nội dung trong offcanvas */
+    .navbar-nav {
+        display: flex;
+        flex-direction: column;
+        /* Đặt các mục theo chiều dọc */
+
+    }
+}

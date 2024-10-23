@@ -1,0 +1,409 @@
+
+@media (min-width: 992px) {
+    .checkout .container{
+        width: 80%;
+    }
+}
+/* Định nghĩa kiểu cho nút chọn địa chỉ khác */
+.checkout h1 {
+    font-size: 2.2rem; /* Kích thước chữ lớn */
+    color: #333; /* Màu chữ */
+    margin-bottom: 1rem; /* Khoảng cách dưới */
+    font-weight: bold;
+    text-align: center;
+}
+.checkout .btn-custom {
+    background-color: #afc7b5; /* Màu nền nhạt */
+    color: #005a00; /* Màu chữ xanh dương */
+    border: 1px solid #007e39; /* Đường viền xanh dương */
+    border-radius: 0.25rem; /* Bo góc */
+    padding: 0.5rem 1rem; /* Khoảng cách xung quanh văn bản */
+    font-size: 1rem; /* Kích thước chữ */
+    font-weight: 500; /* Độ đậm của chữ */
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s; /* Hiệu ứng chuyển tiếp */
+}
+
+/* Hiệu ứng khi di chuột qua nút */
+.checkout .btn-custom:hover {
+    background-color: #003a05; /* Màu nền khi hover */
+    color: #ffffff; /* Màu chữ khi hover */
+    border-color: #008628; /* Đường viền khi hover */
+}
+
+/* Hiệu ứng khi nút bị nhấn */
+.checkout .btn-custom:active {
+    background-color: #008628; /* Màu nền khi nhấn */
+    border-color: #008628; /* Đường viền khi nhấn */
+}
+
+/* Định dạng cho phần chứa địa chỉ khác trong trang thanh toán */
+.checkout #other-addresses {
+    padding: 1rem;
+    background-color: #efffed; /* Màu nền nhạt */
+    border: 1px solid #e6ffe2; /* Đường viền xung quanh */
+    border-radius: 0.5rem; /* Bo góc */
+}
+
+/* Định dạng cho thẻ card trong phần địa chỉ khác */
+.checkout .card {
+    border: 1px solid #ddd; /* Đường viền của thẻ card */
+    border-radius: 0.5rem; /* Bo góc */
+    background-color: #ffffff; /* Màu nền của thẻ card */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* Hiệu ứng đổ bóng */
+    margin-bottom: 1rem; /* Khoảng cách dưới các thẻ card */
+}
+
+/* Hiệu ứng khi di chuột qua thẻ card */
+
+.checkout #other-addresses a{
+    text-decoration: none;
+    color: #ff2d12;
+}
+
+/* Định dạng cho tiêu đề của thẻ card trong phần địa chỉ khác */
+.checkout .card-title {
+    font-size: 1.25rem; /* Kích thước chữ */
+    font-weight: 600; /* Độ đậm của chữ */
+    margin-bottom: 0.5rem; /* Khoảng cách dưới tiêu đề */
+}
+
+/* Định dạng cho văn bản trong thẻ card */
+.checkout .card-text {
+    font-size: 1rem; /* Kích thước chữ */
+    color: #333; /* Màu chữ */
+    line-height: 1.5; /* Khoảng cách dòng */
+}
+.checkout .btn-select {
+    background-color: #ffe0d7; /* Màu nền nút */
+    border-color: #ffe0d7; /* Màu đường viền của nút */
+    color: #911d1d; /* Màu chữ của nút */
+    border-radius: 0.25rem; /* Bo góc nút */
+    padding: 0.5rem 1rem; /* Khoảng cách xung quanh văn bản nút */
+    font-size: 1rem; /* Kích thước chữ */
+    font-weight: 500; /* Độ đậm của chữ */
+    transition: background-color 0.3s, border-color 0.3s,color 0.3s; /* Hiệu ứng chuyển tiếp */
+}
+
+/* Hiệu ứng khi di chuột qua nút chọn địa chỉ */
+.checkout .btn-select:hover {
+    background-color: #911d1d; /* Màu nền khi hover */
+    border-color: #911d1d; /* Màu đường viền khi hover */
+    color: white;
+}
+
+/* Định dạng cho nút chọn địa chỉ trong phần địa chỉ khác */
+.checkout .btn-primary {
+    background: linear-gradient(135deg, #857700, #1b8500,#008648); /* Gradient nền nút */
+    border: 2px solid #24a135; /* Đường viền của nút */
+    color: white; /* Màu chữ của nút */
+    border-radius: 0.25rem; /* Bo góc nút */
+    padding: 0.5rem 1rem; /* Khoảng cách xung quanh văn bản nút */
+    font-size: 1rem; /* Kích thước chữ */
+    font-weight: bold; /* Độ đậm của chữ */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Đổ bóng */
+    transition: background 0.3s, border-color 0.3s, box-shadow 0.3s; /* Hiệu ứng chuyển tiếp */
+}
+
+.checkout .btn-primary:hover {
+    background: linear-gradient(135deg, #ceca00, #fa7272, #ff0000); /* Gradient nền khi hover */
+    border-color: #911d1d; /* Màu đường viền khi hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5); /* Đổ bóng khi hover */
+}
+
+
+.checkout .payment-details {
+    background: linear-gradient(to right, #feffb0, #c2ffc2, #93fa85); /* Gradient nền */
+    padding: 1.5rem; /* Khoảng cách bên trong */
+    border-radius: 0.5rem; /* Bo góc */
+    border: 1px solid #ccc; /* Đường viền xung quanh */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Đổ bóng */
+    margin-bottom: 1.5rem; /* Khoảng cách dưới */
+}
+
+.checkout .payment-details label {
+    font-size: 1.5rem; /* Kích thước chữ tiêu đề */
+    font-weight: 700; /* Độ đậm của chữ tiêu đề */
+    color: #333; /* Màu chữ tiêu đề */
+    margin-bottom: 1rem; /* Khoảng cách dưới tiêu đề */
+}
+
+.checkout .payment-details p {
+    font-size: 1.1rem; /* Kích thước chữ */
+    margin-bottom: 0.7rem; /* Khoảng cách dưới các đoạn văn */
+    color: #555; /* Màu chữ */
+}
+
+.checkout .payment-details p strong {
+    color: #000; /* Màu chữ tổng tiền */
+    font-weight: 700; /* Độ đậm của chữ tổng tiền */
+}
+
+.checkout .payment-details span {
+    color: #e74c3c; /* Màu chữ của số tiền */
+    font-weight: 600; /* Độ đậm của chữ số tiền */
+}
+
+
+.checkout .voucher-code {
+    background: linear-gradient(to right, #ffe8e8, #fac5c5);
+    padding: 1.5rem;
+    height: 300px;
+    overflow-y: auto; /* Để hiển thị thanh cuộn dọc */
+    overflow-x: hidden;
+    border-radius: 0.5rem;
+    border: 1px solid #ff7575;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin-bottom: 1.5rem;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+/* Tùy chỉnh thanh cuộn */
+.checkout .voucher-code::-webkit-scrollbar {
+    width: 12px; /* Độ rộng của thanh cuộn */
+}
+
+/* Tùy chỉnh track (nền của thanh cuộn) */
+.checkout .voucher-code::-webkit-scrollbar-track {
+    background: #ffe8e8; /* Màu nền */
+    border-radius: 10px; /* Bo góc */
+}
+
+/* Tùy chỉnh thumb (phần di chuyển của thanh cuộn) */
+.checkout .voucher-code::-webkit-scrollbar-thumb {
+    background-color: #ff7575; /* Màu của thanh cuộn */
+    border-radius: 10px; /* Bo góc */
+    border: 3px solid #fac5c5; /* Tạo khoảng cách bên trong thanh cuộn */
+}
+
+/* Hiệu ứng khi hover trên thanh cuộn */
+.checkout .voucher-code::-webkit-scrollbar-thumb:hover {
+    background-color: #e64545; /* Màu khi hover */
+}
+
+
+.checkout .voucher-code:hover {
+    box-shadow: 0 6px 12px rgba(255, 1, 1, 0.3); /* Đổ bóng khi hover */
+}
+
+.checkout .voucher-code .form-label {
+    font-size: 1.1rem; /* Kích thước chữ */
+    text-decoration: none;
+    position: relative;
+    font-weight: 700;
+    color: transparent; /* Ẩn màu chữ để chỉ gradient hiện lên */
+    background: linear-gradient(45deg, #ff2f2f, #ffa602, #009238);
+    -webkit-background-clip: text;
+    background-clip: text;
+    font-style: italic;
+    overflow: hidden; /* Đảm bảo ánh sáng không ra ngoài chữ */
+}
+
+.checkout .voucher-code .form-label::before {
+    content: '';
+    position: absolute;
+    top: -100%;
+    left: -100%;
+    width: 300%;
+    height: 300%;
+    background: linear-gradient(120deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.8) 50%, rgba(255, 255, 255, 0) 100%);
+    background-size: 200% 200%;
+    animation: shine 1s infinite;
+    z-index: 1;
+    transform: rotate(30deg);
+}
+
+.checkout .voucher-code .form-label {
+    position: relative;
+    z-index: 0;
+}
+
+@keyframes shine {
+    0% {
+        background-position: -200% -200%;
+    }
+    100% {
+        background-position: 200% 200%;
+    }
+}
+
+
+.checkout .voucher-code #voucher_error_message {
+    color: #e74c3c; /* Màu đỏ tươi cho thông báo lỗi */
+    font-size: 0.875rem; /* Kích thước chữ nhỏ hơn */
+}
+
+.checkout .voucher-code .form-check-input {
+    /* Thay đổi màu nền và màu của biểu tượng ô chọn */
+    background-color: #fff; /* Màu nền của ô chọn */
+    border: 1px solid #ccc; /* Màu đường viền của ô chọn */
+    accent-color: #65cc73; /* Màu sắc của dấu kiểm (v) */
+}
+
+/* Thay đổi màu nền và màu biểu tượng khi ô chọn được chọn */
+.checkout .voucher-code .form-check-input:checked {
+    background-color: #b32810; /* Màu nền khi chọn */
+    border-color: #f85741; /* Màu đường viền khi chọn */
+}
+
+/* Thay đổi màu nền của ô chọn khi di chuột qua */
+.checkout .voucher-code .form-check-input:focus {
+    outline: none; /* Loại bỏ viền mặc định khi focus */
+    box-shadow: 0 0 0 0.2rem rgba(255, 37, 37, 0.25); /* Hiệu ứng đổ bóng khi focus */
+}
+
+.checkout .voucher-code .form-check-label {
+    font-size: 1.1rem; /* Kích thước chữ */ 
+    color: red;
+}
+
+/* Style cho tiêu đề */
+.checkout h2 {
+    font-size: 1.4rem; /* Kích thước chữ lớn */
+    color: #333; /* Màu chữ */
+    margin-bottom: 1rem; /* Khoảng cách dưới */
+    font-weight: bold;
+}
+
+/* Style cho danh sách sản phẩm */
+.checkout #cart-items {
+    list-style-type: none; /* Loại bỏ ký hiệu đầu dòng */
+    padding: 0; /* Loại bỏ khoảng cách thừa */
+    margin-bottom: 2rem; /* Khoảng cách dưới */
+}
+
+.checkout #cart-items .list-group-item {
+    background-color: #f1ffeb; /* Màu nền của sản phẩm */
+    border: 1px solid #ddd; /* Đường viền nhẹ */
+    border-radius: 0.5rem; /* Bo góc các mục */
+    padding: 1rem; /* Khoảng cách bên trong */
+    margin-bottom: 1rem; /* Khoảng cách giữa các mục */
+    transition: transform 0.3s ease; /* Hiệu ứng khi hover */
+}
+
+/* Hiệu ứng khi hover */
+.checkout #cart-items .list-group-item:hover {
+    transform: translateY(-5px); /* Hiệu ứng nâng lên khi hover */
+}
+
+/* Hình ảnh sản phẩm */
+.checkout #cart-items .img-thumbnail {
+    width: 80px; /* Độ rộng hình ảnh */
+    height: auto; /* Tự điều chỉnh chiều cao */
+    border-radius: 0.25rem; /* Bo góc cho hình ảnh */
+    border: none; /* Loại bỏ viền mặc định */
+    object-fit: cover; /* Cắt hình ảnh để vừa khung */
+}
+
+/* Tên và thông tin sản phẩm */
+.checkout #cart-items h5 {
+    font-size: 0.9rem;
+    white-space: normal; /* Cho phép ngắt dòng */
+    word-wrap: break-word; /* Ngắt dòng từ bất kỳ vị trí nào nếu quá dài */
+}
+
+.checkout #cart-items p {
+    margin: 0.25rem 0 0; /* Khoảng cách giữa số lượng và giá */
+    font-size: 0.9rem; /* Kích thước chữ cho số lượng và giá */
+    color: #666; /* Màu chữ */
+}
+
+/* Giá tổng cộng cho mỗi sản phẩm */
+.checkout #cart-items .badge {
+    font-size: 1rem; /* Kích thước chữ cho giá */
+    background-color: #599b59 !important; /* Màu nền của badge */
+    color: #fff; /* Màu chữ trong badge */
+    padding: 0.75rem 1rem; /* Khoảng cách bên trong badge */
+    border-radius: 0.5rem; /* Bo góc */
+}
+@media (max-width: 576px) {
+    .checkout #cart-items h5 {
+        font-size: 1rem; /* Giảm kích thước chữ trên màn hình nhỏ */
+    }
+    .checkout #cart-items .badge {
+        font-size: 0.8rem; /* Kích thước chữ cho giá */
+    }
+}
+
+
+/* Tổng quan về container của shipping và payment */
+.checkout .shipping-method, 
+.checkout .payment-method {
+    background-color: #ebfff8; /* Màu nền nhạt */
+    padding: 1.5rem; /* Khoảng cách bên trong */
+    border: 1px solid #ddd; /* Viền nhẹ */
+    border-radius: 8px; /* Bo góc */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* Đổ bóng nhẹ */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Hiệu ứng khi hover */
+}
+
+.checkout .shipping-method:hover, 
+.checkout .payment-method:hover {
+    transform: translateY(-5px); /* Đẩy phần tử lên khi hover */
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1); /* Tăng đổ bóng khi hover */
+}
+
+/* Tiêu đề của form */
+.checkout .shipping-method .form-label, 
+.checkout .payment-method .form-label {
+    font-size: 1.2rem; /* Kích thước chữ tiêu đề */
+    font-weight: bold; /* Độ đậm của chữ */
+    color: #333; /* Màu chữ */
+    margin-bottom: 0.8rem; /* Khoảng cách dưới */
+}
+
+/* Select input */
+.checkout .form-select {
+    font-size: 1rem; /* Kích thước chữ */
+    padding: 0.75rem 1rem; /* Khoảng cách bên trong */
+    border: 1px solid #e6ffef; /* Viền mặc định */
+    border-radius: 4px; /* Bo góc */
+    background-color: #98ee7e;
+    color: #333; /* Màu chữ */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Hiệu ứng khi focus */
+}
+
+/* Khi hover hoặc focus vào select input */
+.checkout .form-select:hover,
+.checkout .form-select:focus {
+    border-color: #6aca77; /* Viền đổi màu khi hover/focus */
+    box-shadow: 0 0 8px rgba(102, 233, 130, 0.6); /* Đổ bóng khi focus */
+    outline: none; /* Bỏ viền outline mặc định */
+}
+
+/* Hiển thị option bên trong select */
+.checkout .form-select option {
+    padding: 10px; /* Khoảng cách giữa các option */
+    background-color: #fff; /* Nền trắng */
+    color: #333; /* Màu chữ */
+}
+
+/* Khoảng cách dưới cho từng nhóm form */
+.checkout .mb-3 {
+    margin-bottom: 1.5rem; /* Khoảng cách dưới */
+}
+
+/* Responsive - Điều chỉnh padding và kích thước trên màn hình nhỏ */
+@media (max-width: 576px) {
+    .checkout .shipping-method, 
+    .checkout .payment-method {
+        padding: 1rem; /* Giảm padding trên màn hình nhỏ */
+    }
+
+    .checkout .form-select {
+        font-size: 0.9rem; /* Giảm kích thước chữ của select trên màn hình nhỏ */
+        padding: 0.6rem 0.8rem; /* Giảm padding */
+    }
+
+    .checkout .shipping-method .form-label, 
+    .checkout .payment-method .form-label {
+        font-size: 1rem; /* Giảm kích thước tiêu đề trên màn hình nhỏ */
+    }
+}
+
+.card-body a{
+    text-decoration: none;
+    color: #1b8500;
+}
+
+
+

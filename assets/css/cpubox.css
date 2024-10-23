@@ -1,0 +1,228 @@
+.box-cpu .container {
+    min-height: 632px;
+    background: linear-gradient(135deg, #f0f8ff, #e0f7fa, #b2ebf2); /* Gradient xanh nhẹ */
+    width: 80%;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.box-cpu .card {
+    width: 100%;
+    max-width: 250px;
+    height: 350px;
+    border: none;
+    margin: 0 auto;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.box-cpu .card:hover {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.box-cpu .card-body {
+    padding: 15px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.box-cpu .img-wrapper {
+    width: 100%;
+    height: 180px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.box-cpu .card-img-top {
+    width: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease-in-out;
+}
+
+.box-cpu .card:hover .card-img-top {
+    transform: scale(1.1);
+}
+
+.box-cpu .card-title {
+    text-decoration: none;
+    color: #000;
+    font-weight: normal;
+    letter-spacing: 1px;
+    transition: color 0.3s ease;
+    text-align: left;
+    margin-bottom: 0;
+    font-size: 0.9rem;
+    line-height: 1.2;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 2.4em;
+}
+
+.box-cpu .card-title:hover {
+    color: #ddb66e;
+}
+
+.box-cpu .card-text {
+    font-size: 1rem;
+    margin-bottom: 0;
+    text-align: center;
+}
+
+.box-cpu .card-text-price {
+    font-size: 1rem;
+    color: #d31100;
+    margin-bottom: 0;
+    text-align: center;
+    font-weight: bold;
+}
+
+.box-cpu .btn-primary {
+    padding: 3px 15px;
+    background: linear-gradient(135deg, #007bff, #3498db, #cceeff);
+    border: none;
+    color: #fff;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border-radius: 35px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+.box-cpu .btn-primary:hover {
+    background: linear-gradient(135deg, #cceeff, #3498db, #007bff);
+    color: #fff;
+}
+
+.box-cpu .original-price {
+    color: #999;
+    font-size: 0.8rem;
+    text-decoration: line-through;
+}
+
+.box-cpu .discounted-price {
+    color: #d31100;
+    font-size: 1em;
+    font-weight: bold;
+}
+
+.box-cpu .btn-outline-primary {
+    padding: 7px 20px;
+    background: linear-gradient(45deg, #3498db, #5dade2, #85c1e9);
+    border: none;
+    color: #fff;
+    margin-top: 5px;
+    border-radius: 0 !important;
+    margin-bottom: 5px;
+    font-size: 1rem;
+    position: relative;
+    transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+.box-cpu .btn-outline-primary::before {
+    content: '';
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    right: 4px;
+    bottom: 4px;
+    border: 1px solid #fff;
+    z-index: 0;
+}
+
+.box-cpu .btn-outline-primary:hover::before {
+    border-color: #003366;
+}
+
+.box-cpu .btn-outline-primary:hover {
+    background: linear-gradient(45deg, #5dade2, #3498db, #007bff);
+    color: #003366;
+}
+
+.box-cpu .active-cpu {
+    background: linear-gradient(135deg, #1e90ff, #00bfff, #4682b4); /* Đổi màu gradient cho CPU */
+    color: #fff; /* Đổi màu chữ */
+    position: relative;
+}
+
+.box-cpu .active-cpu::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid rgb(30, 144, 255); /* Đổi màu tam giác chỉ dẫn */
+    z-index: 10;
+}
+
+
+.box-cpu .btn-outline-primary:hover::after {
+    border-top-color: rgb(46, 89, 182);
+    transition: border-top-color 0.3s ease;
+}
+
+.box-cpu .title1 {
+    font-size: 1.2rem;
+    text-align: center;
+    display: block;
+    width: 100%;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #051030;
+}
+
+.box-cpu .title2 {
+    text-align: center;
+    font-weight: 800;
+    font-size: 2.2rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative; /* Để sử dụng cho pseudo-elements */
+    margin-bottom: 20px; /* Khoảng cách giữa tiêu đề và đường kẻ */
+}
+
+.box-cpu .title2::after {
+    content: '';
+    display: block;
+    width: 70%; /* Chiều rộng hình thoi bên ngoài */
+    height: 10px; /* Độ dày của đường kẻ */
+    background-color: #136185; /* Màu sắc của đường kẻ */
+    position: absolute;
+    left: 50%; /* Đặt giữa */
+    transform: translateX(-50%); /* Căn giữa cho đường kẻ */
+    bottom: -10px; /* Khoảng cách giữa tiêu đề và đường kẻ */
+    clip-path: polygon(50% 0%, 100% 100%, 0% 100%); /* Tạo hình thoi */
+}
+
+.box-cpu .title2::before {
+    content: '';
+    display: block;
+    width: 70%; /* Chiều rộng hình thoi bên trong (có thể điều chỉnh) */
+    height: 10px; /* Độ dày của đường kẻ */
+    background-color: #fff; /* Màu sắc của đường kẻ bên trong */
+    position: absolute;
+    left: 50%; /* Đặt giữa */
+    transform: translateX(-50%); /* Căn giữa cho đường kẻ */
+    bottom: -12px; /* Khoảng cách giữa tiêu đề và đường kẻ */
+    clip-path: polygon(50% 0%, 100% 100%, 0% 100%); /* Tạo hình thoi */
+    z-index: -1; /* Đặt phía sau hình thoi bên ngoài */
+}

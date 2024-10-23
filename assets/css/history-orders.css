@@ -1,0 +1,239 @@
+/* Tổng quan phần lịch sử mua hàng */
+.history-orders {
+    background-color: #f4f9f4; /* Màu nền nhẹ nhàng */
+    padding: 2rem 0; /* Khoảng cách trên và dưới */
+}
+
+.history-orders h1 {
+    color: #2d6a4f; /* Màu xanh lá cây đậm hơn cho tiêu đề */
+    font-size: 2rem; /* Kích thước chữ tiêu đề */
+    margin-bottom: 1.5rem; /* Khoảng cách dưới tiêu đề */
+}
+
+.history-orders .alert-info {
+    background-color: #d9f5d9; /* Nền thông báo xanh lá nhạt */
+    color: #2d6a4f; /* Màu chữ xanh lá đậm hơn */
+    border: 1px solid #b2d9b2; /* Viền thông báo */
+    border-radius: 0.25rem; /* Bo góc thông báo */
+}
+
+.history-orders .card {
+    border: 1px solid #b2d9b2; /* Viền của thẻ card */
+    border-radius: 0.5rem; /* Bo góc thẻ card */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Hiệu ứng bóng nhẹ */
+    background-color: #ffffff; /* Màu nền của thẻ card */
+}
+
+.history-orders .card-body {
+    padding: 1.5rem; /* Khoảng cách bên trong thẻ card */
+}
+
+.history-orders .card-title {
+    color: #2d6a4f; /* Màu tiêu đề trong thẻ card */
+    font-size: 1.25rem; /* Kích thước chữ tiêu đề thẻ card */
+    margin-bottom: 1rem; /* Khoảng cách dưới tiêu đề */
+}
+
+.history-orders .card-text {
+    color: #333; /* Màu chữ của các đoạn văn bản trong thẻ card */
+    margin-bottom: 0.5rem; /* Khoảng cách dưới mỗi đoạn văn bản */
+}
+
+.history-orders .card-text strong {
+    color: #2d6a4f; /* Màu chữ đậm cho các nhãn trong thẻ card */
+}
+
+.history-orders .btn-info {
+    background-color: #245c44; /* Màu nền của nút */
+    border-color: #2d6a4f; /* Màu viền của nút */
+    width: 100%; /* Chiếm toàn bộ chiều rộng của phần chứa */
+    color: #ffffff; /* Màu chữ của nút */
+    text-align: center; /* Căn giữa chữ trong nút */
+    padding: 10px; /* Khoảng cách giữa chữ và viền nút */
+    border-radius: 10px; /* Bo tròn các góc của nút */
+    transition: background-color 0.3s, border-color 0.3s; /* Hiệu ứng chuyển màu nền và viền khi hover */
+}
+
+.history-orders .btn-info:hover {
+    background-color: #25ad70; /* Màu nền khi hover trên nút */
+    border-color: #245c44; /* Màu viền khi hover trên nút */
+    cursor: pointer; /* Thay đổi con trỏ chuột khi hover */
+}
+
+
+.history-orders .modal-dialog {
+    padding: 20px;
+    min-width: 100%;
+}
+.history-orders .modal-body {
+    padding: 5px;
+    min-width: 100%;
+}
+.history-orders .modal-content {
+    border-radius: 0.5rem; /* Bo góc của modal */
+}
+
+.history-orders .modal-header {
+    background-color: #e0f4e0; /* Màu nền của header modal */
+    border-bottom: 1px solid #b2d9b2; /* Viền dưới của header modal */
+}
+
+.history-orders .modal-title {
+    color: #2d6a4f; /* Màu tiêu đề modal */
+}
+
+.history-orders .modal-footer {
+    background-color: #e0f4e0; /* Màu nền của footer modal */
+    border-top: 1px solid #b2d9b2; /* Viền trên của footer modal */
+}
+
+.history-orders .btn-secondary {
+    background-color: #b2d9b2; /* Màu nền của nút đóng modal */
+    border-color: #b2d9b2; /* Màu viền của nút đóng modal */
+    color: #2d6a4f; /* Màu chữ của nút đóng modal */
+}
+
+.history-orders .btn-secondary:hover {
+    background-color: #a0c9a0; /* Màu nền khi hover trên nút đóng modal */
+    border-color: #a0c9a0; /* Màu viền khi hover trên nút đóng modal */
+}
+
+.history-orders  .list-p-orders{
+    border: 1px solid #319931; /* Viền thông báo */
+    border-radius: 15px;
+    font-size: 0.8rem;
+}
+.history-orders  .list-p-orders h5{
+    font-size: 1rem;
+}
+.history-orders  .list-p-orders .mb-1{
+    color: red;
+    font-weight: bold;
+}
+
+/* Màu nền của trạng thái Đang chờ */
+.history-orders .order-status.pending {
+    color: #ffffff; /* Màu chữ cho trạng thái "Đang chờ" */
+    background-color: #a38d0e; /* Màu nền cho trạng thái "Đang chờ" */
+    padding: 5px; /* Khoảng cách giữa chữ và nền */
+    border-radius: 4px; /* Bo tròn các góc của nền */
+}
+
+/* Màu nền của trạng thái Đã xác nhận */
+.history-orders .order-status.confirmed {
+    color: #ffffff; /* Màu chữ cho trạng thái "Đã xác nhận" */
+    background-color: #4b6cd8; /* Màu nền cho trạng thái "Đã xác nhận" */
+    padding: 5px;
+    border-radius: 4px;
+}
+
+/* Màu nền của trạng thái Đang vận chuyển */
+.history-orders .order-status.shipping {
+    color: #ffffff; /* Màu chữ cho trạng thái "Đang vận chuyển" */
+    background-color: #cc8500; /* Màu nền cho trạng thái "Đang vận chuyển" */
+    padding: 5px;
+    border-radius: 4px;
+}
+
+/* Màu nền của trạng thái Đã giao */
+.history-orders .order-status.delivered {
+    color: #ffffff; /* Màu chữ cho trạng thái "Đã giao" */
+    background-color: #00dd1a; /* Màu nền cho trạng thái "Đã giao" */
+    padding: 5px;
+    border-radius: 4px;
+}
+
+/* Màu nền của trạng thái Đã hủy */
+.history-orders .order-status.canceled {
+    color: #ffffff; /* Màu chữ cho trạng thái "Đã hủy" */
+    background-color: #f44336; /* Màu nền cho trạng thái "Đã hủy" */
+    padding: 5px;
+    border-radius: 4px;
+}
+
+
+
+
+.modalcancel-notify .modal-dialog {
+    display: flex; /* Sử dụng Flexbox */
+    align-items: center; /* Căn giữa theo chiều dọc */
+    justify-content: center; /* Căn giữa theo chiều ngang */
+    position: absolute; /* Để có thể điều chỉnh với thuộc tính top */
+    top: 25%; /* Căn chỉnh từ đỉnh xuống 40% */
+    
+}
+
+.modalcancel-notify .modal-content {
+    border-radius: 10px; /* Góc bo tròn cho modal */
+    border: none; /* Đường viền màu đỏ cho modal */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Đổ bóng cho modal */
+    max-width: 370px;
+}
+
+.modalcancel-notify .modal-header {
+    background-color: #ffa5a5; /* Nền màu đỏ cho header */
+    border-bottom: none;
+    border-top-left-radius: 10px; /* Bo tròn góc trái trên */
+    border-top-right-radius: 10px; /* Bo tròn góc phải trên */
+}
+.modalcancel-notify .modal-header .modal-title{
+    color: #000; /* Màu chữ trắng */
+}
+
+
+.modalcancel-notify .modal-footer {
+    border-top: 2px solid #ffa5a5; /* Đường viền trên cho footer */
+    background-color: #fff;
+}
+
+.modalcancel-notify #confirmationMessage {
+    font-size: 16px; /* Kích thước chữ cho thông báo xác nhận */
+    margin-bottom: 15px; /* Khoảng cách dưới thông báo xác nhận */
+}
+
+.modalcancel-notify #resultMessage {
+    padding: 10px; /* Padding cho thông báo kết quả */
+    border-radius: 5px; /* Bo tròn góc cho thông báo kết quả */
+    margin-top: 15px; /* Khoảng cách trên cho thông báo kết quả */
+}
+
+.modalcancel-notify .alert {
+    margin-bottom: 0; /* Xóa khoảng cách dưới cho thông báo alert */
+}
+
+
+
+.order-summary-container {
+    background-color: #f9f9f9; /* Màu nền nhẹ cho toàn bộ container */
+    border: 1px solid #e0e0e0; /* Đường viền nhẹ */
+    border-radius: 8px; /* Bo góc cho container */
+    padding: 20px; /* Khoảng cách bên trong */
+    margin: 20px 0; /* Khoảng cách bên ngoài */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Đổ bóng nhẹ cho container */
+}
+
+.order-summary {
+    font-size: 16px; /* Kích thước chữ */
+    margin: 10px 0; /* Khoảng cách giữa các phần tử */
+}
+
+.total-amount {
+    color: #333; /* Màu chữ cho tổng tiền hàng */
+    font-weight: bold; /* Đậm chữ */
+}
+
+.shipping-fee {
+    color: #555; /* Màu chữ cho phí vận chuyển */
+}
+
+.voucher-code {
+    color: #c7795b; /* Màu chữ cho voucher đã sử dụng */
+}
+
+.grand-total {
+    color: #d9534f; /* Màu chữ cho tổng thanh toán */
+    font-weight: bold; /* Đậm chữ */
+    font-size: 18px; /* Kích thước chữ lớn hơn cho tổng thanh toán */
+    border-top: 2px solid #e0e0e0; /* Đường viền trên cho tổng thanh toán */
+    padding-top: 10px; /* Khoảng cách bên trên */
+}

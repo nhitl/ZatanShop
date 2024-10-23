@@ -1,0 +1,10 @@
+// assets/scss/test.scss
+@import 'node_modules/bootstrap/scss/bootstrap'; // Nhập toàn bộ Bootstrap SCSS
+
+// Nhập _dropdown.scss sau khi đã nhập Bootstrap để đảm bảo tất cả các mixins được định nghĩa
+@import 'node_modules/bootstrap/scss/_dropdown.scss';
+
+// Custom styles
+.dropdown-menu.show {
+    background-color: yellow;
+}

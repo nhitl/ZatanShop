@@ -1,0 +1,296 @@
+.admin-header .sidebar {
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    right: -250px;
+    /* Di chuyển sidebar ra ngoài màn hình khi ẩn */
+    z-index: 100;
+    width: 250px;
+    /* Kích thước rộng hơn */
+    background-color: #f8f9fa;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    /* Padding bên trong sidebar */
+    overflow-y: auto;
+    /* Cuộn khi nội dung quá dài */
+    opacity: 0;
+    /* Ẩn sidebar */
+}
+
+.admin-header .sidebar.show {
+    transform: translateX(-250px);
+    /* Di chuyển sidebar vào trong màn hình từ bên phải */
+    opacity: 1;
+    /* Hiển thị sidebar */
+}
+
+.admin-header .sidebar-sticky {
+    padding-top: 30px;
+}
+
+.admin-header .sidebar .nav-link {
+    color: #333;
+    font-size: 1.2rem;
+    /* Kích thước chữ lớn hơn */
+    padding: 10px 15px;
+    /* Padding lớn hơn */
+    border-radius: 5px;
+    /* Bo góc */
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.admin-header .sidebar .nav-link:hover {
+    background-color: #606366;
+    color: #e9ecef;
+}
+
+.admin-header .sidebar .nav-link.active:hover {
+    background-color: #343a40;
+    /* Đảm bảo màu nền không thay đổi khi hover */
+    color: white;
+    /* Đảm bảo màu chữ không thay đổi khi hover */
+}
+
+.admin-header .sidebar .nav-item {
+    margin-bottom: 1rem;
+}
+
+.admin-header .sidebar .nav-link i {
+    margin-right: 15px;
+    /* Khoảng cách giữa icon và văn bản lớn hơn */
+    font-size: 1.5rem;
+    /* Kích thước icon lớn hơn */
+}
+
+.admin-header .header {
+    height: 60px;
+    background-color: #343a40;
+    color: white;
+    padding: 0 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 100;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.admin-header .header img {
+    height: 40px;
+}
+
+.admin-header .header h2 {
+    margin: 0;
+    font-size: 24px;
+    flex-grow: 1;
+    text-align: center;
+}
+
+.admin-header .content {
+    margin-left: 0;
+    padding: 20px;
+    margin-top: 60px;
+}
+
+.admin-header .sidebar-toggle {
+    position: absolute;
+    right: 20px;
+    /* Di chuyển nút sang bên phải */
+    top: 10px;
+    z-index: 101;
+}
+
+.admin-header .sidebar .close-btn {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    cursor: pointer;
+    font-size: 24px;
+    color: transparent;
+    /* Ẩn dấu X */
+    background: transparent;
+    border: none;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.admin-header .sidebar .close-btn:hover {
+    background-color: transparent;
+    color: transparent;
+    /* Đảm bảo dấu X không hiển thị khi hover */
+}
+
+
+
+.modal-content {
+    position: relative;
+    /* Đặt vị trí tương đối để không bị ảnh hưởng bởi transform */
+}
+
+@media (max-width: 768px) {
+    .modal-dialog {
+        width: 90%;
+        /* Đảm bảo modal phù hợp với màn hình nhỏ */
+    }
+}
+
+@media (min-width: 900px) {
+    .page-products .container-fluid {
+        width: 80%;
+    }
+}
+
+
+.success-icon {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px;
+    height: 60px;
+    z-index: 1050;
+    /* Remove background color and border from here */
+    text-align: center;
+}
+
+.success-icon.show {
+    display: block;
+}
+
+.border-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 4px solid #ccc;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    animation: borderLoading 2s linear infinite;
+}
+
+@keyframes borderLoading {
+    0% {
+        border-color: #ccc;
+        border-top-color: #28a745;
+        transform: rotate(0deg);
+    }
+
+    100% {
+        border-color: #28a745;
+        transform: rotate(360deg);
+    }
+}
+
+.icon-wrapper {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+}
+
+.icon-wrapper i {
+    font-size: 24px;
+    color: #28a745;
+}
+
+
+/* banner */
+/* 
+banner right */
+.sub-banner .img-subbanner {
+    width: 100%;
+    height: 140px;
+}
+
+.banner .img-banner {
+    width: 100%;
+    height: 140px;
+}
+
+/* Đảm bảo rằng hình ảnh và nội dung hiển thị đẹp và hợp lý */
+/* Style riêng cho modal-subbanner */
+
+
+.sub-banner .title {
+    padding-top: 30px;
+}
+
+.banner .title {
+    padding-top: 30px;
+}
+
+.edit-subbn h1 {
+    padding-top: 30px;
+}
+
+.edit-bn h1 {
+    padding-top: 30px;
+}
+
+.page-products .container-fluid {
+    margin-top: 80px;
+}
+
+
+
+.page-products .col-12 {
+    padding-bottom: 15px;
+}
+
+.page-products .product-item {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+    transition: box-shadow 0.3s ease-in-out;
+    margin: 0 auto;
+}
+
+.page-products .product-item:hover {
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.5);
+}
+
+.page-products .product-item img {
+    max-width: 50%;
+    max-height: 140px;
+    height: auto;
+}
+
+.page-products .product-item .btn {
+    margin-right: 5px;
+}
+
+
+.page-products .scroll-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background-color: #343a40;
+    color: white;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 50px;
+    font-size: 24px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    display: none;
+    /* Ẩn nút khi không cuộn xuống */
+}
+
+.page-products .scroll-to-top:hover {
+    background-color: #22262b;
+}

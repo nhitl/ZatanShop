@@ -1,0 +1,126 @@
+.modal-dialog {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.modal-content {
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.container .btn-secondary {
+    background-color: green; /* Nền trắng */
+    border: 2px solid rgb(53, 53, 53); /* Viền đen */
+    color: white; /* Chữ đỏ */
+    border-radius: 50%; /* Hình tròn */
+    width: 100px; /* Chiều rộng cố định */
+    height: 100px; /* Chiều cao cố định */
+    padding: 0; /* Xóa padding để đảm bảo kích thước cố định */
+    text-align: center; /* Căn giữa chữ */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 14px; /* Kích thước chữ có thể điều chỉnh */
+    line-height: 1; /* Căn chỉnh dòng cho chữ */
+}
+
+.container .btn-secondary:hover {
+    background-color: white;
+    color: brown;
+     /* Màu nền khi hover */
+}
+
+.container .card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%; /* Đảm bảo các card có cùng chiều cao */
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.container .card-body {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.container .card-body p {
+    margin-bottom: 0.5rem;
+}
+
+.container .card-body p:nth-child(3) {
+    /* Giữ địa chỉ trong khung cố định 3 dòng */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-height: 4.5em; /* Chiều cao cho 3 dòng (khoảng 1.5em mỗi dòng) */
+    line-height: 1.5em; /* Dòng cách đều nhau */
+}
+
+
+.container .row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.container .col-md-4 {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px; /* Khoảng cách giữa các card */
+}
+
+.container textarea {
+    resize: none; /* Ngăn người dùng thay đổi kích thước textarea */
+}
+
+.container .btn {
+    margin-top: 10px;
+}
+
+.container .card-default {
+    background-color: #fff3c3; /* Màu vàng tùy chỉnh */
+    border: 2px solid #ffcc00; /* Viền tùy chọn nếu cần */
+}
+
+
+
+.change-pw .card {
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+.change-pw .card-header {
+    font-size: 1.25rem;
+    font-weight: 500;
+}
+
+.change-pw .card-body {
+    padding: 1.5rem;
+}
+
+.change-pw .btn-primary {
+    background-color: #9e3015;
+    border: none;
+}
+
+.change-pw .btn-primary:hover {
+    background-color: #cc390d;
+    border: none;
+}
+
+.change-pw .card-header {
+    background-color: #007e00; /* Màu nền xanh cho header */
+    color: white; /* Màu chữ trắng */
+    font-size: 1.5rem; /* Kích thước chữ */
+    font-weight: bold; /* Chữ đậm */
+    padding: 15px; /* Khoảng cách padding */
+    border-radius: 8px 8px 0 0; /* Bo tròn góc trên */
+    text-align: center; /* Căn giữa nội dung */
+}

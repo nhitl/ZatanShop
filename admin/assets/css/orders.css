@@ -1,0 +1,310 @@
+/* Card container */
+.container{
+    margin-top: 90px;
+}
+/* Card container */
+.order-card {
+    border-radius: 8px;
+    background-color: #dddddd;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+/* Hover effect */
+.order-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Order details container */
+.order-details {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* Information item container */
+.order-info-item,
+.order-meta-item {
+    margin-bottom: 10px;
+}
+
+/* Title for each information item */
+.order-info-title {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+/* Content for each information item */
+.order-info-content {
+    margin: 0;
+}
+
+/* Address styling */
+.order-address {
+    white-space: normal;
+    word-wrap: break-word;
+    height: 4.5rem; /* Adjust this value to fit the desired number of lines */
+    overflow: hidden;
+    position: relative;
+}
+
+
+/* Highlight the order status */
+.order-status {
+    font-weight: bold;
+    border-radius: 20px;
+    display: inline-block;
+    margin-top: 10px;
+}
+
+/* Different status colors */
+.order-status.pending {
+    background-color: #fff3cd; /* Màu nền vàng nhạt cho trạng thái đang chờ */
+    color: #856404; /* Màu chữ nâu tối cho trạng thái đang chờ */
+}
+
+.order-status.confirmed {
+    background-color: #cce5ff; /* Màu nền xanh nhạt cho trạng thái đã xác nhận */
+    color: #004085; /* Màu chữ xanh đậm cho trạng thái đã xác nhận */
+}
+
+.order-status.shipping {
+    background-color: #d1ecf1; /* Màu nền xanh nhạt cho trạng thái đang vận chuyển */
+    color: #0c5460; /* Màu chữ xanh đậm cho trạng thái đang vận chuyển */
+}
+
+.order-status.delivered {
+    background-color: #d4edda; /* Màu nền xanh lá nhạt cho trạng thái đã giao */
+    color: #155724; /* Màu chữ xanh lá đậm cho trạng thái đã giao */
+}
+
+.order-status.canceled {
+    background-color: #f8d7da; /* Màu nền đỏ nhạt cho trạng thái đã hủy */
+    color: #721c24; /* Màu chữ đỏ đậm cho trạng thái đã hủy */
+}
+
+
+
+/* Consistent button style */
+.details-button {
+    background-color: #343a40;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 4px;
+    text-align: center;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background-color 0.3s ease-in-out,color 0.3s ease-in-out;
+    display: block;
+    margin-top: 10px;
+}
+
+.details-button:hover {
+    background-color: #a7a7a7;
+    text-decoration: none;
+    color: #1f1d1d;
+}
+
+/* orders.css */
+
+/* Điều chỉnh khoảng cách giữa các thẻ h1, h2, h3, h4, h5 */
+h2 {
+    margin-bottom: 20px;
+}
+
+/* Định dạng các thẻ card */
+.card {
+    border-radius: 0.5rem;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Định dạng các thẻ card-body */
+.card-body {
+    padding: 20px;
+}
+
+/* Định dạng các thẻ label */
+label {
+    font-weight: bold;
+}
+
+/* Định dạng dropdown (select) */
+select.form-control {
+    border-radius: 0.25rem;
+    border: 1px solid #ced4da;
+}
+
+/* Định dạng nút submit */
+.btn-primary {
+    background-color: #a83749;
+    border: none;
+    border-radius: 0.25rem;
+    font-size: 16px;
+    padding: 10px 20px;
+}
+
+.btn-primary:hover {
+    background-color: #56ad64;
+    color: #ffffff;
+}
+
+/* Định dạng các bảng */
+.table {
+    margin-top: 20px;
+    border-collapse: collapse;
+}
+
+.table th,
+.table td {
+    padding: 12px;
+    text-align: left;
+}
+
+.table th {
+    background-color: #f8f9fa;
+    font-weight: bold;
+}
+
+.table-bordered {
+    border: 1px solid #dee2e6;
+}
+
+.table-bordered th,
+.table-bordered td {
+    border: 1px solid #dee2e6;
+}
+
+/* Định dạng các thông báo */
+.alert {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 0.25rem;
+    font-size: 16px;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+/* Định dạng nút quay lại */
+.btn-secondary {
+    background-color: #6c757d;
+    border: none;
+    border-radius: 0.25rem;
+    padding: 10px 20px;
+    font-size: 16px;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+    color: #ffffff;
+}
+
+
+/* Điều chỉnh kích thước của các cột */
+.product-name-header, .product-name {
+    flex-basis: 50%; /* Tên sản phẩm chiếm 40% chiều rộng */
+    max-width: 50%;
+    text-align: left;
+    padding-right: 15px;
+}
+
+.product-quantity-header, .product-quantity{
+    flex-basis: 10%; /* Các cột còn lại chiếm 20% chiều rộng */
+    max-width: 10%;
+    text-align: right;
+}
+
+.product-price-header, .product-price,
+.product-total-header, .product-total {
+    flex-basis: 20%; /* Các cột còn lại chiếm 20% chiều rộng */
+    max-width: 20%;
+    text-align: right;
+}
+
+/* Khoảng cách giữa các phần */
+.order-item-header, .order-item {
+    display: flex;
+    justify-content: space-between; /* Cân đối các phần bên trong hàng */
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Tiêu đề các cột */
+.order-item-header {
+    font-weight: bold;
+    border-bottom: 2px solid #333; /* Đường gạch dưới tiêu đề */
+    padding-bottom: 10px;
+    margin-bottom: 15px; /* Khoảng cách giữa tiêu đề và các sản phẩm */
+}
+
+.product-name-header,
+.product-quantity-header,
+.product-price-header,
+.product-total-header {
+    text-transform: uppercase; /* Chuyển thành chữ in hoa cho tiêu đề */
+    flex-basis: 20%;
+    text-align: right;
+}
+
+.product-name-header {
+    flex-grow: 1;
+    text-align: left;
+    padding-right: 15px;
+}
+
+.order-item {
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.product-name {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal; /* Để cho phép xuống dòng */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3; /* Hiển thị tối đa 3 dòng */
+    padding-right: 15px;
+}
+
+/* Thay đổi hiển thị cho màn hình nhỏ */
+@media (max-width: 768px) {
+    .product-name-header, .product-name {
+        flex-basis: 35%; /* Tên sản phẩm chiếm 40% chiều rộng */
+        max-width: 35%;
+        text-align: left;
+        padding-right: 15px;
+    }
+    .product-quantity-header, .product-quantity{
+        flex-basis: 10%; /* Các cột còn lại chiếm 20% chiều rộng */
+        max-width: 10%;
+        text-align: center;
+    }
+    .product-price-header, .product-price {
+        flex-basis: 30%; /* Các cột còn lại chiếm 20% chiều rộng */
+        max-width: 30%;
+        text-align: right;
+    }
+    .product-total-header, .product-total {
+        flex-basis: 25%; /* Các cột còn lại chiếm 20% chiều rộng */
+        max-width: 25%;
+        text-align: right;
+    }
+    
+}
+
+.product-name:hover {
+    cursor: default; /* Con trỏ không đổi khi hover */
+}

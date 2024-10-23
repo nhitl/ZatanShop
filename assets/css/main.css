@@ -1,0 +1,43 @@
+.header{
+    display: block;
+}
+.header .topbar {
+    padding: 6px 0;
+    position: relative;
+    background: #004e3e;
+    border-bottom: 1px solid rgba(253, 201, 125, 0.4);
+}
+
+.container, .container-fluid {
+    padding-left: 14px;
+    padding-right: 14px;
+    width: 100%;
+    max-width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+}
+.row {
+    margin-right: -10px;
+    margin-left: -10px;
+}
+.header .topbar .header-promo {
+    display: flex;
+    align-items: center;
+}
+
+header.header .topbar .header-promo .notification {
+    position: relative;
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+svg:not(:root) {
+    overflow: hidden;
+}
+header.header .topbar .header-promo .notification svg {
+    width: 20px;
+    height: 20px;
+}

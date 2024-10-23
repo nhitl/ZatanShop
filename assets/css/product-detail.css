@@ -1,0 +1,972 @@
+.product-detail {
+    display: flex;
+    padding: 20px;
+}
+
+*,
+::after,
+::before {
+    box-sizing: border-box;
+}
+@media (min-width: 1200px) {
+    .layout-product{
+        width: 80%;
+        margin: 0 auto;
+    }
+    
+}
+
+
+
+.product-detail-left{
+    margin-bottom: 20px;
+}
+.swiper-container {
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    overflow: hidden;
+    list-style: none;
+    padding: 0;
+    z-index: 1;
+}
+
+.swiper-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    display: flex;
+    transition-property: transform;
+    box-sizing: content-box;
+}
+
+.gallery-top {
+    box-shadow: 0 0px 2px 0 rgba(60, 64, 67, 0.1), 0 0px 6px 0px rgba(60, 64, 67, 0.25);
+    border-radius: 5px;
+}
+
+.gallery-top .swiper-slide {
+    padding-bottom: 100%;
+    display: block;
+    height: 0;
+    background: #fff;
+    overflow: hidden;
+    border-radius: 5px;
+}
+
+.gallery-top .swiper-slide img {
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 99%;
+    max-height: 100%;
+    width: auto !important;
+    height: auto !important;
+    position: absolute;
+    border-radius: 5px;
+}
+
+.gallery-thumbs {
+    margin-top: 20px !important;
+    background: #fff5e2;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0 0px 2px 0 rgba(60, 64, 67, 0.2), 0 0px 6px 0px rgba(60, 64, 67, 0.5);
+}
+
+
+.gallery-thumbs .swiper-slide {
+    border: 2px solid #ebebeb;
+    cursor: pointer;
+    background: #fff;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.gallery-thumbs .swiper-slide.swiper-slide-thumb-active {
+    border-color: #003cbf;
+}
+
+.gallery-thumbs .swiper-slide .p-100 {
+    padding-bottom: 100%;
+    display: block;
+    height: 0;
+    background: #fff;
+    overflow: hidden;
+    border-radius: 5px;
+}
+
+.gallery-thumbs .swiper-slide .p-100 img {
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 99%;
+    max-height: 100%;
+    width: auto !important;
+    height: auto !important;
+    position: absolute;
+    border-radius: 5px;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+    background: rgba(139, 124, 63, 0.74) !important;
+    width: 30px !important;
+    height: 60px !important;
+    border: 0;
+    transform: translate(0, -50%);
+    margin-top: 0 !important;
+}
+
+.swiper-button-prev {
+    font-weight: bold;
+    color: #0f268f !important;
+    left: 3px !important;
+    border-radius: 0 100px 100px 0;
+}
+
+.swiper-button-prev::after {
+    font-size: 1.5rem;
+}
+
+
+.swiper-button-next {
+    font-weight: bold;
+    color: #0f268f !important;
+    right: 3px !important;
+    border-radius: 100px 0 0 100px;
+}
+
+.swiper-button-next::after {
+    font-size: 1.5rem;
+}
+
+
+
+/* Đảm bảo modal hiển thị ảnh đúng cách */
+.modal-body img {
+    width: 100%;
+    height: auto;
+}
+
+
+
+.show-more+.rte {
+    transition: max-height 0.5s ease;
+    overflow: hidden;
+}
+
+.less-text {
+    display: none;
+}
+
+/* General Styles for Tab Container */
+#tab-product {
+    border: 1px solid #ddd;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Styling Tabs Title */
+.tabs-title {
+    display: flex;
+    list-style-type: none;
+    justify-content: space-between;
+    border-bottom: 2px solid #e6e6e6;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.tabs-title .tab-link {
+    flex: 1;
+    text-align: center;
+    position: relative;
+    /* Để sử dụng pseudo-element cho hiệu ứng gạch dưới */
+}
+
+.tabs-title .tab-link h3 {
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin: 0;
+}
+
+.tabs-title .tab-link a {
+    color: #333;
+    text-decoration: none;
+    padding: 10px;
+    display: block;
+    transition: color 0.3s ease, background-color 0.3s ease;
+    position: relative;
+    /* Để sử dụng pseudo-element cho hiệu ứng gạch dưới */
+}
+
+/* Hiệu ứng khi hover */
+.tabs-title .tab-link a::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    /* Độ dày của đường gạch dưới */
+    background-color: #007c00;
+    /* Màu sắc của đường gạch dưới */
+    transform: scaleX(0);
+    /* Bắt đầu với độ dài 0 */
+    transition: transform 0.3s ease;
+    /* Hiệu ứng chuyển động */
+}
+
+.tabs-title .tab-link a:hover::before {
+    transform: scaleX(1);
+    /* Mở rộng đường gạch dưới khi hover */
+}
+
+.tabs-title .tab-link.active a {
+    color: #007c00;
+}
+
+/* Tab Content Styling */
+.tab-content {
+    display: none;
+    padding-top: 20px;
+}
+
+.tab-content.active {
+    display: block;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Fade In Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+
+/* Phần chứa nội dung sản phẩm */
+.product_getcontent-wrapper {
+    position: relative;
+    padding-bottom: 85px;
+    /* Khoảng cách dưới cùng để tránh nút bị đè lên nội dung */
+}
+
+/* Giới hạn chiều cao ban đầu */
+.product_getcontent {
+    max-height: 330px;
+    /* Chiều cao khi chưa mở rộng */
+    overflow: hidden;
+    /* Ẩn nội dung vượt quá chiều cao */
+    transition: max-height 0.5s ease-in-out;
+    /* Hiệu ứng mở rộng khi nhấn "Xem thêm" */
+    position: relative;
+    /* Đảm bảo vị trí tương đối cho lớp mờ */
+}
+
+/* Tạo hiệu ứng mờ gần nút "Xem thêm" */
+.product_getcontent::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 50px;
+    /* Chiều cao của lớp mờ */
+    background: linear-gradient(transparent, #f9f9f9);
+    /* Hiệu ứng mờ */
+}
+
+
+/* Khi hiển thị toàn bộ nội dung */
+.product_getcontent.expanded {
+    max-height: none;
+    /* Hiển thị toàn bộ nội dung */
+}
+
+/* Xử lý lớp mờ khi hiển thị toàn bộ */
+.product_getcontent.expanded::after {
+    display: none;
+    /* Ẩn hiệu ứng mờ khi hiển thị toàn bộ */
+}
+
+/* Nút "Xem thêm" và "Thu gọn" */
+.show-more {
+    text-align: center;
+    margin-top: 20px;
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+}
+
+.show-more a {
+    display: inline-block;
+    color: #007c00;
+    background-color: #fff;
+    padding: 10px 20px;
+    text-transform: none;
+    /* Đảm bảo chữ không bị chuyển thành chữ hoa */
+    font-size: 16px;
+    border-radius: 50px;
+    border: 1px solid #007c00;
+    /* Đường viền 1px */
+    transition: background-color 0.3s ease, color 0.3s ease;
+    /* Hiệu ứng chuyển màu */
+    text-decoration: none;
+    display: flex;
+    /* Để các biểu tượng và văn bản xếp hàng ngang */
+    align-items: center;
+    /* Căn giữa các phần tử dọc theo trục y */
+}
+
+.show-more a i {
+    margin-left: 8px;
+    /* Khoảng cách giữa văn bản và biểu tượng */
+}
+
+/* Hiệu ứng khi hover */
+.show-more a:hover {
+    background-color: #005b00;
+    /* Thay đổi màu nền khi hover */
+    color: #fff;
+    /* Thay đổi màu border khi hover */
+}
+
+
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .tabs-title {
+        flex-direction: column;
+    }
+
+    .tabs-title .tab-link {
+        margin-bottom: 10px;
+    }
+}
+
+.ba-text-fpt figure {
+    margin: 0;
+    /* Loại bỏ margin mặc định của <figure> */
+    padding: 0;
+    /* Loại bỏ padding mặc định của <figure> */
+    width: 100%;
+    /* Đảm bảo <figure> chiếm toàn bộ chiều rộng của phần tử chứa */
+}
+
+.ba-text-fpt figure img {
+    width: 100%;
+    /* Đặt chiều rộng của <img> bằng 100% chiều rộng của phần tử <figure> */
+    height: auto;
+    /* Giữ tỷ lệ khung hình của hình ảnh */
+    display: block;
+    /* Loại bỏ khoảng trắng phía dưới hình ảnh */
+}
+
+img {
+    vertical-align: middle;
+}
+
+/* khuyen mai */
+.khuyen-mai {
+    margin-top: 20px;
+}
+
+.khuyen-mai .title {
+    width: auto;
+    color: #fff;
+    font-weight: 600;
+    background: #007c00;
+    border-radius: 5px 5px 0px 0px;
+    font-size: 14px;
+    display: inline-flex;
+    padding: 5px 15px;
+    align-items: center;
+    border: 2px solid #007c00;
+}
+
+.khuyen-mai .content {
+    padding-bottom: 5px !important;
+    padding: 25px 15px 15px 15px;
+    border-radius: 0 5px 5px 5px;
+    position: relative;
+    border: 1px solid #007c00;
+}
+
+.khuyen-mai .title img {
+    width: 30px;
+    height: auto;
+    margin-right: 10px;
+}
+
+.khuyen-mai .content ul li {
+    display: flex;
+    margin-bottom: 10px;
+    align-items: center;
+}
+
+.khuyen-mai .content ul li img {
+    width: 20px;
+    height: auto;
+    margin-right: 5px;
+}
+
+/* camket */
+.camket {
+    margin-top: 20px;
+}
+
+.camket .title {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.camket ul {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 0;
+    display: -ms-flexbox;
+    display: flex;
+    font-size: 14px;
+    -ms-flex-wrap: wrap;
+    color: #5a5a5a;
+    flex-wrap: wrap;
+    margin-right: -5px;
+    margin-left: -5px;
+}
+
+.camket ul li {
+    -ms-flex: 0 0 50%;
+    flex: 0 0 50%;
+    max-width: 50%;
+    position: relative;
+    width: 100%;
+    padding-right: 5px;
+    padding-left: 5px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.camket ul li img {
+    max-width: 26px;
+    margin-right: 10px;
+}
+
+
+/* themvaogiohang */
+.product-info .flex-quantity {
+    display: block;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+/* -soluong */
+.layout-product .quantity-controls {
+    display: flex;
+    align-items: center;
+}
+
+.layout-product .quantity-btn {
+    background-color: #007c00;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    padding: 0.5em 1em;
+    cursor: pointer;
+}
+
+.layout-product .quantity-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.layout-product input[type="number"] {
+    width: 60px;
+    text-align: center;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+}
+
+.layout-product #quantity {
+    text-align: center;
+    font-size: 14px;
+    width: 60px;
+    height: 40px;
+}
+
+.layout-product .btn {
+    background-color: #007c00;
+    /* Màu nền nút */
+    color: #fff;
+    /* Màu chữ nút */
+    border: none;
+    border-radius: 4px;
+    /* Bo tròn góc nút */
+    transition: background-color 0.2s;
+    /* Hiệu ứng chuyển màu khi hover */
+}
+
+.layout-product .btn:hover {
+    background-color: #ff0d0d;
+    /* Màu nền khi hover hoặc focus */
+}
+
+/* support-product */
+.support-product {
+    box-shadow: 0 0px 2px 0 rgba(60, 64, 67, 0.1), 0 0px 6px 0px rgba(60, 64, 67, 0.25);
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    background: #fff;
+}
+
+.support-product .title {
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+    margin: 0;
+    font-weight: 700;
+}
+
+.support-product .image {
+    height: 150px;
+    display: block;
+    position: relative;
+}
+
+.support-product .image img {
+    width: auto !important;
+    max-height: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+.support-product .title2 {
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+    line-height: 23px;
+    margin: 0;
+    font-weight: normal;
+}
+
+.support-product .phone {
+    width: 100%;
+    margin-top: 10px;
+    display: block;
+    text-align: center;
+    line-height: 1.1;
+}
+
+.support-product .phone a {
+    font-size: 29px;
+    font-weight: 600;
+    color: #005b00;
+    text-decoration: none;
+}
+
+.support-product .or {
+    width: 100%;
+    margin: 10px 0;
+    color: #7a7d8d;
+    text-align: center;
+    line-height: 1.1;
+}
+
+.support-product .or span {
+    display: inline-block;
+    background: #fff;
+    padding: 0 10px;
+    transform: translateY(50%);
+    font-size: 13px;
+}
+
+.support-product .title3 {
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+    margin: 0;
+    font-weight: 700;
+}
+
+.support-product .chat {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 16px;
+    position: relative;
+    font-weight: 600;
+    padding: 10px 20px;
+    border-radius: 5px;
+    display: inline-block;
+    width: 100%;
+    background: #005b00;
+    text-decoration: none;
+    color: #fff;
+    transition: background-color 0.3s ease;
+    /* Thêm hiệu ứng mượt */
+}
+
+.support-product .chat:hover {
+    background-color: #009900;
+    /* Thay đổi màu nền khi hover */
+    text-decoration: none;
+    /* Đảm bảo không có gạch chân */
+}
+
+/* chính sách */
+.chinhsach-pro {
+    margin-top: 20px;
+    border-radius: 5px;
+}
+
+.chinhsach-pro .item {
+    display: flex;
+    align-items: center;
+    box-shadow: 0 0px 2px 0 rgba(60, 64, 67, 0.1), 0 0px 6px 0px rgba(60, 64, 67, 0.25);
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.chinhsach-pro .item img {
+    max-height: 40px;
+    width: auto;
+}
+
+.chinhsach-pro .item .text {
+    color: #000;
+    padding-left: 10px;
+}
+
+.chinhsach-pro .item .text .title {
+    display: block;
+    color: #007c00;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.chinhsach-pro .item .text .des {
+    font-size: 14px;
+    color: #5a5a5a;
+}
+
+table {
+    width: 100%;
+    /* Để bảng chiếm 100% chiều rộng của khung chứa */
+    border-collapse: collapse;
+    /* Gộp các viền bảng lại để không có khoảng cách */
+    margin-bottom: 20px;
+    /* Thêm khoảng cách phía dưới bảng */
+}
+
+/* sp tương tự */
+.similar-products {
+    position: relative;
+    /* Đặt vị trí tương đối để các nút có thể được định vị tương đối */
+    width: 90% !important;
+    background: linear-gradient(45deg, #b1bd72, #a0cc25);
+    margin: 0 auto;
+    border-radius: 5px;
+}
+
+.similar-products .swiper-container-similar-products {
+    width: 100%;
+    padding-bottom: 20px;
+    padding-top: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+.similar-products .title {
+    padding: 10px 10px;
+    margin-bottom: 0;
+    text-decoration: none;
+    position: relative;
+    font-size: 28px;
+    font-weight: 700;
+    color: transparent;
+    background: linear-gradient(45deg, #17002c, #20993d, #a217ff);
+    /* Màu gradient */
+    -webkit-background-clip: text;
+    text-align: center;
+    background-clip: text;
+    font-style: italic;
+}
+
+/* Đường kẻ ngang dưới tiêu đề */
+.similar-products .title::after {
+    content: "";
+    /* Tạo một phần tử giả */
+    display: block;
+    /* Hiển thị như một block */
+    width: 100%;
+    /* Đường kẻ chiếm toàn bộ chiều rộng */
+    height: 2px;
+    /* Độ dày của đường kẻ */
+    background-color: #8c9607;
+    /* Màu sắc của đường kẻ */
+    margin-top: 5px;
+    /* Khoảng cách giữa tiêu đề và đường kẻ */
+}
+
+.similar-products .swiper-container-similar-products {
+    width: 100%;
+    /* Chiều rộng 100% */
+    padding: 0 20px;
+    /* Padding hai bên */
+
+}
+
+.similar-products .swiper-wrapper {
+    display: flex;
+    /* Đảm bảo các slide hiển thị theo hàng ngang */
+}
+
+.similar-products .swiper-slide {
+    display: flex;
+    /* Căn giữa các sản phẩm trong slide */
+    justify-content: center;
+    /* Căn giữa các sản phẩm */
+    align-items: center;
+    /* Căn giữa chiều dọc */
+    padding: 15px;
+    /* Padding cho từng slide */
+}
+
+.similar-products .product-card {
+    max-width: 250px;
+    border: 1px solid #ddd;
+    /* Viền xung quanh card */
+    background-color: #fff;
+    border-radius: 8px;
+    /* Bo góc */
+    overflow: hidden;
+    /* Ẩn phần thừa */
+    text-align: center;
+    /* Căn giữa nội dung */
+    transition: transform 0.3s;
+    /* Hiệu ứng chuyển đổi khi hover */
+}
+
+.similar-products .product-card:hover {
+    transform: scale(1.05);
+    /* Phóng to khi hover */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    /* Hiệu ứng đổ bóng */
+}
+
+.similar-products .product-card img {
+    width: 100%;
+    /* Chiều rộng 100% để phù hợp với card */
+    min-height: 248px;
+    border-bottom: 1px solid #ddd;
+    /* Viền dưới hình ảnh */
+}
+
+.similar-products .product-card .product-link {
+    text-decoration: none;
+    color: #000;
+    font-weight: normal;
+    letter-spacing: 1px;
+    transition: color 0.3s ease;
+    text-align: left;
+    margin-bottom: 0;
+    font-size: 0.9rem;
+    line-height: 1.2;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 2.4em;
+}
+
+.similar-products .product-card .product-link:hover {
+    color: #ddb66e;
+}
+
+.similar-products .product-card p {
+    margin: 5px 0;
+    /* Khoảng cách giữa đoạn văn và các phần khác */
+    font-size: 14px;
+    /* Kích thước font chữ cho giá */
+    color: #d63333;
+    /* Màu chữ cho giá */
+}
+
+.similar-products .product-card .btn {
+    margin: 10px 0;
+    background-color: #005b00;
+    /* Màu nền nút */
+    color: #dab166;
+    /* Màu chữ nút */
+    border: 2px solid #dab166;
+    /* Bỏ viền nút */
+    border-radius: 5px;
+    /* Bo góc nút */
+    padding: 10px 20px;
+    /* Padding cho nút */
+    transition: background-color 0.3s;
+    /* Hiệu ứng chuyển đổi màu nền */
+}
+
+.similar-products .product-card .btn:hover {
+    background-color: #002b15;
+    /* Màu nền khi hover */
+}
+
+
+.similar-products .swiper-button-next-2,
+.similar-products .swiper-button-prev-2 {
+    color: #008547;
+    /* Màu chữ của nút */
+    background-color: #c48947;
+    /* Màu nền của nút */
+    border-radius: 50%;
+    /* Bo tròn các nút */
+    width: 40px;
+    /* Chiều rộng nút */
+    height: 40px;
+    /* Chiều cao nút */
+    display: flex;
+    /* Hiển thị flex để căn giữa icon */
+    justify-content: center;
+    /* Căn giữa nội dung */
+    align-items: center;
+    /* Căn giữa chiều dọc */
+    position: absolute;
+    /* Vị trí tuyệt đối để định vị */
+    z-index: 10;
+    /* Đảm bảo nút ở trên cùng */
+}
+
+.similar-products .swiper-button-next-2 {
+    right: 10px;
+    /* Khoảng cách bên phải */
+    top: 50%;
+    /* Định vị nút giữa chiều dọc */
+    transform: translateY(-50%);
+    /* Căn giữa nút theo chiều dọc */
+}
+
+.similar-products .swiper-button-prev-2 {
+    left: 10px;
+    /* Khoảng cách bên trái */
+    top: 50%;
+    /* Định vị nút giữa chiều dọc */
+    transform: translateY(-50%);
+    /* Căn giữa nút theo chiều dọc */
+}
+
+/* Hiệu ứng hover cho nút */
+.similar-products .swiper-button-next-2:hover,
+.similar-products .swiper-button-prev-2:hover {
+    background-color: #e6a55c;
+    /* Thay đổi màu khi hover */
+}
+
+/* Thay đổi màu của biểu tượng khi hover */
+.similar-products .swiper-button-next-2:hover i,
+.similar-products .swiper-button-prev-2:hover i {
+    color: #008547;
+    /* Đảm bảo màu của biểu tượng vẫn giữ nguyên */
+}
+
+.config-tb td {
+    max-width: 170px;
+    overflow-wrap: break-word;
+    /* Sử dụng để ngắt từ tại khoảng trắng hoặc trong từ nếu cần */
+    white-space: pre-wrap;
+}
+
+
+.config-tb {
+    max-height: 550px; /* Giới hạn chiều cao ban đầu */
+    overflow: hidden;
+    position: relative;
+    transition: max-height 0.5s ease-in-out;
+    padding-bottom: 60px; /* Chừa khoảng trống để nút hiển thị */
+}
+
+.fade-effect {
+    position: absolute;
+    bottom: 0; /* Hiển thị ngay trên nút */
+    left: 5px;
+    right: 5px;
+    height: 80px;
+    margin: 0 auto;
+    width: 93%;
+    background: linear-gradient(to bottom, transparent, rgb(255, 128, 128)); /* Hiệu ứng mờ */
+    pointer-events: none;
+}
+
+.show-more2 {
+    display: block;
+    width: 60%;
+    text-align: center;
+    margin: 0 auto;
+    background-color: #005b00;
+    color: #dab166;
+    padding: 5px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    position: absolute;
+    bottom: 15px; /* Đặt nút ở cuối */
+    left: 0;
+    right: 0;
+}
+
+.show-more2:hover {
+    background-color: #148b09;
+}
+
+.expanded .config-tb {
+    max-height: none; /* Mở rộng chiều cao khi nhấn */
+}
+
+.expanded .fade-effect {
+    display: none; /* Ẩn hiệu ứng mờ khi nội dung đã mở */
+}
+
+
+
+.config-tb .title {
+    font-size: 1.1rem;
+    text-align: center;
+    /* Căn giữa tiêu đề */
+    padding: 15px 0;
+    position: relative;
+    font-weight: bold;
+}
+
+
+.config-tb .title::after {
+    content: "";
+    display: block;
+    width: 80%;
+    /* Chiều dài của đường gạch ngang */
+    height: 2px;
+    /* Độ dày của đường gạch ngang */
+    background-color: #424242;
+    /* Màu của đường gạch ngang */
+    margin: 10px auto 0 auto;
+    /* Căn giữa và thêm khoảng cách */
+    border-radius: 2px;
+    /* Bo góc nhẹ cho đường gạch */
+}

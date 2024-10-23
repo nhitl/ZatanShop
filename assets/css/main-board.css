@@ -1,0 +1,223 @@
+.box-mainboard .container {
+    min-height: 632px;
+    background: linear-gradient(135deg, #d4edda, #c3e6cb, #7ebd83); /* Gradient xanh lá nhẹ */
+    width: 80%;
+    padding: 20px; /* Thêm khoảng cách giữa nội dung và viền */
+    border-radius: 10px; /* Bo góc để mềm mại hơn */
+}
+
+
+.box-mainboard .card {
+    width: 100%;
+    max-width: 250px;
+    height: 350px;
+    border: none;
+    margin: 0 auto;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.box-mainboard .card:hover {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+.box-mainboard .card-body {
+    padding: 15px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+}
+.box-mainboard .img-wrapper{
+    width: 100%;
+    height: 180px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+.box-mainboard .card-img-top {
+    width: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease-in-out;
+}
+.box-mainboard .card:hover .card-img-top {
+    transform: scale(1.1);
+}
+
+.box-mainboard .card-title {
+    text-decoration: none;
+    color: #000;
+    font-weight: normal;
+    letter-spacing: 1px;
+    transition: color 0.3s ease;
+    text-align: left;
+    margin-bottom: 0;
+    font-size: 0.9rem;
+    line-height: 1.2;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 2.4em;
+}
+.box-mainboard .card-title:hover{
+    color: #ddb66e;
+}
+.box-mainboard .card-text {
+    font-size: 1rem;
+    margin-bottom: 0;
+    text-align: center;
+}
+.box-mainboard .card-text-price {
+    font-size: 1rem;
+    color: #d31100;
+    margin-bottom: 0;
+    text-align: center;
+    font-weight: bold;
+}
+.box-mainboard .btn-primary {
+    padding: 3px 15px;
+    background: linear-gradient(135deg, #ce0000, #d84444, #ffefef);
+    border: none;
+    color: #fff;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border-radius: 35px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+.box-mainboard .btn-primary:hover {
+    background: linear-gradient(135deg, #ffefef, #d84444, #ce0000);
+    color: #fff
+}
+
+
+.box-mainboard .original-price {
+    color: #999; /* Màu xám cho giá gốc */
+    font-size: 0.8rem;
+    text-decoration: line-through; /* Gạch ngang cho giá gốc */
+}
+
+.box-mainboard .discounted-price {
+    color: #d31100; /* Màu đỏ hoặc màu nổi bật cho giá đã giảm */
+    font-size: 1em; /* Kích thước chữ lớn hơn cho giá đã giảm */
+    font-weight: bold; /* Đậm cho giá đã giảm */
+}
+
+.box-mainboard .btn-outline-primary {
+    padding: 7px 20px;
+    background: linear-gradient(45deg, #e7acac, #f78686,#ff5f5f);
+    border: none;
+    color: #fff;
+    margin-top: 5px;
+    border-radius: 0 !important;
+    margin-bottom: 5px;
+    font-size: 1rem;
+    position: relative; /* Đảm bảo nút có position: relative */
+    transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+.box-mainboard .btn-outline-primary::before {
+    content: '';
+    position: absolute;
+    top: 4px; /* Cách đường viền với cạnh trên */
+    left: 4px; /* Cách đường viền với cạnh trái */
+    right: 4px; /* Cách đường viền với cạnh phải */
+    bottom: 4px; /* Cách đường viền với cạnh dưới */
+    border: 2px solid #fff; /* Đường viền bên trong */
+    clip-path: polygon(10% 0%, 90% 0%, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0% 90%, 0% 10%); /* Tạo hình uốn lượn */
+    z-index: 0; /* Đặt phía dưới chữ */
+}
+
+.box-mainboard .btn-outline-primary:hover::before {
+    border-color: #005510; /* Thay đổi màu viền khi hover */
+}
+
+.box-mainboard .btn-outline-primary:hover {
+    background: linear-gradient(45deg, #ffa5a5, #ff6e6e,#ff4444);
+    color: #005510;
+}
+
+.box-mainboard .active-mainboard {
+    background: linear-gradient(135deg, #12cc31, #29a325, #015722);
+    color: #fff;
+    position: relative; /* Đảm bảo lớp active có position: relative */
+}
+
+.box-mainboard .active-mainboard::after {
+    content: '';
+    position: absolute;
+    bottom: -8px; /* Điều chỉnh khoảng cách từ nút */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid rgb(10, 150, 10); /* Màu của tam giác */
+    z-index: 10; /* Đảm bảo mũi tên hiển thị trên */
+}
+
+
+.box-mainboard .btn-outline-primary:hover::after {
+    border-top-color: rgb(163, 30, 30); /* Thay đổi màu tam giác khi hover */
+    transition: border-top-color 0.3s ease;
+}
+.box-mainboard .title1 {
+    font-size: 1.2rem;
+    text-align: center;
+    display: block;
+    width: 100%;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #053024;
+}
+
+.box-mainboard .title2 {
+    text-align: center;
+    font-weight: 800;
+    font-size: 2.2rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative; /* Để sử dụng cho pseudo-elements */
+    margin-bottom: 20px; /* Khoảng cách giữa tiêu đề và đường kẻ */
+}
+
+.box-mainboard .title2::after {
+    content: '';
+    display: block;
+    width: 70%; /* Chiều rộng hình thoi bên ngoài */
+    height: 10px; /* Độ dày của đường kẻ */
+    background-color: #053024; /* Màu sắc của đường kẻ */
+    position: absolute;
+    left: 50%; /* Đặt giữa */
+    transform: translateX(-50%); /* Căn giữa cho đường kẻ */
+    bottom: -10px; /* Khoảng cách giữa tiêu đề và đường kẻ */
+    clip-path: polygon(50% 0%, 100% 100%, 0% 100%); /* Tạo hình thoi */
+}
+
+.box-mainboard .title2::before {
+    content: '';
+    display: block;
+    width: 70%; /* Chiều rộng hình thoi bên trong (có thể điều chỉnh) */
+    height: 10px; /* Độ dày của đường kẻ */
+    background-color: #fff; /* Màu sắc của đường kẻ bên trong */
+    position: absolute;
+    left: 50%; /* Đặt giữa */
+    transform: translateX(-50%); /* Căn giữa cho đường kẻ */
+    bottom: -12px; /* Khoảng cách giữa tiêu đề và đường kẻ */
+    clip-path: polygon(50% 0%, 100% 100%, 0% 100%); /* Tạo hình thoi */
+    z-index: -1; /* Đặt phía sau hình thoi bên ngoài */
+}
+
