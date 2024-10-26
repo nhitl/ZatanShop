@@ -37,7 +37,7 @@ if (isset($_POST['is_ajax']) && $_POST['is_ajax'] == 1) {
         </a>
         </div>
         <div class="card-body">
-            <a href="product_detail.php?id=' . $product['product_id'] . '" title="' . htmlspecialchars($product['product_name']) . '">
+            <a href="product-detail.php?id=' . $product['product_id'] . '" title="' . htmlspecialchars($product['product_name']) . '">
                 <h5 class="card-title">' . $product['product_name'] . '</h5>
             </a>';
 
