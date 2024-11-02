@@ -55,6 +55,13 @@ $sql_other_addresses = "SELECT address_id, recipient_name, recipient_phone, addr
                         WHERE user_id = ? AND is_default = 0";
 $result_other_addresses = executeQuery($conn, $sql_other_addresses, ['i', $user_id]);
 
+// Lấy mã giảm giá đã sử dụng của người dùng từ bảng orders
+$sql_used_vouchers = "SELECT DISTINCT voucher_code FROM orders WHERE user_id = ?";
+$result_used_vouchers = executeQuery($conn, $sql_used_vouchers, ['i', $user_id]);
+$used_vouchers = [];
+while ($row = $result_used_vouchers->fetch_assoc()) {
+    $used_vouchers[] = $row['voucher_code'];
+}
 
 // Lấy các voucher đang hoạt động
 $sql_voucher = "SELECT voucher_code, discount_percentage, min_order_value, max_discount_value, expiry_date 
@@ -200,43 +207,75 @@ $has_address = !empty($shipping_info['recipient_name']) && !empty($shipping_info
                                 <label for="vouchers" class="form-label">Voucher khuyến mãi</label>
                                 <div id="voucher_error_message" style="color: red; display: none;"></div>
                                 <?php
-                                if ($result_vouchers->num_rows > 0) {
+                                // Lấy mã giảm giá đã sử dụng của người dùng từ bảng orders
+                                $sql_used_vouchers = "SELECT DISTINCT voucher_code FROM orders WHERE user_id = ?";
+                                $result_used_vouchers = executeQuery($conn, $sql_used_vouchers, ['i', $user_id]);
+                                $used_vouchers = [];
+                                while ($row = $result_used_vouchers->fetch_assoc()) {
+                                    // Tách chuỗi voucher_code thành mảng
+                                    $used_vouchers = array_merge($used_vouchers, explode(',', $row['voucher_code']));
+                                }
+
+                                // Lấy các voucher đang hoạt động
+                                $sql_voucher = "SELECT voucher_code, discount_percentage, min_order_value, max_discount_value, expiry_date 
+                        FROM voucher 
+                        WHERE status = 'active' AND expiry_date >= CURDATE()";
+                                $result_vouchers = $conn->query($sql_voucher);
+
+                                // Biến cờ để kiểm tra xem có voucher nào khả dụng hay không
+                                $has_available_voucher = false;
+
+                                // Kiểm tra và hiển thị voucher
+                                if ($result_vouchers && $result_vouchers->num_rows > 0) {
                                     while ($voucher = $result_vouchers->fetch_assoc()) {
                                         $voucher_code = htmlspecialchars($voucher['voucher_code']);
+
+                                        // Kiểm tra xem mã đã sử dụng chưa
+                                        if (in_array($voucher_code, $used_vouchers)) {
+                                            continue; // Nếu đã sử dụng, bỏ qua mã này
+                                        }
+
+                                        $has_available_voucher = true; // Có ít nhất một voucher khả dụng
+
                                         $discount_percentage = htmlspecialchars($voucher['discount_percentage']);
                                         $min_order_value = htmlspecialchars($voucher['min_order_value']);
                                         $max_discount_value = htmlspecialchars($voucher['max_discount_value']);
                                         echo '<div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="voucher_' . $voucher_code . '" name="vouchers[]" value="' . $voucher_code . '"
-                                   data-discount-percentage="' . $discount_percentage . '"
-                                   data-min-order-value="' . $min_order_value . '"
-                                   data-max-discount-value="' . $max_discount_value . '">
-                            <label class="form-check-label" for="voucher_' . $voucher_code . '">
-                                Mã: ' . $voucher_code . ' - Giảm ' . $discount_percentage . '%, tối đa ' . number_format($max_discount_value, 0, ',', '.') . ' VNĐ (Đơn tối thiểu: ' . number_format($min_order_value, 0, ',', '.') . ' VNĐ)
-                            </label>
-                        </div>';
+                        <input class="form-check-input" type="checkbox" id="voucher_' . $voucher_code . '" name="vouchers[]" value="' . $voucher_code . '"
+                            data-discount-percentage="' . $discount_percentage . '"
+                            data-min-order-value="' . $min_order_value . '"
+                            data-max-discount-value="' . $max_discount_value . '">
+                        <label class="form-check-label" for="voucher_' . $voucher_code . '">
+                            Mã: ' . $voucher_code . ' - Giảm ' . $discount_percentage . '%, tối đa ' . number_format($max_discount_value, 0, ',', '.') . ' VNĐ (Đơn tối thiểu: ' . number_format($min_order_value, 0, ',', '.') . ' VNĐ)
+                        </label>
+                    </div>';
                                     }
-                                } else {
-                                    echo '<p>Hiện không có voucher nào khả dụng.</p>';
+                                }
+
+                                // Kiểm tra xem có voucher khả dụng hay không
+                                if (!$has_available_voucher) {
+                                    echo '<div class="alert alert-warning">Hiện không có voucher nào khả dụng.</div>';
                                 }
                                 ?>
                             </div>
                         </div>
-                    </div>
 
 
 
-                    <!-- Thông tin chi tiết về tiền hàng, phí vận chuyển, voucher, và tổng tiền -->
-                    <div class="payment-details mb-3">
-                        <label class="form-label">Chi tiết thanh toán</label>
-                        <p>Tiền hàng: <span id="product_amount"><?php echo number_format($total_amount, 0, ',', '.'); ?> ₫</span></p>
-                        <p>Phí vận chuyển: <span id="shipping_fee">50,000 VNĐ</span></p>
-                        <p>Voucher: <span id="voucher_discount">- 0 ₫</span></p>
-                        <p><strong>Tổng thanh toán: <span id="total_amount"><?php echo number_format($total_amount + 50000, 0, ',', '.'); ?> ₫</span></strong></p>
-                    </div>
 
-                    <!-- Button thanh toán -->
-                    <button type="submit" class="btn btn-primary">Xác nhận đặt hàng</button>
+
+
+                        <!-- Thông tin chi tiết về tiền hàng, phí vận chuyển, voucher, và tổng tiền -->
+                        <div class="payment-details mb-3">
+                            <label class="form-label">Chi tiết thanh toán</label>
+                            <p>Tiền hàng: <span id="product_amount"><?php echo number_format($total_amount, 0, ',', '.'); ?> ₫</span></p>
+                            <p>Phí vận chuyển: <span id="shipping_fee">50,000 VNĐ</span></p>
+                            <p>Voucher: <span id="voucher_discount">- 0 ₫</span></p>
+                            <p><strong>Tổng thanh toán: <span id="total_amount"><?php echo number_format($total_amount + 50000, 0, ',', '.'); ?> ₫</span></strong></p>
+                        </div>
+
+                        <!-- Button thanh toán -->
+                        <button type="submit" class="btn btn-primary">Xác nhận đặt hàng</button>
                 </form>
             <?php endif; ?>
         </div>
@@ -381,7 +420,7 @@ $has_address = !empty($shipping_info['recipient_name']) && !empty($shipping_info
             });
         });
     </script>
-    
+
 
 
 

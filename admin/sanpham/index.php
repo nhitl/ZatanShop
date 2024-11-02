@@ -116,12 +116,19 @@ $result = mysqli_query($conn, $query);
                 </div>
             </div>
         </div>
+
+        <div class="scroll-to-bottom">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+
         <!-- Nút cuộn lên đầu trang -->
         <div class="scroll-to-top">
             <i class="fas fa-chevron-up"></i>
         </div>
     </section>
-
+    <?php
+    include_once '../footer.php';
+    ?>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
@@ -134,12 +141,27 @@ $result = mysqli_query($conn, $query);
                 } else {
                     $('.scroll-to-top').fadeOut();
                 }
+
+                // Hiển thị nút cuộn xuống cuối trang khi người dùng ở gần đầu trang
+                if ($(this).scrollTop() < $(document).height() - $(window).height() - 200) {
+                    $('.scroll-to-bottom').fadeIn();
+                } else {
+                    $('.scroll-to-bottom').fadeOut();
+                }
             });
 
             // Xử lý sự kiện khi nút cuộn lên đầu trang được nhấn
             $('.scroll-to-top').click(function() {
                 $('html, body').animate({
                     scrollTop: 0
+                }, 800);
+                return false;
+            });
+
+            // Xử lý sự kiện khi nút cuộn xuống cuối trang được nhấn
+            $('.scroll-to-bottom').click(function() {
+                $('html, body').animate({
+                    scrollTop: $(document).height() - $(window).height()
                 }, 800);
                 return false;
             });

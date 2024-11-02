@@ -133,7 +133,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <button type="submit" class="btn btn-success">Cập nhật</button>
         </form>
     </div>
-
+    <?php
+    include_once '../footer.php';
+    ?>
     <script>
         document.getElementById('voucher-form').addEventListener('submit', function(event) {
             var discountPercentage = document.getElementById('discount_percentage').value;

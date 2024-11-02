@@ -176,7 +176,9 @@ $formatted_discount_total = $discount_total == floor($discount_total) ? number_f
         <a href="delete.php?order_id=<?= $order['order_id'] ?>" class="btn btn-danger float-end" onclick="return confirm('Bạn có chắc chắn muốn xóa đơn hàng này không?');">Xóa đơn hàng</a>
 
     </div>
-
+    <?php
+    include_once '../footer.php';
+    ?>
     <!-- Cập nhật Bootstrap 5 -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>

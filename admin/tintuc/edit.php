@@ -99,7 +99,9 @@ if (isset($_GET['news_id'])) {
             <a href="index.php" class="btn btn-secondary">Hủy bỏ</a>
         </form>
     </div>
-
+    <?php
+    include_once '../footer.php';
+    ?>
 </body>
 
 </html>

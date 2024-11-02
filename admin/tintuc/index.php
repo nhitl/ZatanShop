@@ -95,7 +95,9 @@ $result = mysqli_query($conn, $query);
             </div>
         </div>
     </div>
-
+    <?php
+    include_once '../footer.php';
+    ?>
     <script>
         $('#deleteModal').on('show.bs.modal', function(event) {
             var button = $(event.relatedTarget); // Nút kích hoạt modal

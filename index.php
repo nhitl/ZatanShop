@@ -12,6 +12,7 @@
     <?php include_once 'header.php';
     include_once 'banner.php';
     include_once 'testdanhmuc.php';
+    include_once 'voucher_code.php';
     include_once 'new-products.php';
     include_once 'loading_bar.php';
     include_once 'contact_button.php';

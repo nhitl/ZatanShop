@@ -4343,6 +4343,270 @@ page deal */
     /* Khoảng cách trên và dưới */
 }
 
+/* Định vị hộp chứa liên hệ ở góc dưới bên phải */
+.contact-button-page .contact-box-bottom {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.contact-button-page .contact-box-wrapper {
+    display: flex;
+    align-items: center;
+    background-color: #007bff;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.contact-button-page .contact-box-wrapper:hover {
+    background-color: #008369;
+}
+
+/* Định dạng biểu tượng liên hệ */
+.contact-button-page .contact-icon-box {
+    color: #fcff4e;
+    font-size: 20px;
+    margin-right: 10px;
+}
+
+/* Định dạng thông tin liên hệ (text) */
+.contact-button-page .contact-info a {
+    color: #ecb040;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.contact-button-page .contact-info a:hover {
+    color: #fcff4e;
+}
+
+.contact-button-page .time-onl {
+    color: #edee9d;
+    font-size: 0.8rem;
+}
+
+/* Hiệu ứng backInRight từ animate.css */
+.contact-button-page .animate__backInRight {
+    animation-duration: 1.5s;
+}
+
+.contact-button-page .modal-content {
+    animation-duration: 0.4s;
+    /* Sử dụng !important để đảm bảo rằng kiểu của bạn sẽ được áp dụng */
+}
+
+.contact-button-page .nut-chat-facebook,
+.contact-button-page .nut-chat-zalo,
+.contact-button-page .nut-chat-phone {
+    background-color: rgba(0, 78, 62, 0.6);
+    /* Độ trong suốt là 0.6, bạn có thể điều chỉnh giá trị này */
+}
+
+/* Ẩn thông tin liên hệ trên màn hình nhỏ */
+@media (max-width: 768px) {
+    .contact-button-page .contact-info {
+        display: none;
+        /* Ẩn thông tin liên hệ */
+    }
+
+    .contact-button-page .contact-icon-box {
+        margin-right: 0;
+        /* Đặt lại khoảng cách bên phải cho biểu tượng */
+    }
+}
+
+
+
+
+
+
+.voucher-page {
+    position: relative;
+    width: 80%;
+    /* Đặt vị trí tương đối để các nút có thể được định vị tương đối */
+    background-color: #fff5e2;
+    margin: 0 auto;
+    border-radius: 5px;
+    overflow: hidden;
+
+}
+
+.voucher-page .voucher-badge {
+    position: relative;
+    display: flex;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    background-color: #bb2121;
+    max-height: 100px;
+    max-width: 280px;
+    clip-path: polygon(
+        0% 5%, 2% 0%, 4% 5%, 6% 0%, 8% 5%, 10% 0%, 12% 5%, 14% 0%, 
+        16% 5%, 18% 0%, 20% 5%, 22% 0%, 24% 5%, 26% 0%, 28% 5%, 30% 0%, 
+        32% 5%, 34% 0%, 36% 5%, 38% 0%, 40% 5%, 42% 0%, 44% 5%, 46% 0%, 
+        48% 5%, 50% 0%, 52% 5%, 54% 0%, 56% 5%, 58% 0%, 60% 5%, 62% 0%, 
+        64% 5%, 66% 0%, 68% 5%, 70% 0%, 72% 5%, 74% 0%, 76% 5%, 78% 0%, 
+        80% 5%, 82% 0%, 84% 5%, 86% 0%, 88% 5%, 90% 0%, 92% 5%, 94% 0%, 
+        96% 5%, 98% 0%, 100% 5%, 100% 95%, 98% 100%, 96% 95%, 94% 100%, 
+        92% 95%, 90% 100%, 88% 95%, 86% 100%, 84% 95%, 82% 100%, 80% 95%, 
+        78% 100%, 76% 95%, 74% 100%, 72% 95%, 70% 100%, 68% 95%, 66% 100%, 
+        64% 95%, 62% 100%, 60% 95%, 58% 100%, 56% 95%, 54% 100%, 52% 95%, 
+        50% 100%, 48% 95%, 46% 100%, 44% 95%, 42% 100%, 40% 95%, 38% 100%, 
+        36% 95%, 34% 100%, 32% 95%, 30% 100%, 28% 95%, 26% 100%, 24% 95%, 
+        22% 100%, 20% 95%, 18% 100%, 16% 95%, 14% 100%, 12% 95%, 10% 100%, 
+        8% 95%, 6% 100%, 4% 95%, 2% 100%, 0% 95%
+    );
+    border: 1px solid #28a745; /* Tùy chọn, có thể bỏ đi */
+}
+
+.voucher-page .voucher-badge::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 200%;
+    height: 100%;
+    background: linear-gradient(
+        120deg, 
+        rgba(255, 255, 255, 0.2) 0%, 
+        rgba(255, 255, 255, 0.5) 50%, 
+        rgba(255, 255, 255, 0.2) 100%
+    );
+    animation: light-effect 2s linear infinite;
+    pointer-events: none; /* Để lớp phủ không cản trở các thao tác */
+}
+
+
+@keyframes light-effect {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.voucher-page .title2 {
+    font-style: italic;
+    font-weight: bold;
+    font-size: 2rem;
+    background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8f00ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    padding-right: 5px;
+}
+
+
+
+
+
+
+
+.voucher-page .text-code {
+    color: #FFD700;
+    font-size: 1rem;
+    border-bottom: 2px solid #fffc35;
+    margin-bottom: 0;
+}
+
+.voucher-page .descript {
+    font-size: 0.9rem;
+    margin-bottom: 0;
+}
+
+.voucher-page .voucher-image {
+    width: 30%;
+    border-right: 2px solid #fffc35;
+    position: relative;
+}
+
+.voucher-page .voucher-image img {
+    width: 100%;
+    height: auto;
+    margin-top: 5px;
+    max-height: 100px;
+}
+
+.voucher-page .voucher-info {
+    width: 70%;
+    padding: 5px 15px;
+    position: relative;
+}
+
+.voucher-page .voucher-info p {
+    color: #fff;
+    font-size: 0.8rem;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-height: calc(2 * 1.6em);
+}
+.voucher-page .text-date{
+    font-size: 0.7rem;
+    color: #d3d3d3;
+}
+
+.voucher-page .swiper-container-voucher {
+    width: 100%;
+    padding-bottom: 20px;
+    padding-top: 10px;
+    position: relative;
+}
+
+.voucher-page .swiper-slide {
+    display: flex;
+    /* Căn giữa các sản phẩm trong slide */
+    justify-content: center;
+    /* Căn giữa các sản phẩm */
+    align-items: center;
+    /* Căn giữa chiều dọc */
+    padding: 5px;
+    /* Padding cho từng slide */
+}
+
+.voucher-page .swiper-button-next-3,
+.voucher-page .swiper-button-prev-3 {
+    color: #008547;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    z-index: 10;
+    opacity: 0; /* Ẩn các nút ban đầu */
+    transition: opacity 0.3s; /* Hiệu ứng chuyển tiếp cho opacity */
+}
+
+/* Hiệu ứng xuất hiện cho các nút khi hover */
+.voucher-page:hover .swiper-button-next-3,
+.voucher-page:hover .swiper-button-prev-3 {
+    opacity: 1; /* Hiện các nút khi hover */
+}
+
+.voucher-page .swiper-button-next-3 {
+    right: -13px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.voucher-page .swiper-button-prev-3 {
+    left: -13px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* Thay đổi màu sắc khi hover */
+.voucher-page .swiper-button-next-3:hover svg path,
+.voucher-page .swiper-button-prev-3:hover svg path {
+    stroke: #bb2121; /* Đổi màu đường viền sang màu xanh lá */
+}
 
 
 

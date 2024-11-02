@@ -31,7 +31,7 @@
                 <ul class="nav flex-column">
                     <li class="nav-item">
                         <a class="nav-link" href="/TEST/admin/index.php">
-                            <i class="fas fa-tachometer-alt"></i> <span>Dashboard</span>
+                            <i class="fa-solid fa-gauge-high"></i> <span>Dashboard</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -46,7 +46,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/TEST/admin/danhmuc/index.php">
-                            <i class="fab fa-steam-symbol"></i> <span>Danh Mục</span>
+                            <i class="fa-solid fa-list"></i> <span>Danh Mục SP</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -56,7 +56,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/TEST/admin/banner/index.php">
-                            <i class="fas fa-image"></i> <span>Banner</span>
+                            <i class="fa-solid fa-panorama"></i> <span>Banner</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -66,17 +66,22 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/TEST/admin/tintuc/index.php">
-                            <i class="fas fa-newspaper"></i> <span>Tin Tức</span>
+                            <i class="fa-regular fa-newspaper"></i> <span>Tin Tức</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/TEST/admin/notifications/index.php">
+                            <i class="fa-regular fa-bell"></i> <span>Thông Báo</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/TEST/admin/voucher/index.php">
-                            <i class="fas fa-shopping-cart"></i> <span>Vouchers</span>
+                            <i class="fa-solid fa-ticket"></i> <span>Vouchers</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/TEST/admin/order-details/index.php">
-                            <i class="fas fa-shopping-cart"></i> <span>Đơn hàng</span>
+                            <i class="fa-regular fa-note-sticky"></i> <span>Đơn hàng</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -88,6 +93,7 @@
             </div>
         </nav>
     </section>
+
     <!-- Main content -->
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
