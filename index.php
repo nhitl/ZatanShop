@@ -18,6 +18,7 @@
     include_once 'contact_button.php';
     include_once 'box_mainboard.php';
     include_once 'box_cpu.php';
+    include_once 'ads.php';
     ?>
     
 

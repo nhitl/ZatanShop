@@ -74,8 +74,8 @@ $totalPages = ceil($totalRows / $limit);
 </head>
 
 <body>
-    <?php include_once 'header.php'; 
-    include_once 'contact_button.php';?>
+    <?php include_once 'header.php';
+    include_once 'contact_button.php'; ?>
     <section class="breadcrumb-section">
         <div class="container">
             <nav aria-label="breadcrumb">
@@ -245,7 +245,25 @@ $totalPages = ceil($totalRows / $limit);
             </div>
 
         </div>
+
+        <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+            <div class="modal-dialog modaladdtocard">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="cartModalLabel">Thông báo</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p id="cartModalMessage"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
+
     <?php include_once 'footer.php'; ?>
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <script>
@@ -284,14 +302,14 @@ $totalPages = ceil($totalRows / $limit);
                 },
                 success: function(response) {
                     var result = JSON.parse(response);
-                    // Hiển thị thông báo dựa trên trạng thái
-                    if (result.status === 'error') {
-                        alert(result.message); // Hiển thị thông báo lỗi
-                    } else {
-                        alert(result.message); // Hiển thị thông báo thành công
-                        // Cập nhật số lượng sản phẩm trong giỏ (nếu cần)
-                        updateCartCount(); // Hàm này cần được định nghĩa nếu bạn muốn cập nhật số lượng giỏ hàng
-                    }
+                    // Hiển thị thông báo trong modal
+                    $('#cartModalMessage').text(result.message);
+                    $('#cartModal').modal('show'); // Hiện modal
+                    updateCartCount(); // Cập nhật số lượng giỏ hàng
+                },
+                error: function() {
+                    $('#cartModalMessage').text('Đã xảy ra lỗi khi thêm sản phẩm vào giỏ hàng.'); // Thông báo lỗi
+                    $('#cartModal').modal('show'); // Hiện modal
                 }
             });
         }

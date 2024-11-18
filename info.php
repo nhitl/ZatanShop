@@ -31,6 +31,23 @@ if ($result->num_rows > 0) {
 
 $stmt->close();
 
+// Xử lý cập nhật tên
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['new_full_name']) && !empty($_POST['new_full_name'])) {
+    $new_full_name = $_POST['new_full_name'];
+
+    // Cập nhật tên mới vào cơ sở dữ liệu
+    $update_sql = "UPDATE users SET full_name = ? WHERE user_id = ?";
+    $update_stmt = $conn->prepare($update_sql);
+    $update_stmt->bind_param("si", $new_full_name, $user_id);
+    $update_stmt->execute();
+
+    // Cập nhật lại tên trong phiên
+    $_SESSION['full_name'] = $new_full_name;
+
+    // Chuyển hướng về chính trang sau khi cập nhật tên
+    header("Location: " . $_SERVER['PHP_SELF']); // Chuyển hướng về trang này
+    exit(); // Dừng lại sau khi chuyển hướng để không chạy tiếp mã phía dưới
+}
 ?>
 
 <!DOCTYPE html>
@@ -46,8 +63,9 @@ $stmt->close();
 </head>
 
 <body>
-    <?php include 'header.php'; 
-    include_once 'contact_button.php';?>
+    <?php include 'header.php';
+    include_once 'contact_button.php'; ?>
+
     <section class="breadcrumb-section">
         <div class="container">
             <nav aria-label="breadcrumb">
@@ -58,6 +76,7 @@ $stmt->close();
             </nav>
         </div>
     </section>
+
     <section class="info-user">
         <main class="container mt-5">
             <div class="row">
@@ -68,12 +87,21 @@ $stmt->close();
                         <img src="assets/img/imgusers.png" alt="Ảnh Đại Diện" class="img-fluid rounded-circle" style="width: 120px; height: 120px;">
                     </div>
                 </div>
-                <div class="col-md-8">
-                    <h2><?php echo htmlspecialchars($full_name); ?></h2>
-                    <p><strong>Email:</strong> <?php echo htmlspecialchars($email); ?></p>
-                    <!-- Thông tin khác có thể thêm vào đây -->
+                <div class="col-md-4 col-8 center-form">
+                    <div>
+                        <h2>Tên:</h2>
+                        <form method="POST" action="">
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="new_full_name" value="<?php echo htmlspecialchars($full_name); ?>" required>
+                                <button type="submit" class="btn btn-success"><i class="fa-solid fa-arrows-rotate"></i></button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
+
+
             </div>
+
             <div class="row mt-4">
                 <div class="col-md-3 col-6 d-flex justify-content-center">
                     <a href="history-orders.php" class="btn btn-secondary">Theo giõi đơn hàng</a>
@@ -90,6 +118,7 @@ $stmt->close();
             </div>
         </main>
     </section>
+
     <?php include 'footer.php'; ?>
 </body>
 

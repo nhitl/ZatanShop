@@ -970,3 +970,167 @@ table {
     border-radius: 2px;
     /* Bo góc nhẹ cho đường gạch */
 }
+
+
+
+
+.star {
+    width: 20px;
+    height: 20px;
+    background-color: rgb(214, 214, 214);
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    border: 1px solid #4CAF50; /* Viền xanh lá */
+    display: inline-block;
+    margin-right: 4px; /* Khoảng cách giữa các ngôi sao */
+    position: relative;
+    cursor: pointer;
+}
+
+.star.full {
+    background-color: #4CAF50; /* Màu xanh lá khi đầy */
+}
+
+.star.half {
+    background: linear-gradient(to right, #4CAF50 50%, rgb(184, 184, 184) 50%); /* Màu xanh lá 50% */
+}
+
+.star.empty {
+    background-color: rgb(214, 214, 214); /* Nền trắng khi trống */
+}
+
+.star3 {
+    width: 20px;
+    height: 20px;
+    background-color: rgb(214, 214, 214);
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    border: 1px solid #4CAF50; /* Viền xanh lá */
+    display: inline-block;
+    margin-right: 4px; /* Khoảng cách giữa các ngôi sao */
+    position: relative;
+    cursor: pointer;
+}
+
+.star3.full {
+    background-color: #4CAF50; /* Màu xanh lá khi đầy */
+}
+
+.star3.half {
+    background: linear-gradient(to right, #4CAF50 50%, rgb(184, 184, 184) 50%); /* Màu xanh lá 50% */
+}
+
+.star3.empty {
+    background-color: rgb(214, 214, 214); /* Nền trắng khi trống */
+}
+
+
+
+.star2-rating {
+    display: inline-block;
+}
+
+.star2 {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    margin-right: 2px;
+    background-color: transparent;
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); /* Tạo hình sao */
+}
+
+.star2.full {
+    background-color: #4CAF50; /* Màu vàng cho sao đầy */
+}
+
+.star2.empty {
+    background-color: #b3b3b3; /* Sao trống không có màu nền */
+    border: 2px solid #4CAF50; /* Viền sao trống */
+}
+.reviews {
+    padding: 15px;
+    background-color: #ffeeee;
+    max-height: 470px; /* Giới hạn chiều cao của phần reviews */
+    overflow-y: auto;  /* Thêm thanh cuộn dọc khi nội dung vượt quá chiều cao */
+}
+
+/* Tùy chỉnh thanh cuộn */
+.reviews::-webkit-scrollbar {
+    width: 8px;  /* Đặt chiều rộng của thanh cuộn */
+}
+
+.reviews::-webkit-scrollbar-thumb {
+    background-color: #ff9191;  /* Màu sắc của thanh cuộn */
+    border-radius: 10px;  /* Làm tròn các góc của thanh cuộn */
+}
+
+.reviews::-webkit-scrollbar-thumb:hover {
+    background-color: #ff5b5b;  /* Màu sắc khi hover vào thanh cuộn */
+}
+
+.reviews::-webkit-scrollbar-track {
+    background-color: #cec5c5;  /* Màu nền của thanh cuộn */
+    border-radius: 10px;  /* Làm tròn các góc của vùng chứa thanh cuộn */
+}
+
+
+.reviews-title{
+    padding-top: 15px;
+    letter-spacing: 3px;
+}
+
+.review-form{
+    padding: 30px;
+    background-color: #fdffe8;
+}
+.header-comment{
+    background-color: #ffcfa1;
+    padding: 20px;
+    border: 2px solid #702204;
+}
+.header-comment .btn-outline-primary {
+    padding: 7px 20px;
+    background: linear-gradient(45deg, #e7acac, #f78686, #ff5f5f);
+    border: none;
+    color: #fff;
+    margin-top: 5px;
+    margin-right: 10px;
+    border-radius: 0 !important;
+    margin-bottom: 5px;
+    font-size: 1rem;
+    position: relative;
+    transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+.header-comment .btn-outline-primary:hover {
+    background: linear-gradient(135deg, #ffefef, #d84444, #ce0000);
+    color: #fff
+}
+
+.rating-filters .btn.active {
+    background: linear-gradient(135deg, #887131, #a4d844, #ce6400);
+    color: #fff;
+    border-color: #d84444;
+    box-shadow: 0 4px 8px rgba(206, 0, 0, 0.3);
+}
+
+.review-form .btn-primary {
+    padding: 7px 20px;
+    background: linear-gradient(45deg, #e7acac, #f78686, #ff5f5f);
+    border: none;
+    color: #fff;
+    margin-top: 5px;
+    margin-right: 10px;
+    border-radius: 0 !important;
+    margin-bottom: 5px;
+    font-size: 1rem;
+    position: relative;
+    transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+.review-form .btn-primary:hover {
+    background: linear-gradient(135deg, #ffefef, #d84444, #ce0000);
+    color: #fff
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}

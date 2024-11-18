@@ -16,6 +16,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete_configuration']
         exit();
     }
 }
+function createSlug($string) {
+    // Chuyển đổi các ký tự có dấu thành không dấu
+    $string = preg_replace([
+        '/á|à|ạ|ả|ã|â|ấ|ầ|ậ|ẩ|ẫ|ă|ắ|ằ|ặ|ẳ|ẵ/i', '/é|è|ẹ|ẻ|ẽ|ê|ế|ề|ệ|ể|ễ/i', '/í|ì|ị|ỉ|ĩ/i',
+        '/ó|ò|ọ|ỏ|õ|ô|ố|ồ|ộ|ổ|ỗ|ơ|ớ|ờ|ợ|ở|ỡ/i', '/ú|ù|ụ|ủ|ũ|ư|ứ|ừ|ự|ử|ữ/i', '/ý|ỳ|ỵ|ỷ|ỹ/i',
+        '/đ/i', '/Á|À|Ạ|Ả|Ã|Â|Ấ|Ầ|Ậ|Ẩ|Ẫ|Ă|Ắ|Ằ|Ặ|Ẳ|Ẵ/i', '/É|È|Ẹ|Ẻ|Ẽ|Ê|Ế|Ề|Ệ|Ể|Ễ/i', '/Í|Ì|Ị|Ỉ|Ĩ/i',
+        '/Ó|Ò|Ọ|Ỏ|Õ|Ô|Ố|Ồ|Ộ|Ổ|Ỗ|Ơ|Ớ|Ờ|Ợ|Ở|Ỡ/i', '/Ú|Ù|Ụ|Ủ|Ũ|Ư|Ứ|Ừ|Ự|Ử|Ữ/i', '/Ý|Ỳ|Ỵ|Ỷ|Ỹ/i', '/Đ/i'
+    ], [
+        'a', 'e', 'i', 'o', 'u', 'y', 'd', 'A', 'E', 'I', 'O', 'U', 'Y', 'D'
+    ], $string);
+
+    // Chuyển thành chữ thường
+    $string = mb_strtolower(trim($string)); // Chuyển thành chữ thường và loại bỏ khoảng trắng thừa
+
+    // Thay thế ký tự không hợp lệ bằng dấu "-"
+    $string = preg_replace('/[^a-z0-9-]+/u', '-', $string);
+
+    // Loại bỏ dấu "-" lặp lại
+    $string = preg_replace('/-+/', '-', $string);
+
+    // Loại bỏ dấu "-" ở đầu và cuối chuỗi
+    $string = trim($string, '-');
+
+    return $string;
+}
+
 
 
 // Lấy thông tin sản phẩm theo product_id
@@ -59,7 +85,8 @@ if (isset($_GET['product_id'])) {
 if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['delete_configuration'])) {
     // Lấy giá trị từ form
     $productName = $_POST['product_name'];
-    $price = str_replace(',', '', $_POST['price']);  // Loại bỏ dấu phẩy trong giá
+    $slug = createSlug($productName); // Tạo slug từ tên sản phẩm
+    $price = str_replace(',', '', $_POST['price']); // Loại bỏ dấu phẩy trong giá
 
     // Xử lý cập nhật hoặc thêm mới cấu hình
     foreach ($_POST['configurations'] as $config) {
@@ -166,14 +193,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['delete_configuration'
 
     // Cập nhật thông tin sản phẩm
     $updateProductQuery = "UPDATE products SET 
-    product_name='$productName', 
-    price='$price', 
-    product_info='$productInfo', 
-    category_id='$categoryId', 
-    subcategory_id='$subcategoryId', 
-    brand_id='$brandId', 
-    stock_quantity='$stockQuantity'  
-    WHERE product_id=$productId";
+product_name='$productName', 
+slug='$slug', 
+price='$price', 
+product_info='$productInfo', 
+category_id='$categoryId', 
+subcategory_id='$subcategoryId', 
+brand_id='$brandId', 
+stock_quantity='$stockQuantity'  
+WHERE product_id=$productId";
 
 
 

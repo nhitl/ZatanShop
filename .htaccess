@@ -1,0 +1,8 @@
+# Đảm bảo tệp CSS và JS được truy cập đúng
+RewriteCond %{REQUEST_URI} !^/TEST/css/
+RewriteCond %{REQUEST_URI} !^/TEST/js/
+RewriteCond %{REQUEST_URI} !^/TEST/images/
+
+# Đảm bảo các URL đẹp có thể chuyển hướng đúng đến file PHP
+RewriteEngine On
+RewriteRule ^product-detail/([0-9]+)$ /TEST/product-detail.php?id=$1 [L,QSA]

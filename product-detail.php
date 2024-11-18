@@ -2,6 +2,9 @@
 // Kết nối đến cơ sở dữ liệu
 include('dbconnect.php');
 
+if ($conn->connect_error) {
+    die("Kết nối cơ sở dữ liệu thất bại: " . $conn->connect_error);
+}
 // Lấy ID sản phẩm từ tham số GET
 $product_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
@@ -125,6 +128,56 @@ while ($row = $similarProductsResult->fetch_assoc()) {
     $similarProducts[] = $row;
 }
 
+// Truy vấn lấy các đánh giá cho sản phẩm theo product_id
+$reviewQuery = "
+    SELECT 
+        r.rating, r.comment, r.image_path, r.created_at, u.full_name 
+    FROM product_reviews r 
+    LEFT JOIN users u ON r.user_id = u.user_id 
+    WHERE r.product_id = ? 
+    ORDER BY r.created_at DESC"; // Sắp xếp theo thời gian tạo, từ cũ đến mới
+$stmt = $conn->prepare($reviewQuery);
+$stmt->bind_param("i", $product_id);
+$stmt->execute();
+$reviewsResult = $stmt->get_result(); // Lấy kết quả đánh giá
+
+
+// Truy vấn lấy số lượng đánh giá theo từng mức sao
+$ratingCountQuery = "
+    SELECT rating, COUNT(*) AS rating_count
+    FROM product_reviews 
+    WHERE product_id = ? 
+    GROUP BY rating
+    ORDER BY rating DESC"; // Sắp xếp theo số sao từ cao đến thấp
+$stmt = $conn->prepare($ratingCountQuery);
+$stmt->bind_param("i", $product_id);
+$stmt->execute();
+$ratingCountsResult = $stmt->get_result();
+$ratingCounts = [];
+while ($row = $ratingCountsResult->fetch_assoc()) {
+    $ratingCounts[$row['rating']] = $row['rating_count'];
+}
+
+// Nếu không có giá trị cho một mức sao, đặt mặc định là 0
+for ($i = 1; $i <= 5; $i++) {
+    if (!isset($ratingCounts[$i])) {
+        $ratingCounts[$i] = 0;
+    }
+}
+
+// Truy vấn lấy trung bình số sao của sản phẩm
+$averageRatingQuery = "
+    SELECT AVG(rating) AS average_rating
+    FROM product_reviews
+    WHERE product_id = ?";
+$stmt = $conn->prepare($averageRatingQuery);
+$stmt->bind_param("i", $product_id);
+$stmt->execute();
+$averageRatingResult = $stmt->get_result();
+$averageRatingRow = $averageRatingResult->fetch_assoc();
+$averageRating = round($averageRatingRow['average_rating'], 1); // Làm tròn đến 1 chữ số thập phân
+
+
 
 ?>
 
@@ -217,7 +270,7 @@ while ($row = $similarProductsResult->fetch_assoc()) {
                                         <label for="quantity">Số lượng:</label>
                                         <div class="quantity-controls">
                                             <button type="button" id="quantity-decrease" class="quantity-btn">-</button>
-                                            <input type="number" id="quantity" name="quantity" value="1" min="1" step="1" readonly>
+                                            <input type="number" id="quantity" name="quantity" value="1" min="1" step="1">
                                             <button type="button" id="quantity-increase" class="quantity-btn">+</button>
                                         </div>
                                     </div>
@@ -455,11 +508,157 @@ while ($row = $similarProductsResult->fetch_assoc()) {
                                     <button class="show-more2" id="showMoreBtn2">Xem toàn bộ thông số <i class="fa-solid fa-angles-down"></i></button>
                                 </div>
                             </div>
-
-
-
-
                         </div>
+
+
+
+                        <div class="comment-box">
+                            <div class="container mt-5">
+                                <!-- Hiển thị tóm tắt số sao -->
+                                <div class="header-comment">
+                                    <h5 class="mb-4 reviews-title">ĐÁNH GIÁ SẢN PHẨM</h5>
+                                    <div class="rating-summary mb-4">
+                                        <strong><?php echo $averageRating; ?> trên 5</strong>
+
+                                        <div class="stars3">
+                                            <?php
+                                            // Số sao đầy đủ
+                                            $fullStars = floor($averageRating);
+                                            // Phần sao không đầy đủ (làm tròn)
+                                            $halfStar = ($averageRating - $fullStars) >= 0.5 ? 1 : 0;
+                                            // Tính số sao trống
+                                            $emptyStars = 5 - ($fullStars + $halfStar);
+
+                                            // Vẽ ngôi sao đầy đủ
+                                            for ($i = 0; $i < $fullStars; $i++) {
+                                                echo '<span class="star3 full"></span>';
+                                            }
+
+                                            // Vẽ ngôi sao một phần
+                                            if ($halfStar) {
+                                                echo '<span class="star3 half"></span>';
+                                            }
+
+                                            // Vẽ ngôi sao trống
+                                            for ($i = 0; $i < $emptyStars; $i++) {
+                                                echo '<span class="star3 empty"></span>';
+                                            }
+                                            ?>
+                                        </div>
+                                    </div>
+                                    <!-- Bộ lọc các đánh giá theo số sao -->
+                                    <div class="rating-filters mb-4">
+                                        <button class="btn btn-outline-primary active" onclick="filterReviews(0)">Tất cả (<?php echo array_sum($ratingCounts); ?>)</button>
+                                        <button class="btn btn-outline-primary" onclick="filterReviews(5)">5 sao (<?php echo $ratingCounts[5]; ?>)</button>
+                                        <button class="btn btn-outline-primary" onclick="filterReviews(4)">4 sao (<?php echo $ratingCounts[4]; ?>)</button>
+                                        <button class="btn btn-outline-primary" onclick="filterReviews(3)">3 sao (<?php echo $ratingCounts[3]; ?>)</button>
+                                        <button class="btn btn-outline-primary" onclick="filterReviews(2)">2 sao (<?php echo $ratingCounts[2]; ?>)</button>
+                                        <button class="btn btn-outline-primary" onclick="filterReviews(1)">1 sao (<?php echo $ratingCounts[1]; ?>)</button>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 reviews" id="reviewsList">
+                                        <div class="comment" id="reviewsContainer">
+                                            <?php if ($reviewsResult->num_rows > 0) : ?>
+                                                <?php while ($row = $reviewsResult->fetch_assoc()) : ?>
+                                                    <div class="card mb-3 review-card" data-rating="<?php echo $row['rating']; ?>">
+                                                        <div class="card-body">
+                                                            <div class="row">
+                                                                <div class="col-md-2 col-2">
+                                                                    <img width="45px" src="assets/img/imgusers.png" alt="">
+                                                                </div>
+                                                                <div class="col">
+                                                                    <!-- Hiển thị tên và ngày giờ -->
+                                                                    <p class="review-header">
+                                                                        <strong><?php echo htmlspecialchars($row['full_name']); ?></strong> |
+                                                                        <span class="text-muted small">
+                                                                            <?php echo date('d-m-Y, H:i:s', strtotime($row['created_at'])); ?>
+                                                                        </span>
+                                                                    </p>
+
+                                                                    <!-- Hiển thị đánh giá sao -->
+                                                                    <div class="star2-rating mb-1">
+                                                                        <?php
+                                                                        $rating = (int)$row['rating'];
+                                                                        for ($i = 1; $i <= 5; $i++) {
+                                                                            if ($i <= $rating) {
+                                                                                echo '<span class="star2 full"></span>'; // Sao đầy
+                                                                            } else {
+                                                                                echo '<span class="star2 empty"></span>'; // Sao trống
+                                                                            }
+                                                                        }
+                                                                        ?>
+                                                                    </div>
+
+                                                                    <!-- Hiển thị bình luận -->
+                                                                    <p class="card-text"><?php echo htmlspecialchars($row['comment']); ?></p>
+
+                                                                    <!-- Hiển thị ảnh nếu có -->
+                                                                    <?php if ($row['image_path']) : ?>
+                                                                        <img src="<?php echo htmlspecialchars($row['image_path']); ?>"
+                                                                            alt="Ảnh sản phẩm" class="img-fluid mt-3" style="max-width: 150px;">
+                                                                    <?php endif; ?>
+                                                                </div>
+                                                            </div>
+
+
+                                                        </div>
+                                                    </div>
+                                                <?php endwhile; ?>
+                                            <?php else : ?>
+                                                <p>Chưa có đánh giá cho sản phẩm này.</p>
+                                            <?php endif; ?>
+                                        </div>
+
+                                    </div>
+
+                                    <!-- Bình luận và đánh giá -->
+                                    <div class="col-lg-6 review-form">
+                                        <h5 class="mb-4">Bình luận và đánh giá</h5>
+                                        <form id="reviewForm" enctype="multipart/form-data">
+                                            <input type="hidden" name="product_id" value="<?php echo $product_id; ?>">
+
+                                            <!-- Đánh giá sao -->
+                                            <div class="mb-3">
+                                                <label for="rating" class="form-label">Số sao:</label>
+                                                <div id="ratingStars" class="rating">
+                                                    <!-- Ngôi sao với data-value từ 1 đến 5 -->
+                                                    <span class="star empty" data-value="1"></span>
+                                                    <span class="star empty" data-value="2"></span>
+                                                    <span class="star empty" data-value="3"></span>
+                                                    <span class="star empty" data-value="4"></span>
+                                                    <span class="star empty" data-value="5"></span>
+                                                </div>
+                                                <input type="hidden" name="rating" id="rating" value="5" required>
+                                            </div>
+
+                                            <!-- Bình luận và ảnh -->
+                                            <div class="mb-3">
+                                                <label for="comment" class="form-label">Bình luận:</label>
+                                                <textarea name="comment" id="comment" class="form-control" rows="4" required placeholder="Mời bạn nhập bình luận..."></textarea>
+                                            </div>
+
+
+                                            <div class="col-md-9 mb-3">
+                                                <label for="image" class="form-label">Đính kèm ảnh:</label>
+                                                <input type="file" name="image" id="image" class="form-control" accept="image/*">
+                                            </div>
+
+                                            <button type="submit" class="btn btn-primary">Gửi bình luận</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+
+
+
+
+
                         <div class="row mt-5">
                             <div class="similar-products">
                                 <div class="container">
@@ -488,10 +687,10 @@ while ($row = $similarProductsResult->fetch_assoc()) {
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
-        </div>
     </section>
     <?php
     include_once 'footer.php';
@@ -589,6 +788,14 @@ while ($row = $similarProductsResult->fetch_assoc()) {
     </script>
     <script>
         $(document).ready(function() {
+            // Hàm kiểm tra tính hợp lệ cho số lượng
+            function validateQuantity(quantity) {
+                if (isNaN(quantity) || quantity < 1) {
+                    return false;
+                }
+                return true;
+            }
+
             $('#quantity-increase').click(function() {
                 var $quantityInput = $('#quantity');
                 var currentValue = parseInt($quantityInput.val(), 10);
@@ -602,7 +809,19 @@ while ($row = $similarProductsResult->fetch_assoc()) {
                     $quantityInput.val(currentValue - 1);
                 }
             });
+
+            $('#quantity').on('input', function() {
+                var $quantityInput = $(this);
+                var value = parseInt($quantityInput.val(), 10);
+
+                // Nếu không hợp lệ (như giá trị âm hoặc không phải số), đặt về giá trị mặc định là 1
+                if (!validateQuantity(value)) {
+                    $quantityInput.val(1);
+                }
+            });
         });
+
+
 
         function showModal() {
             // Hiển thị modal
@@ -692,6 +911,151 @@ while ($row = $similarProductsResult->fetch_assoc()) {
             }
         });
     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const stars = document.querySelectorAll('.star');
+            const ratingInput = document.getElementById('rating');
+
+            // Đặt giá trị mặc định cho rating nếu chưa có giá trị
+            if (!ratingInput.value) {
+                ratingInput.value = 5; // Đặt giá trị mặc định là 5 sao nếu chưa chọn sao
+            }
+
+            // Cập nhật sao hiển thị theo giá trị rating ban đầu
+            let currentRating = ratingInput.value;
+            updateStars(currentRating);
+
+            // Cập nhật sao khi người dùng hover qua các sao
+            stars.forEach(star => {
+                star.addEventListener('mouseenter', function() {
+                    const value = this.getAttribute('data-value');
+                    updateStars(value); // Tạm thời tô sao khi hover
+                });
+
+                star.addEventListener('mouseleave', function() {
+                    updateStars(currentRating); // Quay lại sao hiện tại khi di chuột ra
+                });
+
+                star.addEventListener('click', function() {
+                    const value = this.getAttribute('data-value');
+                    currentRating = value; // Cập nhật giá trị sao khi click
+                    ratingInput.value = value; // Lưu giá trị vào input ẩn
+                    updateStars(value); // Cập nhật sao khi click
+                });
+            });
+
+            // Cập nhật sao khi hover hoặc click
+            function updateStars(value) {
+                stars.forEach(star => {
+                    if (star.getAttribute('data-value') <= value) {
+                        star.classList.add('full');
+                        star.classList.remove('empty');
+                    } else {
+                        star.classList.remove('full');
+                        star.classList.add('empty');
+                    }
+                });
+            }
+        });
+
+
+
+
+
+        $(document).ready(function() {
+            // Xử lý khi người dùng chọn sao
+            $("#ratingStars .star").on("click", function() {
+                var rating = $(this).data("value"); // Lấy giá trị rating từ data-value
+                $("#rating").val(rating); // Cập nhật giá trị vào trường input ẩn
+                updateStars(rating); // Cập nhật giao diện sao
+            });
+
+            // Cập nhật giao diện sao khi người dùng chọn
+            function updateStars(rating) {
+                $("#ratingStars .star").each(function() {
+                    var starValue = $(this).data("value");
+                    if (starValue <= rating) {
+                        $(this).removeClass("empty").addClass("full");
+                    } else {
+                        $(this).removeClass("full").addClass("empty");
+                    }
+                });
+            }
+
+            // Khi form được submit
+            $("#reviewForm").on("submit", function(e) {
+                e.preventDefault(); // Ngăn việc reload lại trang
+
+                var formData = new FormData(this); // Thu thập dữ liệu từ form
+
+                $.ajax({
+                    url: 'submit_review.php', // Tới file xử lý
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        // Phân tích phản hồi JSON từ server
+                        var data = JSON.parse(response);
+
+                        if (data.success) {
+                            var newReview = `
+                    <div class="card mb-3 review-card">
+                        <div class="card-body">
+                            <h6 class="card-title">${data.review.full_name} | Ngày ${data.review.created_at}</h6>
+                            <div class="star2-rating mb-1">`;
+
+                            // Cập nhật sao đánh giá
+                            for (var i = 1; i <= 5; i++) {
+                                newReview += `<span class="star2 ${i <= data.review.rating ? 'full' : 'empty'}"></span>`;
+                            }
+
+                            newReview += `
+                            </div>
+                            <p class="card-text">${data.review.comment}</p>
+                            ${data.review.image ? '<img src="' + data.review.image + '" alt="Ảnh sản phẩm" class="img-fluid mt-3" style="max-width: 150px;">' : ''}
+                        </div>
+                    </div>`;
+
+                            // Thêm bình luận vào phần reviews-list
+                            $("#reviewsList").prepend(newReview);
+                            $("#reviewForm")[0].reset(); // Reset form
+                            updateStars(5); // Reset lại ngôi sao (trả về 5 sao mặc định)
+                        } else {
+                            alert("Có lỗi xảy ra. Vui lòng thử lại.");
+                        }
+                    },
+                    error: function() {
+                        alert("Có lỗi xảy ra trong quá trình gửi dữ liệu.");
+                    }
+                });
+            });
+        });
+
+
+
+        function filterReviews(rating) {
+            // Hiển thị tất cả đánh giá nếu chọn "Tất cả"
+            if (rating === 0) {
+                $('.review-card').show();
+            } else {
+                // Ẩn tất cả các đánh giá
+                $('.review-card').hide();
+                // Chỉ hiển thị những đánh giá có rating tương ứng
+                $('.review-card[data-rating="' + rating + '"]').show();
+            }
+
+            // Xóa lớp active khỏi tất cả các nút lọc
+            $(".rating-filters .btn").removeClass("active");
+            // Thêm lớp active cho nút hiện tại
+            $(".rating-filters .btn").each(function() {
+                if ($(this).attr("onclick") === `filterReviews(${rating})`) {
+                    $(this).addClass("active");
+                }
+            });
+        }
+    </script>
+
 
 
 

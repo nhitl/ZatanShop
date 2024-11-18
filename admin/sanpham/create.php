@@ -10,7 +10,51 @@ $categoryResult = mysqli_query($conn, $categoryQuery);
 $brandQuery = "SELECT brand_id, brand_name, brand_image FROM brands";
 $brandResult = mysqli_query($conn, $brandQuery);
 
-// Kiểm tra xem form đã được submit chưa
+// Hàm tạo slug từ tên sản phẩm
+function createSlug($str)
+{
+    // Chuyển tiếng Việt có dấu thành không dấu
+    $str = preg_replace([
+        '/á|à|ạ|ả|ã|â|ấ|ầ|ậ|ẩ|ẫ|ă|ắ|ằ|ặ|ẳ|ẵ/i', '/é|è|ẹ|ẻ|ẽ|ê|ế|ề|ệ|ể|ễ/i', '/í|ì|ị|ỉ|ĩ/i',
+        '/ó|ò|ọ|ỏ|õ|ô|ố|ồ|ộ|ổ|ỗ|ơ|ớ|ờ|ợ|ở|ỡ/i', '/ú|ù|ụ|ủ|ũ|ư|ứ|ừ|ự|ử|ữ/i', '/ý|ỳ|ỵ|ỷ|ỹ/i',
+        '/đ/i', '/Á|À|Ạ|Ả|Ã|Â|Ấ|Ầ|Ậ|Ẩ|Ẫ|Ă|Ắ|Ằ|Ặ|Ẳ|Ẵ/i', '/É|È|Ẹ|Ẻ|Ẽ|Ê|Ế|Ề|Ệ|Ể|Ễ/i', '/Í|Ì|Ị|Ỉ|Ĩ/i',
+        '/Ó|Ò|Ọ|Ỏ|Õ|Ô|Ố|Ồ|Ộ|Ổ|Ỗ|Ơ|Ớ|Ờ|Ợ|Ở|Ỡ/i', '/Ú|Ù|Ụ|Ủ|Ũ|Ư|Ứ|Ừ|Ự|Ử|Ữ/i', '/Ý|Ỳ|Ỵ|Ỷ|Ỹ/i', '/Đ/i'
+    ], [
+        'a', 'e', 'i', 'o', 'u', 'y', 'd', 'A', 'E', 'I', 'O', 'U', 'Y', 'D'
+    ], $str);
+
+    // Chuyển thành chữ thường
+    $str = mb_strtolower($str, 'UTF-8');
+
+    // Thay thế các ký tự không phải chữ hoặc số bằng dấu '-'
+    $str = preg_replace('/[^\p{L}\p{N}]+/u', '-', $str);
+
+    // Loại bỏ dấu '-' thừa ở đầu và cuối chuỗi
+    $str = trim($str, '-');
+
+    return $str;
+}
+
+
+// Hàm kiểm tra slug trùng và tạo slug duy nhất
+function createUniqueSlug($slug, $conn)
+{
+    // Kiểm tra xem slug đã tồn tại chưa
+    $checkQuery = "SELECT COUNT(*) FROM products WHERE slug = ?";
+    $stmt = mysqli_prepare($conn, $checkQuery);
+    mysqli_stmt_bind_param($stmt, 's', $slug);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_bind_result($stmt, $count);
+    mysqli_stmt_fetch($stmt);
+
+    // Nếu slug đã tồn tại, thêm một chuỗi ngẫu nhiên vào cuối slug
+    if ($count > 0) {
+        $slug = $slug . '-' . uniqid();
+    }
+
+    return $slug;
+}
+
 // Kiểm tra xem form đã được submit chưa
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Các giá trị khác
@@ -20,8 +64,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $categoryId = $_POST['category_id'];
     $subcategoryId = $_POST['subcategory_id'];
     $brandId = $_POST['brand_id'];
-    $stockQuantity = $_POST['stock_quantity']; // Lấy số lượng sản phẩm
-    $promotionDescription = $_POST['promotion_description']; // Lấy mô tả quà tặng kèm
+    $stockQuantity = $_POST['stock_quantity'];
+    $promotionDescription = $_POST['promotion_description'];
+
+    // Tạo slug từ tên sản phẩm
+    $slug = createSlug($productName);
 
     // Kiểm tra biến trống
     if (empty($productName) || empty($price) || empty($categoryId) || empty($subcategoryId) || empty($brandId) || empty($stockQuantity)) {
@@ -29,12 +76,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 
+    // Kiểm tra slug duy nhất
+    $slug = createUniqueSlug($slug, $conn);
+
     // Xử lý ảnh chính 
     $targetDir = "../assets/img/imgproducts/";
-
-    // Upload ảnh chính 
     $imageExtension = pathinfo($_FILES["background_image"]["name"], PATHINFO_EXTENSION);
-    $imageName = uniqid("bg_", true) . '.' . $imageExtension; // Tên file duy nhất cho ảnh chính
+    $imageName = uniqid("bg_", true) . '.' . $imageExtension;
     $targetFile = $targetDir . $imageName;
 
     if (move_uploaded_file($_FILES["background_image"]["tmp_name"], $targetFile)) {
@@ -45,9 +93,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Insert dữ liệu vào bảng products
-    $insertProductQuery = "INSERT INTO products (product_name, price, background_image, product_info, category_id, subcategory_id, brand_id, stock_quantity) 
-                           VALUES ('$productName', '$price', '$targetFile', '$productInfo', '$categoryId', '$subcategoryId', '$brandId', '$stockQuantity')";
-    
+    $insertProductQuery = "INSERT INTO products (product_name, slug, price, background_image, product_info, category_id, subcategory_id, brand_id, stock_quantity) 
+                           VALUES ('$productName', '$slug', '$price', '$targetFile', '$productInfo', '$categoryId', '$subcategoryId', '$brandId', '$stockQuantity')";
+
     if (mysqli_query($conn, $insertProductQuery)) {
         // Lấy product_id của sản phẩm vừa thêm
         $productId = mysqli_insert_id($conn);

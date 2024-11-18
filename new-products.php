@@ -2,7 +2,7 @@
 include_once 'dbconnect.php';
 
 // Truy xuất sản phẩm mới nhất và thông tin giảm giá
-$sql = "SELECT p.product_id, p.product_name, p.price, p.background_image, p.stock_quantity, 
+$sql = "SELECT p.product_id, p.product_name, p.price, p.background_image, p.stock_quantity, p.sales_count, 
                COALESCE(d.discount_percentage, 0) AS discount_percentage, 
                COALESCE(p.price * (1 - d.discount_percentage / 100), p.price) AS discounted_price,
                p.configuration, p.sales_count
@@ -13,7 +13,7 @@ $sql = "SELECT p.product_id, p.product_name, p.price, p.background_image, p.stoc
 $result = $conn->query($sql);
 
 // Truy xuất sản phẩm bán chạy và thông tin giảm giá
-$sqlBestSelling = "SELECT p.product_id, p.product_name, p.price, p.background_image,p.stock_quantity, 
+$sqlBestSelling = "SELECT p.product_id, p.product_name, p.price, p.background_image, p.stock_quantity, p.sales_count,
                            COALESCE(d.discount_percentage, 0) AS discount_percentage, 
                            COALESCE(p.price * (1 - d.discount_percentage / 100), p.price) AS discounted_price
                     FROM products p
@@ -23,14 +23,17 @@ $sqlBestSelling = "SELECT p.product_id, p.product_name, p.price, p.background_im
                     ORDER BY p.sales_count DESC LIMIT 10";
 $resultBestSelling = $conn->query($sqlBestSelling);
 
+
 $sqlDiscountedProducts = "SELECT p.product_id, p.product_name, p.price, p.background_image, 
-                                  p.stock_quantity, d.discount_percentage, 
+                                  p.stock_quantity, p.sales_count, 
+                                  d.discount_percentage, 
                                   (p.price * (1 - d.discount_percentage / 100)) AS discounted_price
                           FROM products p
                           JOIN discounts d ON p.product_id = d.product_id
                           WHERE d.start_date <= CURDATE() AND d.end_date >= CURDATE()";
 
 $resultDiscountedProducts = $conn->query($sqlDiscountedProducts);
+
 ?>
 
 
@@ -113,7 +116,28 @@ $resultDiscountedProducts = $conn->query($sqlDiscountedProducts);
 
                                 // Chuyển mảng mô tả thành một chuỗi để hiển thị trong tooltip, với <br> để xuống dòng
                                 $promotionDescription = implode("<br>", $promotionDescriptions); // Xuống dòng với mỗi mô tả khác nhau
+                                // Truy vấn lấy rating trung bình và số lượt đánh giá
+                                $reviewQuery = "
+                                SELECT 
+                                AVG(rating) AS average_rating, 
+                                COUNT(review_id) AS review_count 
+                                FROM product_reviews 
+                                WHERE product_id = " . intval($row['product_id']);
+                                $reviewResult = $conn->query($reviewQuery);
 
+                                $averageRating = 0;
+                                $reviewCount = 0;
+
+                                if ($reviewResult && $reviewResult->num_rows > 0) {
+                                    $reviewData = $reviewResult->fetch_assoc();
+                                    $averageRating = round($reviewData['average_rating'], 1);
+                                    $reviewCount = $reviewData['review_count'];
+                                }
+
+                                // Tính toán tiến trình bán hàng
+                                $totalSalesTarget = 300; // Giá trị cố định
+                                $salesCount = isset($row["sales_count"]) ? intval($row["sales_count"]) : 0;
+                                $salesPercentage = min(100, ($salesCount / $totalSalesTarget) * 100); // Giới hạn tiến trình tối đa là 100%
                                 echo '<div class="swiper-slide col-md-4 d-flex justify-content-center">';
                                 echo '    <div class="card position-relative">';
 
@@ -141,6 +165,18 @@ $resultDiscountedProducts = $conn->query($sqlDiscountedProducts);
                                 echo '            </h5>';
                                 echo '            <p class="card-text"><span class="text-decoration-line-through">' . htmlspecialchars(number_format($row["price"])) . '₫</span></p>';
                                 echo '            <p class="card-text-price">' . htmlspecialchars(number_format($row["discounted_price"])) . ' ₫</p>';
+                                // Rating và số lượt đánh giá
+                                echo '            <p class="rating-info">';
+                                echo '                <span>' . htmlspecialchars($averageRating) . ' <i class="fa-solid fa-star"></i> (' . htmlspecialchars($reviewCount) . ' đánh giá)</span>';
+                                echo '            </p>';
+
+                                // Thanh tiến trình bán hàng
+                                echo '            <div class="progress position-relative">';
+                                echo '                <div class="progress-bar" role="progressbar" style="width: ' . $salesPercentage . '%;" aria-valuenow="' . $salesPercentage . '" aria-valuemin="0" aria-valuemax="100">';
+                                echo '                    <span class="sales-count text-center position-absolute w-100">Đã bán: ' . htmlspecialchars($salesCount) . '/' . $totalSalesTarget . '</span>';
+                                echo '                </div>';
+                                echo '            </div>';
+
                                 echo '            <div class="d-flex justify-content-between align-items-center">';
                                 echo '                <p class="stock-quantity mb-0">';
                                 if ($row['stock_quantity'] > 0) {
@@ -187,7 +223,7 @@ $resultDiscountedProducts = $conn->query($sqlDiscountedProducts);
                     if ($resultBestSelling->num_rows > 0) {
                         while ($row = $resultBestSelling->fetch_assoc()) {
                             $imagePath = 'admin' . $row["background_image"];
-                            // Truy vấn để lấy thông tin quà tặng từ bảng `product_promotions`
+                            // Truy vấn để lấy thông tin quà tặng từ bảng product_promotions
                             $promoQuery = "SELECT promotion_description FROM product_promotions WHERE product_id = " . intval($row['product_id']);
                             $promoResult = $conn->query($promoQuery);
 
@@ -202,8 +238,33 @@ $resultDiscountedProducts = $conn->query($sqlDiscountedProducts);
 
                             // Chuyển mảng mô tả thành một chuỗi để hiển thị trong tooltip, với <br> để xuống dòng
                             $promotionDescription = implode("<br>", $promotionDescriptions); // Xuống dòng với mỗi mô tả khác nhau
+
+                            // Truy vấn lấy rating trung bình và số lượt đánh giá
+                            $reviewQuery = "
+                        SELECT 
+                            AVG(rating) AS average_rating, 
+                            COUNT(review_id) AS review_count 
+                        FROM product_reviews 
+                        WHERE product_id = " . intval($row['product_id']);
+                            $reviewResult = $conn->query($reviewQuery);
+
+                            $averageRating = 0;
+                            $reviewCount = 0;
+
+                            if ($reviewResult && $reviewResult->num_rows > 0) {
+                                $reviewData = $reviewResult->fetch_assoc();
+                                $averageRating = round($reviewData['average_rating'], 1);
+                                $reviewCount = $reviewData['review_count'];
+                            }
+
+                            // Tính toán tiến trình bán hàng
+                            $totalSalesTarget = 300; // Giá trị cố định
+                            $salesCount = isset($row["sales_count"]) ? intval($row["sales_count"]) : 0;
+                            $salesPercentage = min(100, ($salesCount / $totalSalesTarget) * 100); // Giới hạn tiến trình tối đa là 100%
+
                             echo '<div class="swiper-slide col-md-4 d-flex justify-content-center">';
                             echo '    <div class="card position-relative" data-product-id="' . htmlspecialchars($row["product_id"]) . '" data-product-name="' . htmlspecialchars($row["product_name"]) . '" data-product-price="' . htmlspecialchars(number_format($row["price"])) . '" data-product-config="' . (isset($row["configuration"]) ? htmlspecialchars($row["configuration"]) : 'Chưa có thông tin') . '" data-product-sales="' . (isset($row["sales_count"]) ? htmlspecialchars($row["sales_count"]) : 'Chưa có thông tin') . '">';
+
                             // Thêm biểu tượng quà tặng vào góc trên bên phải ảnh
                             if (!empty($promotionDescription)) {
                                 echo '<div class="tag-promo" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom" data-bs-offset="-35, 0" title="' . $promotionDescription . '">';
@@ -232,6 +293,20 @@ $resultDiscountedProducts = $conn->query($sqlDiscountedProducts);
                                 echo '<span class="card-text-price">' . htmlspecialchars(number_format($row["price"])) . ' ₫</span>';
                             }
                             echo '            </p>';
+
+                            // Rating và số lượt đánh giá
+                            echo '            <p class="rating-info">';
+                            echo '                <span>' . htmlspecialchars($averageRating) . ' <i class="fa-solid fa-star"></i> (' . htmlspecialchars($reviewCount) . ' đánh giá)</span>';
+                            echo '            </p>';
+
+                            // Thanh tiến trình bán hàng
+                            echo '            <div class="progress position-relative">';
+                            echo '                <div class="progress-bar" role="progressbar" style="width: ' . $salesPercentage . '%;" aria-valuenow="' . $salesPercentage . '" aria-valuemin="0" aria-valuemax="100">';
+                            echo '                    <span class="sales-count text-center position-absolute w-100">Đã bán: ' . htmlspecialchars($salesCount) . '/' . $totalSalesTarget . '</span>';
+                            echo '                </div>';
+                            echo '            </div>';
+
+                            // Tình trạng hàng và nút thêm giỏ hàng
                             echo '            <div class="d-flex justify-content-between align-items-center">';
                             echo '                <p class="stock-quantity mb-0">';
                             if ($row['stock_quantity'] > 0) {
@@ -242,9 +317,9 @@ $resultDiscountedProducts = $conn->query($sqlDiscountedProducts);
                             echo '                </p>';
                             echo '                <a href="#" onclick="addToCart(' . htmlspecialchars($row['product_id']) . ', 1); return false;" class="btn btn-primary"><i class="fa-sharp fa-solid fa-cart-plus"></i></a>';
                             echo '            </div>'; // Kết thúc thẻ div d-flex
-                            echo '        </div>';
-                            echo '    </div>';
-                            echo '</div>';
+                            echo '        </div>'; // Kết thúc card-body
+                            echo '    </div>'; // Kết thúc card
+                            echo '</div>'; // Kết thúc swiper-slide
                         }
                     } else {
                         echo "<p>Không có sản phẩm bán chạy.</p>";
@@ -258,7 +333,8 @@ $resultDiscountedProducts = $conn->query($sqlDiscountedProducts);
             <div class="best-selling-footer">
                 <a href="all-products.php?sort=sales_desc" class="btn btn-view-all"><i class="fa-solid fa-right-to-bracket"></i> Xem tất cả</a>
             </div>
-        </div>
+
+
     </section>
 
     <section class="new-products-swiper">
@@ -293,7 +369,27 @@ $resultDiscountedProducts = $conn->query($sqlDiscountedProducts);
 
                                 // Chuyển mảng mô tả thành một chuỗi để hiển thị trong tooltip, với <br> để xuống dòng
                                 $promotionDescription = implode("<br>", $promotionDescriptions); // Xuống dòng với mỗi mô tả khác nhau
+                                $reviewQuery = "
+                                SELECT 
+                                    AVG(rating) AS average_rating, 
+                                    COUNT(review_id) AS review_count 
+                                FROM product_reviews 
+                                WHERE product_id = " . intval($row['product_id']);
+                                $reviewResult = $conn->query($reviewQuery);
 
+                                $averageRating = 0;
+                                $reviewCount = 0;
+
+                                if ($reviewResult && $reviewResult->num_rows > 0) {
+                                    $reviewData = $reviewResult->fetch_assoc();
+                                    $averageRating = round($reviewData['average_rating'], 1);
+                                    $reviewCount = $reviewData['review_count'];
+                                }
+
+                                // Tính toán tiến trình bán hàng
+                                $totalSalesTarget = 300; // Giá trị cố định
+                                $salesCount = isset($row["sales_count"]) ? intval($row["sales_count"]) : 0;
+                                $salesPercentage = min(100, ($salesCount / $totalSalesTarget) * 100); // Giới hạn tiến trình tối đa là 100%
                                 echo '<div class="swiper-slide col-md-4 d-flex justify-content-center">';
                                 echo '    <div class="card position-relative" data-product-id="' . htmlspecialchars($row["product_id"]) . '" data-product-name="' . htmlspecialchars($row["product_name"]) . '" data-product-price="' . htmlspecialchars(number_format($row["price"])) . '" data-product-config="' . (isset($row["configuration"]) ? htmlspecialchars($row["configuration"]) : 'Chưa có thông tin') . '" data-product-sales="' . (isset($row["sales_count"]) ? htmlspecialchars($row["sales_count"]) : 'Chưa có thông tin') . '">';
                                 // Thêm biểu tượng quà tặng vào góc trên bên phải ảnh
@@ -324,6 +420,17 @@ $resultDiscountedProducts = $conn->query($sqlDiscountedProducts);
                                     echo '<span class="card-text-price">' . htmlspecialchars(number_format($row["price"])) . ' ₫</span>';
                                 }
                                 echo '            </p>';
+                                // Rating và số lượt đánh giá
+                                echo '            <p class="rating-info">';
+                                echo '                <span>' . htmlspecialchars($averageRating) . ' <i class="fa-solid fa-star"></i> (' . htmlspecialchars($reviewCount) . ' đánh giá)</span>';
+                                echo '            </p>';
+
+                                // Thanh tiến trình bán hàng
+                                echo '            <div class="progress position-relative">';
+                                echo '                <div class="progress-bar" role="progressbar" style="width: ' . $salesPercentage . '%;" aria-valuenow="' . $salesPercentage . '" aria-valuemin="0" aria-valuemax="100">';
+                                echo '                    <span class="sales-count text-center position-absolute w-100">Đã bán: ' . htmlspecialchars($salesCount) . '/' . $totalSalesTarget . '</span>';
+                                echo '                </div>';
+                                echo '            </div>';
                                 echo '            <div class="d-flex justify-content-between align-items-center">';
                                 echo '                <p class="stock-quantity mb-0">';
                                 if ($row['stock_quantity'] > 0) {

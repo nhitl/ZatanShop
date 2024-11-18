@@ -30,12 +30,12 @@
             <div class="sidebar-sticky">
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link" href="/TEST/admin/index.php">
+                        <a class="nav-link" href="../admin/index.php">
                             <i class="fa-solid fa-gauge-high"></i> <span>Dashboard</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/TEST/admin/sanpham/index.php">
+                        <a class="nav-link" href="../admin/sanpham/index.php">
                             <i class="fas fa-box"></i> <span>Sản Phẩm</span>
                         </a>
                     </li>

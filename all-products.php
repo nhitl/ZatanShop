@@ -21,8 +21,8 @@
 
 <body>
     <!-- Header Section Begin -->
-    <?php 
-    include_once 'header.php'; 
+    <?php
+    include_once 'header.php';
     include_once 'contact_button.php';
     ?>
     <!-- Header Section End -->
@@ -358,7 +358,7 @@
 
                                     // Lặp qua tất cả các khuyến mãi
                                     while ($promo_row = mysqli_fetch_assoc($promo_result)) {
-                                        $promo_descriptions[] ='- ' . htmlspecialchars($promo_row['promotion_description']); // Lưu mô tả khuyến mãi vào mảng
+                                        $promo_descriptions[] = '- ' . htmlspecialchars($promo_row['promotion_description']); // Lưu mô tả khuyến mãi vào mảng
                                     }
 
                                     // Nối tất cả mô tả lại thành một chuỗi, phân cách bằng dấu phẩy hoặc ký tự nào đó
@@ -517,6 +517,18 @@
                 }
             });
         }
+
+
+        $(document).ready(function() {
+            $('.shop__sidebar__categories .danhmuc > a').on('click', function(e) {
+                e.preventDefault(); // Ngăn điều hướng
+                var $categoryItem = $(this).parent();
+
+                // Hiển thị/Ẩn danh mục con với hiệu ứng mượt mà
+                $categoryItem.toggleClass('expanded');
+                $categoryItem.find('.subcategories').slideToggle(100); // Thời gian 200ms để mở mượt hơn
+            });
+        });
     </script>
 
 </body>

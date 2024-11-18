@@ -19,9 +19,24 @@ if (isset($_GET['product_id'])) {
         $newBackgroundImage = uniqid("bg_copy_", true) . '.' . pathinfo($product['background_image'], PATHINFO_EXTENSION);
         copy($product['background_image'], $targetDir . $newBackgroundImage);
 
-        // Tạo sản phẩm mới dựa trên sản phẩm gốc
-        $newProductQuery = "INSERT INTO products (product_name, price, background_image, product_info, category_id, subcategory_id, brand_id, stock_quantity) 
-                            VALUES ('" . $product['product_name'] . "', '" . $product['price'] . "', '" . $targetDir . $newBackgroundImage . "', '" . $product['product_info'] . "', '" . $product['category_id'] . "', '" . $product['subcategory_id'] . "', '" . $product['brand_id'] . "', '" . $product['stock_quantity'] . "')";
+        // Tạo slug mới
+        $originalSlug = $product['slug'];
+        $newSlug = $originalSlug . '-' . uniqid(); // Thêm hậu tố duy nhất
+
+        // Kiểm tra slug để đảm bảo duy nhất
+        while (true) {
+            $checkSlugQuery = "SELECT * FROM products WHERE slug = '$newSlug'";
+            $checkSlugResult = mysqli_query($conn, $checkSlugQuery);
+            if (mysqli_num_rows($checkSlugResult) == 0) {
+                break; // Nếu slug là duy nhất, thoát vòng lặp
+            }
+            $newSlug = $originalSlug . '-' . uniqid(); // Tạo slug mới nếu bị trùng
+        }
+
+        // Tạo sản phẩm mới với slug độc nhất
+        $newProductQuery = "INSERT INTO products (product_name, slug, price, background_image, product_info, category_id, subcategory_id, brand_id, stock_quantity) 
+                            VALUES ('" . $product['product_name'] . "', '$newSlug', '" . $product['price'] . "', '" . $targetDir . $newBackgroundImage . "', '" . $product['product_info'] . "', '" . $product['category_id'] . "', '" . $product['subcategory_id'] . "', '" . $product['brand_id'] . "', '" . $product['stock_quantity'] . "')";
+        
         if (mysqli_query($conn, $newProductQuery)) {
             $newProductId = mysqli_insert_id($conn);
 
