@@ -1,3 +1,5 @@
-node_modules/
-
+# Loại trừ file google_login.php
 google_login.php
+
+# Loại trừ thư mục vendor
+/vendor
