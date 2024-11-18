@@ -4713,7 +4713,7 @@ page deal */
     transform: translateY(-50%);
 }
 
-/* Thay đổi màu sắc khi hover */
+/* Thay đổi màu sắc khi hover aaa */
 .voucher-page .swiper-button-next-3:hover svg path,
 .voucher-page .swiper-button-prev-3:hover svg path {
     stroke: #bb2121; /* Đổi màu đường viền sang màu xanh lá */
