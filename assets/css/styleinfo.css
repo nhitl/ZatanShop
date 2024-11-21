@@ -1,153 +1,355 @@
-.modal-dialog {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+/* Định dạng chung cho section setting-address */
+.setting-address{
+    padding: 30px 0;
+    width: 80%;
+    margin: 0 auto;
+
+}
+.setting-address h2 {
+    font-size: 1.75rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #333;
 }
 
+.setting-address .card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+}
+
+.setting-address .card:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.setting-address .card-body {
+    padding: 1.5rem;
+}
+
+.setting-address .card-body p {
+    font-size: 1rem;
+    color: #555;
+}
+
+.setting-address .card-body .btn {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+
+.setting-address .btn-primary {
+    background-color: #007bff;
+    border: none;
+    color: white;
+}
+
+.setting-address .btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.setting-address .btn-warning {
+    background-color: #ffc107;
+    border: none;
+    color: white;
+}
+
+.setting-address .btn-warning:hover {
+    background-color: #e0a800;
+}
+
+.setting-address .btn-danger {
+    background-color: #dc3545;
+    border: none;
+    color: white;
+}
+
+.setting-address .btn-danger:hover {
+    background-color: #c82333;
+}
+
+/* Hiển thị các địa chỉ mặc định */
+.setting-address .card-default {
+    border: 2px solid #28a745;
+    background-color: #e8f5e9;
+}
+
+.setting-address .card-default .btn-primary {
+    background-color: #28a745;
+}
+
+.setting-address .card-default .btn-primary:hover {
+    background-color: #218838;
+}
+
+.list-add{
+    margin-top: 30px;
+}
+/* Modal - Định dạng chung */
 .modal-content {
-    border-radius: 8px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.container .btn-secondary {
-    background-color: green; /* Nền trắng */
-    border: 2px solid rgb(53, 53, 53); /* Viền đen */
-    color: white; /* Chữ đỏ */
-    border-radius: 50%; /* Hình tròn */
-    width: 100px; /* Chiều rộng cố định */
-    height: 100px; /* Chiều cao cố định */
-    padding: 0; /* Xóa padding để đảm bảo kích thước cố định */
-    text-align: center; /* Căn giữa chữ */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: bold;
-    font-size: 14px; /* Kích thước chữ có thể điều chỉnh */
-    line-height: 1; /* Căn chỉnh dòng cho chữ */
+.modal-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #ddd;
 }
 
-.container .btn-secondary:hover {
-    background-color: white;
-    color: brown;
-     /* Màu nền khi hover */
+.modal-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #333;
 }
 
-.container .card {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 100%; /* Đảm bảo các card có cùng chiều cao */
+.modal-footer {
+    background-color: #f8f9fa;
+    border-top: 1px solid #ddd;
+}
+
+.modal-footer .btn {
+    width: auto;
+    padding: 0.5rem 1.5rem;
+    font-size: 1rem;
+}
+
+/* Modal thông báo thành công */
+#successModal .modal-header {
+    background-color: #28a745;
+    color: white;
+}
+
+#successModal .modal-footer .btn-secondary {
+    background-color: #007bff;
+    color: white;
+}
+
+#successModal .modal-footer .btn-secondary:hover {
+    background-color: #0056b3;
+}
+
+/* Modal thông báo lỗi */
+#errorModal .modal-header {
+    background-color: #dc3545;
+    color: white;
+}
+
+#errorModal .modal-footer .btn-secondary {
+    background-color: #007bff;
+    color: white;
+}
+
+#errorModal .modal-footer .btn-secondary:hover {
+    background-color: #0056b3;
+}
+
+/* Modal xác nhận xóa */
+#confirmDeleteModal .modal-header {
+    background-color: #ffc107;
+    color: #333;
+}
+
+#confirmDeleteModal .modal-footer .btn-danger {
+    background-color: #dc3545;
+}
+
+#confirmDeleteModal .modal-footer .btn-danger:hover {
+    background-color: #c82333;
+}
+
+#confirmDeleteModal .modal-footer .btn-secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+#confirmDeleteModal .modal-footer .btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+/* Modal chỉnh sửa địa chỉ */
+#editAddressModal .modal-header {
+    background-color: #007bff;
+    color: white;
+}
+
+#editAddressModal .modal-footer .btn-primary {
+    background-color: #007bff;
+}
+
+#editAddressModal .modal-footer .btn-primary:hover {
+    background-color: #0056b3;
+}
+
+#editAddressModal .modal-body .form-control {
+    border-radius: 5px;
     border: 1px solid #ddd;
+    padding: 0.75rem;
+    font-size: 1rem;
+}
+
+#editAddressModal .modal-body .form-label {
+    font-weight: 500;
+    color: #333;
+}
+
+/* Modal input - focused */
+.modal-body .form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
+}
+
+/* Nút chỉnh sửa địa chỉ */
+#editAddressModal .btn-primary {
+    background-color: #28a745;
+    border: none;
+    color: white;
+}
+
+#editAddressModal .btn-primary:hover {
+    background-color: #218838;
+}
+
+/* Cải tiến giao diện form thêm địa chỉ mới */
+.setting-address form .form-label {
+    font-weight: 500;
+    color: #333;
+}
+
+.setting-address form .form-control {
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    padding: 0.75rem;
+    font-size: 1rem;
+}
+
+.setting-address form .btn-primary {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1.25rem;
+    border-radius: 5px;
+    background: linear-gradient(135deg, #6dad7b, #286e45); /* Gradient hạ tông */
+    border: none;
+    color: white;
+}
+
+.setting-address form .btn-primary:hover {
+    background: linear-gradient(135deg, #286e45, #6dad7b); /* Gradient khi hover */
+}
+
+
+
+/* Định dạng chung cho section đổi mật khẩu */
+.change-pw {
+    padding: 50px 0;
+    background-color: #f4f9f5;
+}
+
+.change-pw .container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Thông báo thành công hoặc lỗi */
+.change-pw .alert {
     border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.container .card-body {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-.container .card-body p {
-    margin-bottom: 0.5rem;
-}
-
-.container .card-body p:nth-child(3) {
-    /* Giữ địa chỉ trong khung cố định 3 dòng */
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    min-height: 4.5em; /* Chiều cao cho 3 dòng (khoảng 1.5em mỗi dòng) */
-    line-height: 1.5em; /* Dòng cách đều nhau */
-}
-
-
-.container .row {
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.container .col-md-4 {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 20px; /* Khoảng cách giữa các card */
-}
-
-.container textarea {
-    resize: none; /* Ngăn người dùng thay đổi kích thước textarea */
-}
-
-.container .btn {
-    margin-top: 10px;
-}
-
-.container .card-default {
-    background-color: #fff3c3; /* Màu vàng tùy chỉnh */
-    border: 2px solid #ffcc00; /* Viền tùy chọn nếu cần */
-}
-
-
-
+/* Định dạng card */
 .change-pw .card {
-    border-radius: 8px;
+    border-radius: 10px;
     border: 1px solid #ddd;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+}
+
+.change-pw .card:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 .change-pw .card-header {
-    font-size: 1.25rem;
-    font-weight: 500;
+    background-color: #6dad7b;
+    color: white;
+    font-weight: 600;
+    text-align: center;
+    padding: 15px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 }
 
 .change-pw .card-body {
     padding: 1.5rem;
+    background-color: white;
+    border-radius: 10px;
 }
 
+/* Các trường nhập mật khẩu */
+.change-pw .form-label {
+    font-weight: 500;
+    color: #333;
+}
+
+.change-pw .form-control {
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    padding: 0.75rem;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.change-pw .form-control:focus {
+    border-color: #6dad7b;
+    box-shadow: 0 0 0 0.25rem rgba(109, 173, 123, 0.25);
+}
+
+/* Nút Đổi Mật Khẩu */
 .change-pw .btn-primary {
-    background-color: #9e3015;
+    background-color: #6dad7b;
+    color: white;
     border: none;
+    padding: 0.75rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .change-pw .btn-primary:hover {
-    background-color: #cc390d;
-    border: none;
+    background-color: #58a069;
+    color: #f9f9f9;
 }
 
-.change-pw .card-header {
-    background-color: #007e00; /* Màu nền xanh cho header */
-    color: white; /* Màu chữ trắng */
-    font-size: 1.5rem; /* Kích thước chữ */
-    font-weight: bold; /* Chữ đậm */
-    padding: 15px; /* Khoảng cách padding */
-    border-radius: 8px 8px 0 0; /* Bo tròn góc trên */
-    text-align: center; /* Căn giữa nội dung */
+/* Hiệu ứng hover cho các input */
+.change-pw .form-control:hover {
+    border-color: #6dad7b;
 }
 
-/* Đảm bảo rằng input và button cùng chiều cao */
-.info-user .input-group {
-    display: flex;
-    align-items: center; /* Căn giữa theo chiều dọc */
+.change-pw .form-control:focus {
+    border-color: #6dad7b;
 }
 
-.info-user .input-group .form-control {
-    flex: 1; /* Cho phép input chiếm toàn bộ không gian còn lại */
+/* Thông báo lỗi */
+.change-pw .alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
 }
 
-.info-user .input-group .btn {
-    margin: 0;
-    white-space: nowrap; /* Đảm bảo chữ không bị cắt ngắn */
+.change-pw .alert-danger .btn-close {
+    color: #721c24;
 }
-/* Thêm hiệu ứng focus vào input */
-.info-user .input-group .form-control:focus {
-    border-color: #005014; /* Thay đổi màu viền khi focus */
-    box-shadow: 0 0 5px rgba(0, 255, 179, 0.5); /* Tạo hiệu ứng bóng khi focus */
+
+/* Thông báo thành công */
+.change-pw .alert-success {
+    background-color: #d4edda;
+    color: #155724;
 }
-/* Căn giữa nội dung cả chiều ngang và chiều dọc */
-.info-user .center-form {
-    display: flex;
-    justify-content: center; /* Căn giữa theo chiều ngang */
-    align-items: center; /* Căn giữa theo chiều dọc */
-    height: 100%; /* Đảm bảo div chứa có chiều cao */
+
+.change-pw .alert-success .btn-close {
+    color: #155724;
 }
+

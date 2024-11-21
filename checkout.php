@@ -65,12 +65,12 @@ while ($row = $result_used_vouchers->fetch_assoc()) {
 
 // Lấy các voucher đang hoạt động
 $sql_voucher = "SELECT voucher_code, discount_percentage, min_order_value, max_discount_value, expiry_date 
-                FROM voucher 
+                FROM vouchers 
                 WHERE status = 'active' AND expiry_date >= CURDATE()";
 $result_vouchers = $conn->query($sql_voucher);
 
 // Lấy giá trị giảm giá tối đa
-$sql_max_discount = "SELECT MAX(max_discount_value) AS max_discount_value FROM voucher WHERE status = 'active' AND expiry_date >= CURDATE()";
+$sql_max_discount = "SELECT MAX(max_discount_value) AS max_discount_value FROM vouchers WHERE status = 'active' AND expiry_date >= CURDATE()";
 $max_discount_result = $conn->query($sql_max_discount);
 $max_discount_row = $max_discount_result->fetch_assoc();
 $max_discount_value = $max_discount_row['max_discount_value'];
@@ -218,7 +218,7 @@ $has_address = !empty($shipping_info['recipient_name']) && !empty($shipping_info
 
                                 // Lấy các voucher đang hoạt động
                                 $sql_voucher = "SELECT voucher_code, discount_percentage, min_order_value, max_discount_value, expiry_date 
-                        FROM voucher 
+                        FROM vouchers 
                         WHERE status = 'active' AND expiry_date >= CURDATE()";
                                 $result_vouchers = $conn->query($sql_voucher);
 

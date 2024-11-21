@@ -1,0 +1,162 @@
+/* Card chính */
+.info-user{
+    padding: 50px 0;
+}
+.info-user .card {
+    border: none;
+    border-radius: 15px; /* Bo tròn thêm để card trông mềm mại */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* Đổ bóng mạnh hơn */
+    background: #ffffff; /* Màu nền trắng cho card */
+    overflow: hidden; /* Đảm bảo các phần tử không tràn ra ngoài */
+    transition: box-shadow 0.3s ease; /* Hiệu ứng di chuyển và bóng */
+}
+
+.info-user .card:hover {
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2); /* Bóng đậm hơn khi hover */
+}
+
+/* Card body */
+.info-user .card-body {
+    padding: 2rem;
+    background-color: #fff; /* Nền nhẹ cho card */
+    border-radius: 15px;
+    text-align: center; /* Căn giữa nội dung */
+}
+
+/* Ảnh đại diện */
+.info-user img {
+    border-radius: 50%; /* Viền tròn cho ảnh đại diện */
+    border: 5px solid #ddd; /* Viền ảnh sáng */
+    transition: transform 0.3s ease, border-color 0.3s ease;
+    width: 120px;
+    height: 120px;
+    object-fit: cover; /* Cắt ảnh để giữ tỷ lệ */
+}
+
+.info-user img:hover {
+    transform: scale(1.1); /* Phóng to ảnh khi hover */
+    border-color: #28a745; /* Đổi màu viền khi hover */
+}
+
+/* Tên người dùng */
+.info-user h3 {
+    font-size: 1.8rem; /* Tăng kích thước tên */
+    font-weight: 700;
+    color: #333; /* Màu chữ đậm */
+    margin-top: 1rem;
+}
+
+/* Email người dùng */
+.info-user p.text-muted {
+    font-size: 1.1rem;
+    color: #6c757d; /* Màu chữ nhẹ hơn */
+}
+
+/* Form cập nhật tên */
+.info-user .input-group {
+    max-width: 400px;
+    margin: 1rem auto;
+    background-color: #dac16f;
+    border-radius: 10px;
+    padding: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Đổ bóng nhẹ cho form */
+}
+
+.info-user .input-group input {
+    border-radius: 10px;
+    border: 1px solid #ddd; /* Viền input */
+    font-size: 1.1rem;
+    padding: 0.8rem;
+}
+/* Thêm hiệu ứng focus vào input */
+.info-user .input-group .form-control:focus {
+    border-color: #65b67a; /* Thay đổi màu viền khi focus */
+    box-shadow: 0 0 5px rgba(0, 255, 179, 0.5); /* Tạo hiệu ứng bóng khi focus */
+}
+.info-user .btn-success {
+    background-color: #28a745;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding: 10px 20px;
+    transition: background-color 0.3s ease;
+}
+
+.info-user .btn-success:hover {
+    background-color: #218838; /* Màu đậm hơn khi hover */
+}
+
+/* Nút điều hướng */
+.info-user .row .btn-secondary {
+    width: 100%;
+    max-width: 200px;
+    font-size: 0.9rem; 
+    font-weight: 600;
+    text-transform: uppercase; /* Viết hoa chữ */
+    border-radius: 50px; /* Bo tròn nút */
+    padding: 30px 15px; /* Tăng khoảng cách bên trong */
+    color: #ffffff; /* Chữ trắng */
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, #1e5840, #2c8b62,#69c59d); /* Hiệu ứng gradient */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5); /* Đổ bóng nổi bật */
+    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    border: none; /* Loại bỏ viền */
+}
+
+.info-user .row .btn-secondary:hover {
+    background: linear-gradient(45deg, #34a574, #245c44); /* Đổi chiều gradient khi hover */
+    transform: translateY(-5px); /* Hiệu ứng nổi lên */
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.7); /* Đổ bóng đậm hơn */
+}
+
+/* Nút khi được nhấn */
+.info-user .row .btn-secondary:active {
+    transform: translateY(2px); /* Hiệu ứng nhấn xuống */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Giảm bóng */
+}
+
+
+/* Nút điều hướng */
+.info-user .row .btn-primary {
+    width: 100%;
+    max-width: 200px;
+    font-size: 0.9rem; 
+    font-weight: 600;
+    text-transform: uppercase; /* Viết hoa chữ */
+    border-radius: 50px; /* Bo tròn nút */
+    padding: 30px 15px; /* Tăng khoảng cách bên trong */
+    color: #ffffff; /* Chữ trắng */
+    margin-bottom: 10px;
+    text-align: center;
+    background: linear-gradient(135deg, #58221e, #8b372c,#c56969); /* Hiệu ứng gradient */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5); /* Đổ bóng nổi bật */
+    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    border: none; /* Loại bỏ viền */
+}
+
+.info-user .row .btn-primary:hover {
+    background: linear-gradient(45deg, #c56969, #58221e); /* Đổi chiều gradient khi hover */
+    transform: translateY(-5px); /* Hiệu ứng nổi lên */
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.7); /* Đổ bóng đậm hơn */
+}
+
+/* Nút khi được nhấn */
+.info-user .row .btn-primary:active {
+    transform: translateY(2px); /* Hiệu ứng nhấn xuống */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Giảm bóng */
+}
+
+
+
+/* Đảm bảo cân đối trên các thiết bị */
+@media (max-width: 768px) {
+    .info-user .card-body {
+        padding: 1.5rem;
+    }
+
+    .info-user .btn-secondary {
+        font-size: 0.9rem;
+        max-width: none;
+    }
+}

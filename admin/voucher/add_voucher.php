@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $status = $_POST['status'];
 
     // Kiểm tra trùng lặp mã voucher
-    $check_sql = "SELECT * FROM voucher WHERE voucher_code = '$voucher_code'";
+    $check_sql = "SELECT * FROM vouchers WHERE voucher_code = '$voucher_code'";
     $result = $conn->query($check_sql);
 
     if ($result->num_rows > 0) {
@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         if (empty($errors)) {
-            $sql = "INSERT INTO voucher (voucher_code, description, discount_percentage, expiry_date, min_order_value, max_discount_value, status)
+            $sql = "INSERT INTO vouchers (voucher_code, description, discount_percentage, expiry_date, min_order_value, max_discount_value, status)
                     VALUES ('$voucher_code', '$description', '$discount_percentage', '$expiry_date', '$min_order_value', '$max_discount_value', '$status')";
 
             if ($conn->query($sql) === TRUE) {

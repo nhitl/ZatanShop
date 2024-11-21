@@ -548,11 +548,11 @@ $resultDiscountedProducts = $conn->query($sqlDiscountedProducts);
             var swiper4 = new Swiper('.swiper-container-discounted-products', {
                 loop: true, // Cho phép lặp lại các slide
                 autoplay: {
-                    delay: 2500, // Thời gian giữa mỗi lần trượt (tính bằng ms)
+                    delay: 2000, // Thời gian giữa mỗi lần trượt (tính bằng ms)
                     disableOnInteraction: false, // Tạm dừng autoplay khi có tương tác, nhưng sẽ tiếp tục sau đó
                     pauseOnMouseEnter: true, // Tạm dừng autoplay khi di chuột vào
                 },
-                speed: 1500,
+                speed: 500,
                 spaceBetween: 10,
                 navigation: {
                     nextEl: '.swiper-button-next',

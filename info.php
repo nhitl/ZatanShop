@@ -58,8 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['new_full_name']) && !e
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thông Tin Người Dùng</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <link rel="stylesheet" href="assets/css/styleinfo.css">
+    <link rel="stylesheet" href="assets/css/styleinfo2.css">
 </head>
 
 <body>
@@ -79,43 +78,40 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['new_full_name']) && !e
 
     <section class="info-user">
         <main class="container mt-5">
-            <div class="row">
-                <!-- Phần Ảnh Đại Diện và Thông Tin Người Dùng -->
-                <div class="col-md-4 d-flex justify-content-center align-items-start mb-4">
-                    <div class="text-center">
-                        <!-- Ảnh đại diện -->
-                        <img src="assets/img/imgusers.png" alt="Ảnh Đại Diện" class="img-fluid rounded-circle" style="width: 120px; height: 120px;">
-                    </div>
+            <div class="card">
+                <div class="card-body text-center">
+                    <img src="assets/img/imgusers.png" alt="Ảnh Đại Diện" class="img-fluid rounded-circle mb-3" style="width: 120px; height: 120px;">
+                    <h3><?php echo htmlspecialchars($full_name); ?></h3>
+                    <p class="text-muted"><?php echo htmlspecialchars($email); ?></p>
+                    <form method="POST" class="d-inline">
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="new_full_name" value="<?php echo htmlspecialchars($full_name); ?>" required>
+                            <button type="submit" class="btn btn-success">Cập nhật</button>
+                        </div>
+                    </form>
                 </div>
-                <div class="col-md-4 col-8 center-form">
-                    <div>
-                        <h2>Tên:</h2>
-                        <form method="POST" action="">
-                            <div class="input-group">
-                                <input type="text" class="form-control" name="new_full_name" value="<?php echo htmlspecialchars($full_name); ?>" required>
-                                <button type="submit" class="btn btn-success"><i class="fa-solid fa-arrows-rotate"></i></button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-
-
             </div>
 
             <div class="row mt-4">
-                <div class="col-md-3 col-6 d-flex justify-content-center">
-                    <a href="history-orders.php" class="btn btn-secondary">Theo giõi đơn hàng</a>
+                <div class="col-md-3 col-6 d-flex justify-content-center mb-3">
+                    <a href="history-orders.php" class="btn btn-secondary w-100">Theo dõi đơn hàng</a>
                 </div>
-                <div class="col-md-3 col-6 d-flex justify-content-center">
-                    <a href="setting-address.php" class="btn btn-secondary">Thiết lập địa chỉ</a>
+                <div class="col-md-3 col-6 d-flex justify-content-center mb-3">
+                    <a href="setting-address.php" class="btn btn-secondary w-100">Thiết lập địa chỉ</a>
                 </div>
-                <div class="col-md-3 col-6 d-flex justify-content-center">
-                    <a href="change-password.php" class="btn btn-secondary">Đổi mật khẩu</a>
+                <div class="col-md-3 col-6 d-flex justify-content-center mb-3">
+                    <a href="change-password.php" class="btn btn-secondary w-100">Đổi mật khẩu</a>
                 </div>
-                <div class="col-md-3 col-6 d-flex justify-content-center">
-                    <a href="logout.php" class="btn btn-secondary">Đăng xuất</a>
+                <div class="col-md-3 col-6 d-flex justify-content-center mb-3">
+                    <a href="vouchers.php" class="btn btn-secondary w-100">Kho vouchers</a>
                 </div>
             </div>
+            <div class="row justify-content-center mt-1">
+                <div class="col-md-3 col-6 d-flex justify-content-center mb-3">
+                    <a href="logout.php" class="btn btn-primary w-100">Đăng xuất</a>
+                </div>
+            </div>
+
         </main>
     </section>
 

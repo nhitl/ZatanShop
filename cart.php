@@ -1,5 +1,5 @@
 <?php
-include 'dbconnect.php'; // Kết nối cơ sở dữ liệu
+include_once 'dbconnect.php'; // Kết nối cơ sở dữ liệu
 
 session_start(); // Khởi tạo phiên làm việc
 

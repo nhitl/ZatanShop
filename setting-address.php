@@ -175,55 +175,60 @@ $stmt->close();
 <body>
     <?php include 'header.php';
     include_once 'contact_button.php'; ?>
-    <main class="container mt-5">
-        <h2><i class="fa-solid fa-location-dot"></i> Danh Sách Địa Chỉ </h2>
-        <div class="row">
-            <?php foreach ($addresses as $address): ?>
-                <div class="col-md-4 mb-4">
-                    <div class="card <?php echo $address['is_default'] ? 'card-default' : ''; ?>">
-                        <div class="card-body">
-                            <p><strong>Người nhận:</strong> <?php echo htmlspecialchars($address['recipient_name']); ?></p>
-                            <p><strong>Điện thoại:</strong> <?php echo htmlspecialchars($address['recipient_phone']); ?></p>
-                            <p><strong>Địa chỉ:</strong> <?php echo htmlspecialchars($address['address']); ?></p>
-                            <?php if ($address['is_default']): ?>
-                                <p class="text-success">
-                                    <strong>Địa chỉ mặc định</strong> <i class="fa-solid fa-check"></i>
-                                </p>
-                            <?php else: ?>
-                                <form method="POST" action="">
-                                    <input type="hidden" name="address_id" value="<?php echo $address['address_id']; ?>">
-                                    <button type="submit" name="set_default" class="btn btn-primary">Chọn làm địa chỉ mặc định</button>
-                                </form>
-                            <?php endif; ?>
-                            <form method="POST" action="" class="mt-2">
-                                <input type="hidden" name="address_id" value="<?php echo $address['address_id']; ?>">
-                                <button type="button" class="btn btn-warning" onclick="openEditModal('<?php echo $address['address_id']; ?>', '<?php echo htmlspecialchars($address['address']); ?>', '<?php echo htmlspecialchars($address['recipient_name']); ?>', '<?php echo htmlspecialchars($address['recipient_phone']); ?>')">Chỉnh sửa</button>
-                                <button type="button" class="btn btn-danger btn-delete" data-address-id="<?php echo $address['address_id']; ?>">Xóa</button>
-                            </form>
+    <section class="setting-address">
+        <main class="container mt-5">
+            <h2 class="mt-4">Thêm Địa Chỉ Mới</h2>
+            <form method="POST" action="">
+                <div class="mb-3">
+                    <label for="address" class="form-label">Địa chỉ</label>
+                    <input type="text" class="form-control" id="address" name="address" required>
+                </div>
+                <div class="mb-3">
+                    <label for="recipient_name" class="form-label">Tên người nhận</label>
+                    <input type="text" class="form-control" id="recipient_name" name="recipient_name" required>
+                </div>
+                <div class="mb-3">
+                    <label for="recipient_phone" class="form-label">Số điện thoại</label>
+                    <input type="text" class="form-control" id="recipient_phone" name="recipient_phone" required>
+                </div>
+                <button type="submit" name="add_address" class="btn btn-primary">Thêm Địa Chỉ</button>
+            </form>
 
+            <h2 class="list-add"><i class="fa-solid fa-location-dot"></i> Danh Sách Địa Chỉ </h2>
+            <div class="row">
+                <?php foreach ($addresses as $address): ?>
+                    <div class="col-md-4 mb-4">
+                        <div class="card <?php echo $address['is_default'] ? 'card-default' : ''; ?> h-100">
+                            <div class="card-body">
+                                <p><strong>Người nhận:</strong> <?php echo htmlspecialchars($address['recipient_name']); ?></p>
+                                <p><strong>Điện thoại:</strong> <?php echo htmlspecialchars($address['recipient_phone']); ?></p>
+                                <p><strong>Địa chỉ:</strong> <?php echo htmlspecialchars($address['address']); ?></p>
+                                <?php if ($address['is_default']): ?>
+                                    <p class="text-success">
+                                        <strong>Địa chỉ mặc định</strong> <i class="fa-solid fa-check"></i>
+                                    </p>
+                                <?php else: ?>
+                                    <form method="POST" action="">
+                                        <input type="hidden" name="address_id" value="<?php echo $address['address_id']; ?>">
+                                        <button type="submit" name="set_default" class="btn btn-primary">Chọn làm địa chỉ mặc định</button>
+                                    </form>
+                                <?php endif; ?>
+                                <form method="POST" action="" class="">
+                                    <input type="hidden" name="address_id" value="<?php echo $address['address_id']; ?>">
+                                    <button type="button" class="btn btn-warning" onclick="openEditModal('<?php echo $address['address_id']; ?>', '<?php echo htmlspecialchars($address['address']); ?>', '<?php echo htmlspecialchars($address['recipient_name']); ?>', '<?php echo htmlspecialchars($address['recipient_phone']); ?>')">Chỉnh sửa</button>
+                                    <button type="button" class="btn btn-danger btn-delete" data-address-id="<?php echo $address['address_id']; ?>">Xóa</button>
+                                </form>
+
+                            </div>
                         </div>
                     </div>
-                </div>
-            <?php endforeach; ?>
-        </div>
+                <?php endforeach; ?>
+            </div>
 
-        <h2 class="mt-4">Thêm Địa Chỉ Mới</h2>
-        <form method="POST" action="">
-            <div class="mb-3">
-                <label for="address" class="form-label">Địa chỉ</label>
-                <input type="text" class="form-control" id="address" name="address" required>
-            </div>
-            <div class="mb-3">
-                <label for="recipient_name" class="form-label">Tên người nhận</label>
-                <input type="text" class="form-control" id="recipient_name" name="recipient_name" required>
-            </div>
-            <div class="mb-3">
-                <label for="recipient_phone" class="form-label">Số điện thoại</label>
-                <input type="text" class="form-control" id="recipient_phone" name="recipient_phone" required>
-            </div>
-            <button type="submit" name="add_address" class="btn btn-primary">Thêm Địa Chỉ</button>
-        </form>
-    </main>
+
+        </main>
+    </section>
+
 
     <!-- Modal cho thông báo thành công -->
     <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">

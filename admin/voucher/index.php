@@ -1,6 +1,6 @@
 <?php
 include_once '../dbconnect.php';
-$result = $conn->query("SELECT * FROM voucher");
+$result = $conn->query("SELECT * FROM vouchers");
 ?>
 
 <!DOCTYPE html>

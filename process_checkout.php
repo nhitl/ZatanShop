@@ -59,7 +59,7 @@ if ($user_info === NULL) {
 
 // Lấy các voucher đang hoạt động
 $sql_vouchers = "SELECT voucher_code, discount_percentage, min_order_value, max_discount_value 
-                 FROM voucher 
+                 FROM vouchers 
                  WHERE status = 'active' AND expiry_date >= CURDATE()";
 $result_vouchers = $conn->query($sql_vouchers);
 if ($result_vouchers === false) {
@@ -98,7 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $voucher_discounts = [];
     foreach ($selected_vouchers as $voucher_code) {
         $voucher_sql = "SELECT discount_percentage, min_order_value, max_discount_value 
-                        FROM voucher 
+                        FROM vouchers 
                         WHERE voucher_code = ? AND status = 'active' AND expiry_date >= CURDATE()";
         $voucher_stmt = $conn->prepare($voucher_sql);
         if ($voucher_stmt === false) {

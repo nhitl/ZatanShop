@@ -6,7 +6,7 @@ if (isset($_GET['id'])) {
     $voucher_id = $_GET['id'];
 
     // Thực hiện câu lệnh DELETE
-    if ($conn->query("DELETE FROM voucher WHERE voucher_id = $voucher_id") === TRUE) {
+    if ($conn->query("DELETE FROM vouchers WHERE voucher_id = $voucher_id") === TRUE) {
         // Nếu xóa thành công, lưu thông báo vào session
         $_SESSION['success_message'] = "Voucher đã được xóa thành công!";
     } else {

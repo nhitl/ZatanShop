@@ -1,11 +1,30 @@
 <?php
 include_once('dbconnect.php');
+
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-$current_page = basename($_SERVER['PHP_SELF']);
+// Kiểm tra trạng thái đăng nhập
+$user_logged_in_header = isset($_SESSION['user_id']);
+$user_full_name_header = '';
+
+if ($user_logged_in_header) {
+    $user_id = $_SESSION['user_id'];
+    $query = "SELECT full_name FROM users WHERE user_id = ?";
+    $stmt_header = $conn->prepare($query);
+    $stmt_header->bind_param("i", $user_id);
+    $stmt_header->execute();
+    $result_header = $stmt_header->get_result();
+
+    if ($row_header = $result_header->fetch_assoc()) {
+        $user_full_name_header = $row_header['full_name'];
+    }
+    $stmt_header->close();
+}
+
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -20,7 +39,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
 </head>
 
 <body>
-    <?php 
+    <?php
     include_once 'loading_bar.php';
     ?>
     <header class="header">
@@ -101,12 +120,15 @@ $current_page = basename($_SERVER['PHP_SELF']);
                                     </span>
                                     <span class="item-title">Giỏ hàng</span>
                                 </a>
-                                <a id="cart-icon" href="info.php" class="text-center" title="Tài khoản">
+                                <a id="cart-icon" href="<?php echo $user_logged_in_header ? 'info.php' : 'login.php'; ?>" class="text-center" title="Tài khoản">
                                     <span class="box-icon">
                                         <i class="fa-solid fa-user"></i>
                                     </span>
-                                    <span class="item-title">Tài khoản</span>
+                                    <span class="item-title">
+                                        <?php echo $user_logged_in_header ? htmlspecialchars($user_full_name_header) : 'Đăng nhập'; ?>
+                                    </span>
                                 </a>
+
                                 <button class="navbar-toggler pe-0 " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
                                     <span class="navbar-toggler-icon"><i class="fa-solid fa-bars"></i></span>
                                 </button>
@@ -129,19 +151,19 @@ $current_page = basename($_SERVER['PHP_SELF']);
                         <div class="offcanvas-body">
                             <ul class="navbar-nav justify-content-center flex-grow-1">
                                 <li class="nav-item">
-                                    <a class="nav-link mx-lg-2<?php echo ($current_page == 'index.php') ? ' active' : ''; ?>" href="./index.php"><i class="fa-solid fa-diamond"></i>  Trang chủ</a>
+                                    <a class="nav-link mx-lg-2<?php echo ($current_page == 'index.php') ? ' active' : ''; ?>" href="./index.php"><i class="fa-solid fa-diamond"></i> Trang chủ</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link mx-lg-2<?php echo ($current_page == 'all-products.php') ? ' active' : ''; ?>" href="./all-products.php"><i class="fa-solid fa-diamond"></i>  Sản phẩm</a>
+                                    <a class="nav-link mx-lg-2<?php echo ($current_page == 'all-products.php') ? ' active' : ''; ?>" href="./all-products.php"><i class="fa-solid fa-diamond"></i> Sản phẩm</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link mx-lg-2 <?php echo ($current_page == 'tra-gop.php') ? ' active' : ''; ?>" href="./tra-gop.php"><i class="fa-solid fa-diamond"></i>  Hỗ trợ trả góp</a>
+                                    <a class="nav-link mx-lg-2 <?php echo ($current_page == 'tra-gop.php') ? ' active' : ''; ?>" href="./tra-gop.php"><i class="fa-solid fa-diamond"></i> Hỗ trợ trả góp</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link mx-lg-2<?php echo ($current_page == 'news.php') ? ' active' : ''; ?>" href="./news.php"><i class="fa-solid fa-diamond"></i>  Tin công nghệ</a>
+                                    <a class="nav-link mx-lg-2<?php echo ($current_page == 'news.php') ? ' active' : ''; ?>" href="./news.php"><i class="fa-solid fa-diamond"></i> Tin công nghệ</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link mx-lg-2<?php echo ($current_page == 'chinh-sach-kinh-doanh.php') ? ' active' : ''; ?>" href="chinh-sach-kinh-doanh.php"><i class="fa-solid fa-diamond"></i>  Chính sách</a>
+                                    <a class="nav-link mx-lg-2<?php echo ($current_page == 'chinh-sach-kinh-doanh.php') ? ' active' : ''; ?>" href="chinh-sach-kinh-doanh.php"><i class="fa-solid fa-diamond"></i> Chính sách</a>
                                 </li>
                             </ul>
                         </div>

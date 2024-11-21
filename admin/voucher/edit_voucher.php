@@ -4,7 +4,7 @@ include_once '../dbconnect.php';
 
 if (isset($_GET['id'])) {
     $voucher_id = intval($_GET['id']);  // Đảm bảo voucher_id là số nguyên
-    $result = $conn->query("SELECT * FROM voucher WHERE voucher_id = $voucher_id");
+    $result = $conn->query("SELECT * FROM vouchers WHERE voucher_id = $voucher_id");
     if ($result->num_rows > 0) {
         $voucher = $result->fetch_assoc();
     } else {
@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $status = $conn->real_escape_string($_POST['status']);
 
     // Kiểm tra trùng mã voucher
-    $sql_check = "SELECT * FROM voucher WHERE voucher_code='$voucher_code' AND voucher_id != $voucher_id";
+    $sql_check = "SELECT * FROM vouchers WHERE voucher_code='$voucher_code' AND voucher_id != $voucher_id";
     $result_check = $conn->query($sql_check);
 
     if ($result_check->num_rows > 0) {
@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();  // Đảm bảo không có mã nào sau khi header được thực thi
     } else {
         // Xử lý cập nhật
-        $sql = "UPDATE voucher SET voucher_code='$voucher_code', description='$description', discount_percentage='$discount_percentage',
+        $sql = "UPDATE vouchers SET voucher_code='$voucher_code', description='$description', discount_percentage='$discount_percentage',
                 expiry_date='$expiry_date', min_order_value='$min_order_value', max_discount_value='$max_discount_value', status='$status'
                 WHERE voucher_id=$voucher_id";
 

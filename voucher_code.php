@@ -3,7 +3,7 @@
 include_once 'dbconnect.php';
 
 // Truy vấn CSDL để lấy voucher còn hiệu lực
-$query = "SELECT voucher_code, description, discount_percentage, expiry_date FROM voucher WHERE status = 'active' AND expiry_date >= CURDATE()";
+$query = "SELECT voucher_code, description, discount_percentage, expiry_date FROM vouchers WHERE status = 'active' AND expiry_date >= CURDATE()";
 $result = mysqli_query($conn, $query);
 
 // Kiểm tra xem truy vấn có thành công hay không

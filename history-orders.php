@@ -103,7 +103,7 @@ WHERE order_items.order_id = ?";
 $sql = "
 SELECT o.*, v.voucher_code, v.description 
 FROM orders o 
-LEFT JOIN voucher v ON o.voucher_code = v.voucher_code 
+LEFT JOIN vouchers v ON o.voucher_code = v.voucher_code 
 WHERE o.user_id = ? 
 ORDER BY o.created_at DESC";
 $stmt = $conn->prepare($sql);
@@ -133,30 +133,47 @@ if ($result->num_rows > 0) {
 </head>
 
 <body>
-    <?php include 'header.php'; 
-    include_once 'contact_button.php';?>
+    <?php include 'header.php';
+    include_once 'contact_button.php'; ?>
     <section class="history-orders">
         <div class="container">
-            <h1 class="d-flex justify-content-center align-items-center mb-4">Lịch sử mua hàng</h1>
+            <h1 class="text-center mb-4 pt-3">Lịch sử mua hàng</h1>
             <?php if (empty($orders)): ?>
                 <div class="alert alert-info">Bạn chưa có đơn hàng nào.</div>
             <?php else: ?>
-                <div class="row g-3">
-                    <?php foreach ($orders as $order): ?>
-                        <div class="col-12 col-md-6 col-lg-4">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">Mã đơn hàng: <?php echo htmlspecialchars($order['order_id']); ?></h5>
-                                    <p class="card-text"><strong>Tổng tiền:</strong> <?php echo number_format($order['grand_total'], 0); ?> VND</p>
-                                    <p class="card-text"><strong>Phương thức thanh toán:</strong></br> <?php echo $payment_method_mapping[htmlspecialchars($order['payment_method'])] ?? htmlspecialchars($order['payment_method']); ?></p>
-                                    <p class="card-text"><strong>Trạng thái:</strong></br>
-                                        <span class="order-status <?php echo htmlspecialchars($order['order_status']); ?>">
-                                            <?php echo $status_mapping[htmlspecialchars($order['order_status'])] ?? htmlspecialchars($order['order_status']); ?>
-                                        </span>
-                                    </p>
-                                    <p class="card-text"><strong>Ngày đặt hàng:</strong></br> <?php echo htmlspecialchars($order['created_at']); ?></p>
-                                    <a href="#" class="btn btn-info btn-sm view-order" data-order-id="<?php echo $order['order_id']; ?>">Xem chi tiết</a>
+                <!-- Tabs -->
+                <ul class="nav nav-tabs" id="orderTabs" role="tablist">
+                    <li class="nav-item">
+                        <button class="nav-link active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all-orders" type="button" role="tab"><i class="fa-solid fa-diamond"></i> Tất cả</button>
+                    </li>
+                    <?php foreach ($status_mapping as $key => $status_name): ?>
+                        <li class="nav-item">
+                            <button class="nav-link" id="<?php echo $key; ?>-tab" data-bs-toggle="tab" data-bs-target="#<?php echo $key; ?>-orders" type="button" role="tab"><?php echo '<i class="fa-solid fa-diamond"></i> ' . $status_name; ?></button>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+
+                <!-- Tab Contents -->
+                <div class="tab-content mt-4" id="orderTabsContent">
+                    <div class="tab-pane fade show active" id="all-orders" role="tabpanel">
+                        <div class="row g-3">
+                            <?php foreach ($orders as $order): ?>
+                                <div class="col-12 col-md-6 col-lg-4">
+                                    <?php include 'order_card.php'; ?>
                                 </div>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                    <?php foreach ($status_mapping as $key => $status_name): ?>
+                        <div class="tab-pane fade" id="<?php echo $key; ?>-orders" role="tabpanel">
+                            <div class="row g-3">
+                                <?php foreach ($orders as $order): ?>
+                                    <?php if ($order['order_status'] === $key): ?>
+                                        <div class="col-12 col-md-6 col-lg-4">
+                                            <?php include 'order_card.php'; ?>
+                                        </div>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
                             </div>
                         </div>
                     <?php endforeach; ?>
@@ -203,36 +220,28 @@ if ($result->num_rows > 0) {
                 </div>
             </div>
         </div>
-
-
-
-
         <?php include 'footer.php'; ?>
     </section>
     <script>
         $(document).ready(function() {
-            // Khi nhấn vào nút "Xem", lấy order_id và gửi yêu cầu AJAX
+            var currentOrderId = null; // Biến để lưu trữ order_id hiện tại
+
+            // Khi nhấn nút "Xem", lưu order_id
             $('.view-order').on('click', function() {
-                var orderId = $(this).data('order-id');
+                currentOrderId = $(this).data('order-id'); // Lưu order_id
                 $.ajax({
-                    url: '', // Gửi yêu cầu tới cùng file
+                    url: '',
                     type: 'GET',
                     data: {
-                        order_id: orderId
+                        order_id: currentOrderId
                     },
                     success: function(response) {
-                        // Hiển thị dữ liệu trong modal
                         $('#orderDetailsContent').html(response);
-
-                        // Luôn hiển thị nút hủy
                         $('#cancelOrderBtn').show();
-
-                        // Mở modal
                         $('#orderDetailModal').modal('show');
                     }
                 });
             });
-
 
             // Xử lý sự kiện khi người dùng nhấn nút hủy đơn hàng
             $('#cancelOrderBtn').on('click', function() {
@@ -240,28 +249,27 @@ if ($result->num_rows > 0) {
                 $('#cancelOrderModal').modal('show');
             });
 
-            // Xử lý sự kiện khi người dùng nhấn nút xác nhận hủy đơn hàng
+            // Khi nhấn nút "Hủy đơn hàng", sử dụng currentOrderId
             $('#confirmCancelOrderBtn').on('click', function() {
-                var orderId = $('.view-order').data('order-id'); // Lấy order_id từ dữ liệu của nút Xem
                 $.ajax({
-                    url: 'cancel_order.php', // File xử lý hủy đơn hàng
+                    url: 'cancel_order.php',
                     type: 'POST',
                     data: {
-                        order_id: orderId
+                        order_id: currentOrderId
                     },
                     success: function(response) {
-                        // Phân tích kết quả trả về
                         var responseParts = response.split('|');
                         var status = responseParts[0];
                         var message = responseParts[1];
 
-                        // Hiển thị thông báo trong modal
-                        $('#confirmationMessage').addClass('d-none'); // Ẩn thông báo xác nhận
-                        $('#resultMessage').removeClass('d-none').removeClass('alert-success alert-danger').addClass(status === 'success' ? 'alert alert-success' : 'alert alert-danger').text(message);
+                        $('#confirmationMessage').addClass('d-none');
+                        $('#resultMessage').removeClass('d-none')
+                            .removeClass('alert-success alert-danger')
+                            .addClass(status === 'success' ? 'alert alert-success' : 'alert alert-danger')
+                            .text(message);
 
-                        // Tải lại trang sau 2 giây
                         setTimeout(function() {
-                            location.reload(); // Tải lại trang sau 2 giây
+                            location.reload();
                         }, 2000);
                     }
                 });

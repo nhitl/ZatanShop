@@ -1,7 +1,6 @@
 /* Tổng quan phần lịch sử mua hàng */
 .history-orders {
-    background-color: #f4f9f4; /* Màu nền nhẹ nhàng */
-    padding: 2rem 0; /* Khoảng cách trên và dưới */
+    background-color: #f0fff0; /* Màu nền nhẹ nhàng */
 }
 
 .history-orders h1 {
@@ -236,4 +235,71 @@
     font-size: 18px; /* Kích thước chữ lớn hơn cho tổng thanh toán */
     border-top: 2px solid #e0e0e0; /* Đường viền trên cho tổng thanh toán */
     padding-top: 10px; /* Khoảng cách bên trên */
+}
+
+
+
+.history-orders .nav-tabs {
+    border-bottom: none; /* Bỏ đường gạch chân */
+    display: flex;
+    justify-content: center; /* Canh giữa danh sách tabs */
+    padding: 10px 0;
+    background-color: #245c44; /* Màu xanh chủ đạo */
+    border-radius: 10px; /* Bo góc container */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Đổ bóng */
+}
+
+/* Tabs chưa được chọn */
+.history-orders .nav-tabs .nav-link {
+    color: #ffffff; /* Chữ trắng */
+    background-color: transparent; /* Nền trong suốt */
+    border: none; /* Không viền */
+    padding: 12px 20px; /* Khoảng cách rộng rãi */
+    margin: 0 8px; /* Khoảng cách giữa các tabs */
+    border-radius: 5px; /* Bo góc nhẹ */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Hiệu ứng đổi màu mượt */
+    font-weight: bold; /* Chữ đậm */
+    font-size: 16px;
+}
+
+/* Tabs khi được hover */
+.history-orders .nav-tabs .nav-link:hover {
+    background-color: #3e7759; /* Nền xanh đậm hơn khi hover */
+    color: #f5f5f5; /* Chữ sáng hơn */
+}
+
+/* Tab đang active */
+.history-orders .nav-tabs .nav-link.active {
+    background-color: #ffffff; /* Nền trắng */
+    color: #245c44; /* Chữ màu chính */
+    border: none; /* Không viền */
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2); /* Đổ bóng bên trong nhẹ */
+}
+
+/* Tabs focus */
+.history-orders .nav-tabs .nav-link:focus {
+    outline: none; /* Bỏ đường viền mặc định */
+}
+
+/* Nội dung của các tab */
+.history-orders .tab-content {
+    background-color: #ffffff; /* Nền trắng */
+    border-radius: 10px; /* Bo góc */
+    padding: 20px;
+    margin-top: 10px;
+    min-height: 373px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Đổ bóng */
+}
+
+/* Ẩn item-title trên màn hình nhỏ */
+@media (min-width: 1200px) {
+    .history-orders .tab-content {
+        width: 80%;
+        margin: 0 auto;
+    }
+}
+
+/* Định dạng icon trong các tab */
+.history-orders .nav-link i {
+    font-size: 0.6rem; /* Kích thước icon */
 }
