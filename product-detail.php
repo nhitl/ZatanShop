@@ -691,13 +691,33 @@ $averageRating = round($averageRatingRow['average_rating'], 1); // Làm tròn đ
                     </div>
                 </div>
             </div>
+            <!-- Modal thông báo riêng cho phần bình luận -->
+            <div class="modal fade custom-comment-modal" id="commentNotificationModal" tabindex="-1" aria-labelledby="commentNotificationModalLabel" aria-hidden="true">
+                <div class="modal-dialog custom-comment-dialog">
+                    <div class="modal-content custom-comment-content">
+                        <div class="modal-header custom-comment-header">
+                            <h5 class="modal-title custom-comment-title" id="commentNotificationModalLabel">Thông báo</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body custom-comment-body" id="commentNotificationMessage">
+                            <!-- Nội dung thông báo sẽ được chèn vào đây -->
+                        </div>
+                        <div class="modal-footer custom-comment-footer">
+                            <a href="login.php" class="btn custom-comment-login-btn"><i class="fa-solid fa-right-to-bracket"></i> Đăng Nhập</a>
+                            <button type="button" class="btn custom-comment-close-btn" data-bs-dismiss="modal">Đóng</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
     </section>
+
+
     <?php
     include_once 'footer.php';
     ?>
     <!-- Thêm Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
     <!-- Thêm Swiper JS -->
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <script>
@@ -982,7 +1002,6 @@ $averageRating = round($averageRatingRow['average_rating'], 1); // Làm tròn đ
                 });
             }
 
-            // Khi form được submit
             $("#reviewForm").on("submit", function(e) {
                 e.preventDefault(); // Ngăn việc reload lại trang
 
@@ -995,41 +1014,50 @@ $averageRating = round($averageRatingRow['average_rating'], 1); // Làm tròn đ
                     contentType: false,
                     processData: false,
                     success: function(response) {
-                        // Phân tích phản hồi JSON từ server
                         var data = JSON.parse(response);
 
                         if (data.success) {
                             var newReview = `
-                    <div class="card mb-3 review-card">
-                        <div class="card-body">
-                            <h6 class="card-title">${data.review.full_name} | Ngày ${data.review.created_at}</h6>
-                            <div class="star2-rating mb-1">`;
+        <div class="card mb-3 review-card">
+            <div class="card-body">
+                <h6 class="card-title">
+                    <img width="45px" src="assets/img/imgusers.png" alt="User" class="me-2">
+                    ${data.review.full_name} | Ngày ${data.review.created_at}
+                </h6>
+                <div class="star2-rating mb-1">`;
 
-                            // Cập nhật sao đánh giá
                             for (var i = 1; i <= 5; i++) {
                                 newReview += `<span class="star2 ${i <= data.review.rating ? 'full' : 'empty'}"></span>`;
                             }
 
                             newReview += `
-                            </div>
-                            <p class="card-text">${data.review.comment}</p>
-                            ${data.review.image ? '<img src="' + data.review.image + '" alt="Ảnh sản phẩm" class="img-fluid mt-3" style="max-width: 150px;">' : ''}
-                        </div>
-                    </div>`;
+                </div>
+                <p class="card-text">${data.review.comment}</p>
+                ${data.review.image ? '<img src="' + data.review.image + '" alt="Ảnh sản phẩm" class="img-fluid mt-3" style="max-width: 150px;">' : ''}
+            </div>
+        </div>`;
 
-                            // Thêm bình luận vào phần reviews-list
                             $("#reviewsList").prepend(newReview);
                             $("#reviewForm")[0].reset(); // Reset form
                             updateStars(5); // Reset lại ngôi sao (trả về 5 sao mặc định)
+
+
                         } else {
-                            alert("Có lỗi xảy ra. Vui lòng thử lại.");
+                            // Hiển thị thông báo lỗi bằng modal
+                            $("#commentNotificationMessage").text("Bạn cần đăng nhập để được bình luận.");
+                            var commentModal = new bootstrap.Modal(document.getElementById('commentNotificationModal'));
+                            commentModal.show();
                         }
                     },
                     error: function() {
-                        alert("Có lỗi xảy ra trong quá trình gửi dữ liệu.");
+                        // Hiển thị thông báo lỗi bằng modal
+                        $("#commentNotificationMessage").text("Có lỗi xảy ra trong quá trình gửi dữ liệu.");
+                        var commentModal = new bootstrap.Modal(document.getElementById('commentNotificationModal'));
+                        commentModal.show();
                     }
                 });
             });
+
         });
 
 

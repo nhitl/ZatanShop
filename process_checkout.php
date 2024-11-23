@@ -205,12 +205,139 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             throw new Exception('MySQL execute statement failed for delete cart: ' . htmlspecialchars($delete_cart_stmt->error));
         }
 
-        $conn->commit();
-        echo 'Đặt hàng thành công!';
+        $conn->commit();  // Xác nhận giao dịch và lưu đơn hàng
 
-        // Kiểm tra phương thức thanh toán và chuyển hướng
         if ($payment_method === 'online') {
-            header('Location: online_payment.php?order_id=' . $order_id);
+            error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
+            date_default_timezone_set('Asia/Ho_Chi_Minh');
+
+            // Kết nối cơ sở dữ liệu
+            $conn = new mysqli('localhost', 'root', '123456', 'zatanshop');
+
+            // Kiểm tra kết nối
+            if ($conn->connect_error) {
+                die("Kết nối thất bại: " . $conn->connect_error);
+            }
+
+            // Truy vấn đơn hàng mới nhất
+            $stmt = $conn->prepare("SELECT * FROM orders ORDER BY order_id DESC LIMIT 1");
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            if ($result->num_rows > 0) {
+                $order = $result->fetch_assoc();
+                // Lấy thông tin đơn hàng
+                $order_id = $order['order_id'];
+                $grand_total = $order['grand_total'];  // Tổng tiền thanh toán
+            } else {
+                die("Không tìm thấy đơn hàng.");
+            }
+
+            // Kiểm tra dữ liệu đơn hàng
+            if (!isset($order_id) || !isset($grand_total)) {
+                die("Dữ liệu đơn hàng không hợp lệ.");
+            }
+
+            // Cập nhật trạng thái thanh toán ban đầu
+            $stmt = $conn->prepare("UPDATE orders SET payment_status = 'pending' WHERE order_id = ?");
+            $stmt->bind_param("i", $order_id);
+            $stmt->execute();
+
+            // Các thông số cấu hình VNPAY
+            $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html"; // Địa chỉ thanh toán
+            $vnp_Returnurl = "http://localhost:8081/TEST/vnpay_return.php"; // URL trả về sau khi thanh toán
+            $vnp_TmnCode = "A477Z1E7"; // Mã website tại VNPAY
+            $vnp_HashSecret = "LWIO1UKE8JMYVPP72VQL74UZEPMI3HHK"; // Chuỗi bí mật từ VNPAY
+
+            $vnp_TxnRef = $order_id;  // Mã đơn hàng
+            $vnp_Amount = round($grand_total);  // Làm tròn số tiền sau khi nhân với 100
+            $vnp_Locale = 'vn';  // Ngôn ngữ hiển thị (ví dụ: 'vn' cho Tiếng Việt)
+            $vnp_BankCode = '';  // Mã ngân hàng (nếu có, nếu không có thì để trống)
+            $vnp_IpAddr = '192.168.0.102';  // Địa chỉ IP của người dùng
+            $expire = date('YmdHis', strtotime('+1 day')); // Thời gian hết hạn đơn hàng (thêm 1 ngày)
+
+
+            $inputData = array(
+                "vnp_Version" => "2.1.0",
+                "vnp_TmnCode" => $vnp_TmnCode,
+                "vnp_Amount" => $vnp_Amount * 100,  // Lưu ý: nhân với 100 để có số tiền đúng
+                "vnp_Command" => "pay",
+                "vnp_CreateDate" => date('YmdHis'),
+                "vnp_CurrCode" => "VND",
+                "vnp_IpAddr" => $vnp_IpAddr,
+                "vnp_Locale" => $vnp_Locale,
+                "vnp_OrderInfo" => "Thanh toan GD:" . $vnp_TxnRef, // Thêm thông tin đơn hàng
+                "vnp_OrderType" => "other",  // Đảm bảo có tham số này
+                "vnp_ReturnUrl" => $vnp_Returnurl,
+                "vnp_TxnRef" => $vnp_TxnRef,
+                "vnp_ExpireDate" => $expire
+            );
+
+
+            if (isset($vnp_BankCode) && $vnp_BankCode != "") {
+                $inputData['vnp_BankCode'] = $vnp_BankCode;
+            }
+
+            ksort($inputData);
+            $query = "";
+            $i = 0;
+            $hashdata = "";
+            foreach ($inputData as $key => $value) {
+                if ($i == 1) {
+                    $hashdata .= '&' . urlencode($key) . "=" . urlencode($value);
+                } else {
+                    $hashdata .= urlencode($key) . "=" . urlencode($value);
+                    $i = 1;
+                }
+                $query .= urlencode($key) . "=" . urlencode($value) . '&';
+            }
+            
+
+
+            $vnp_Url = $vnp_Url . "?" . $query;
+            if (isset($vnp_HashSecret)) {
+                $vnpSecureHash =   hash_hmac('sha512', $hashdata, $vnp_HashSecret); //  
+                $vnp_Url .= 'vnp_SecureHash=' . $vnpSecureHash;
+            }
+            header('Location: ' . $vnp_Url);
+            die();
+
+
+
+            
+        } else {
+            // Trường hợp thanh toán khi nhận hàng
+            // Hiển thị modal thông báo đặt hàng thành công
+            echo "<link href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css' rel='stylesheet' />";
+            echo "<script src='https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js'></script>";
+            echo "<script src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js'></script>";
+
+            echo "<div class='modal fade' id='orderSuccessModal' tabindex='-1' aria-labelledby='orderSuccessModalLabel' aria-hidden='true'>
+        <div class='modal-dialog'>
+            <div class='modal-content'>
+                <div class='modal-header'>
+                    <h5 class='modal-title' id='orderSuccessModalLabel'>Thông báo</h5>
+                    <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+                </div>
+                <div class='modal-body'>
+                    <p>Đặt hàng thành công! Cảm ơn bạn đã mua hàng.</p>
+                </div>
+                <div class='modal-footer'>
+                </div>
+            </div>
+        </div>
+    </div>";
+
+            echo "<script>
+        $(document).ready(function() {
+            $('#orderSuccessModal').modal('show');
+
+            // Chuyển hướng sau 2.5 giây
+            setTimeout(function() {
+                window.location.href = 'thank_you.php';
+            }, 2500);
+        });
+    </script>";
             exit();
         }
     } catch (Exception $e) {

@@ -4723,3 +4723,94 @@ page deal */
 
 
 
+/* Làm cho phần tiêu đề "Thank You!" nổi bật */
+.tks-tiltle1 {
+    font-size: 60px;
+    font-weight: bold;
+    color: #ff6600;
+    /* Màu cam nổi bật */
+    animation: glowing 1.5s infinite alternate;
+    text-shadow: 0 0 10px #ff6600, 0 0 20px #ff6600, 0 0 30px #ff6600, 0 0 40px #ff6600;
+}
+
+/* Tạo hiệu ứng nhấp nháy */
+@keyframes glowing {
+    0% {
+        color: #ff6600;
+        text-shadow: 0 0 5px #ff6600, 0 0 10px #ff6600, 0 0 15px #ff6600;
+    }
+
+    50% {
+        color: #ff3300;
+        text-shadow: 0 0 20px #ff3300, 0 0 30px #ff3300, 0 0 40px #ff3300;
+    }
+
+    100% {
+        color: #ff6600;
+        text-shadow: 0 0 10px #ff6600, 0 0 20px #ff6600, 0 0 30px #ff6600;
+    }
+}
+
+/* Phần mô tả bên dưới tiêu đề */
+.tks-tiltle2 {
+    font-size: 20px;
+    color: #555;
+    /* Màu chữ tối để tạo sự dễ đọc */
+    margin-top: 20px;
+    font-style: italic;
+}
+
+/* Đoạn giới thiệu tiếp tục mua sắm */
+.tks-tiltle3 {
+    font-size: 18px;
+    color: #333;
+    margin-top: 30px;
+    font-weight: bold;
+}
+
+.tks-tiltle3 a {
+    color: #ff6600;
+    text-decoration: none;
+    font-weight: bold;
+    animation: glowing 1.5s infinite alternate;
+}
+
+.tks-tiltle3 a:hover {
+    text-decoration: underline;
+}
+ /* Cải thiện giao diện của container */
+.thanks .container {
+background: #f9f9f9;
+border-radius: 10px;
+padding: 40px;
+box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+max-width: 800px;
+margin: 50px auto;
+}
+
+.response-container {
+    max-width: 400px !important;
+    margin-top: 50px;
+    padding: 30px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    min-height: 500px;
+}
+.response-header {
+    border-bottom: 2px solid #eee;
+    margin-bottom: 20px;
+}
+.response-status {
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+.response-status.success {
+    color: green;
+}
+.response-status.error {
+    color: red;
+}
+.response-label {
+    font-weight: bold;
+}

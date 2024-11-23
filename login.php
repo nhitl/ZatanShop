@@ -3,6 +3,18 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
+// Vô hiệu hóa bộ nhớ cache và kiểm tra trạng thái đăng nhập
+session_start();
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+
+// Kiểm tra nếu người dùng đã đăng nhập
+if (isset($_SESSION['user_id'])) {
+    header("Location: index.php"); // Chuyển hướng đến trang chủ
+    exit();
+}
+
 // Include the database connection file
 include_once 'dbconnect.php';
 
@@ -11,6 +23,7 @@ function sanitizeInput($data)
 {
     return htmlspecialchars(strip_tags(trim($data)));
 }
+
 
 // Tạo biến để lưu thông báo lỗi và thông báo thành công
 $login_error = "";
