@@ -229,6 +229,17 @@ header.header .topbar {
     display: block;
     /* Hiển thị mục thông báo hiện tại */
 }
+.notification-badge {
+    position: absolute;
+    top: 0px;
+    right: 12px;
+    transform: translate(50%, -50%);
+    width: 14px; /* Điều chỉnh kích thước chấm đỏ */
+    height: 14px;
+    background-color: red;
+    border-radius: 50%;
+    border: 2px solid white; /* Viền trắng giúp nổi bật hơn */
+}
 
 
 .header-hotline {
@@ -870,10 +881,10 @@ header.header .topbar .header-hotline a .text-box .acc-text {
     border-radius: 50%;
     object-fit: contain;
     margin-bottom: 10px;
-    border: 5px solid green;
-    /* Thêm viền màu xanh lá cây */
-    transition: transform 0.3s ease;
-    /* Thêm hiệu ứng chuyển đổi mượt mà */
+    border: 3px solid transparent;
+    background: linear-gradient(to right, #d1cf45, #78d478,#f7e2ab);
+    background-clip: border-box; /* Áp dụng gradient chỉ cho viền */
+    transition: transform 0.3s ease, background 0.3s ease;
 }
 
 .category-swiper .swiper-slide img:hover {
@@ -2929,7 +2940,7 @@ Card Styles */
     font-weight: bold;
 }
 
-.blog__item__text a {
+.blog__item__text .view {
     text-decoration: none;
     color: rgb(255, 0, 0);
     font-weight: bold;
@@ -2953,11 +2964,11 @@ Card Styles */
     color: rgb(255, 94, 0);
 }
 
-.blog__item__text a:hover {
+.blog__item__text .view:hover {
     color: #7c0000;
 }
 
-.blog__item__text a::after {
+.blog__item__text .view::after {
     content: "";
     position: absolute;
     bottom: 0;
@@ -2970,7 +2981,7 @@ Card Styles */
     transition: transform 0.3s ease;
 }
 
-.blog__item__text a:hover::after {
+.blog__item__text .view:hover::after {
     transform: scaleX(0.4);
     transform-origin: bottom left;
 }
@@ -3347,6 +3358,7 @@ Card Styles */
 /* card product shop spad */
 .shop-spad .product__filter .product-all {
     border-radius: 0;
+    max-width: 230px;
     transition: box-shadow 0.3s ease;
     position: relative;
     overflow: hidden;
@@ -3537,10 +3549,9 @@ Card Styles */
 
 @media (max-width: 991px) {
     .promo-tooltip {
-        width: 220px;
+        width: 150px;
         /* Chiều rộng tối đa cho tooltip */
     }
-
 }
 
 @media (max-width: 500px) {
@@ -4789,28 +4800,65 @@ margin: 50px auto;
 }
 
 .response-container {
-    max-width: 400px !important;
-    margin-top: 50px;
+    max-width: 400px;
+    margin: 50px auto; /* Center the container */
     padding: 30px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(135deg, #ffffff, #f3f3f3);
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
     min-height: 500px;
+    font-family: 'Arial', sans-serif;
+    color: #333;
 }
+
 .response-header {
-    border-bottom: 2px solid #eee;
+    border-bottom: 2px solid #ddd;
     margin-bottom: 20px;
+    text-align: center;
+    padding-bottom: 10px;
 }
+
+.response-header h3 {
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: #444;
+    text-transform: uppercase;
+}
+
 .response-status {
     font-weight: bold;
     font-size: 1.2rem;
 }
+
 .response-status.success {
-    color: green;
+    color: #28a745;
 }
+
 .response-status.error {
-    color: red;
+    color: #dc3545;
 }
+
 .response-label {
     font-weight: bold;
+    color: #555;
+}
+
+.response-container .btn-green {
+    display: inline-block;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    text-decoration: none;
+    border: none;
+    border-radius: 30px;
+    background: linear-gradient(45deg, #6fcf97, #56ab2f);
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.response-container .btn-green:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    text-decoration: none;
 }

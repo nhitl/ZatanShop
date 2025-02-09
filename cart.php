@@ -1,5 +1,5 @@
 <?php
-include_once 'dbconnect.php'; // Kết nối cơ sở dữ liệu
+include 'dbconnect.php'; // Kết nối cơ sở dữ liệu
 
 session_start(); // Khởi tạo phiên làm việc
 
@@ -94,7 +94,7 @@ if (isset($_POST['checkout'])) {
         $product_stmt->close();
 
         // Lấy đường dẫn ảnh sản phẩm
-        $product_image = 'admin' . htmlspecialchars($row['background_image']); // Đảm bảo đường dẫn đúng
+        $product_image = 'admin/admin/' . htmlspecialchars($row['background_image']); // Đảm bảo đường dẫn đúng
 
         if ($row['quantity'] > $row['stock_quantity']) {
             $exceeded = true;
@@ -151,6 +151,7 @@ $result = $stmt->get_result();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/cart.css">
+    <link rel="icon" href="admin/assets/img/favicon.ico.png" type="image/png">
     <title>Document</title>
     <style>
         .gio-hang .container{
@@ -196,7 +197,7 @@ $result = $stmt->get_result();
                                 <div class="col-10 my-3">
                                     <div class="row">
                                         <div class="col-md-2">
-                                            <img src="<?php echo 'admin' . $row['background_image']; ?>" alt="<?php echo $row['product_name']; ?>">
+                                            <img src="<?php echo 'admin/admin/' . $row['background_image']; ?>" alt="<?php echo $row['product_name']; ?>">
                                         </div>
                                         <div class="col-md-10">
                                             <h4><?php echo $row['product_name']; ?></h4>
@@ -393,7 +394,7 @@ $result = $stmt->get_result();
                 }, function(response) {
                     // Xử lý phản hồi từ máy chủ ở đây
                     if (response.success) {
-                        window.location.href = 'checkout.php'; // Chuyển hướng nếu thành công
+                        window.location.href = 'thanh-toan'; // Chuyển hướng nếu thành công
                     } else {
                         // Hiển thị thông báo trong modal
                         $('#modal-message').html(response.message); // Đặt nội dung thông báo

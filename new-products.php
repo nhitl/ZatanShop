@@ -5,15 +5,16 @@ include_once 'dbconnect.php';
 $sql = "SELECT p.product_id, p.product_name, p.price, p.background_image, p.stock_quantity, p.sales_count, 
                COALESCE(d.discount_percentage, 0) AS discount_percentage, 
                COALESCE(p.price * (1 - d.discount_percentage / 100), p.price) AS discounted_price,
-               p.configuration, p.sales_count
+               p.configuration, p.sales_count, p.slug 
         FROM products p
         LEFT JOIN discounts d ON p.product_id = d.product_id 
         AND d.start_date <= CURDATE() AND d.end_date >= CURDATE()
         ORDER BY p.product_id DESC LIMIT 10";
+
 $result = $conn->query($sql);
 
 // Truy xuất sản phẩm bán chạy và thông tin giảm giá
-$sqlBestSelling = "SELECT p.product_id, p.product_name, p.price, p.background_image, p.stock_quantity, p.sales_count,
+$sqlBestSelling = "SELECT p.product_id, p.product_name, p.slug, p.price, p.background_image, p.stock_quantity, p.sales_count,
                            COALESCE(d.discount_percentage, 0) AS discount_percentage, 
                            COALESCE(p.price * (1 - d.discount_percentage / 100), p.price) AS discounted_price
                     FROM products p
@@ -24,7 +25,7 @@ $sqlBestSelling = "SELECT p.product_id, p.product_name, p.price, p.background_im
 $resultBestSelling = $conn->query($sqlBestSelling);
 
 
-$sqlDiscountedProducts = "SELECT p.product_id, p.product_name, p.price, p.background_image, 
+$sqlDiscountedProducts = "SELECT p.product_id, p.product_name, p.price, p.background_image, p.slug, 
                                   p.stock_quantity, p.sales_count, 
                                   d.discount_percentage, 
                                   (p.price * (1 - d.discount_percentage / 100)) AS discounted_price
@@ -62,7 +63,7 @@ $resultDiscountedProducts = $conn->query($sqlDiscountedProducts);
                 <div class="col-md-6 col-12">
                     <div class="best-selling-title d-flex align-items-center">
                         <img width="50" height="60" src="assets/img/flicon.png" alt="Flash Sale Icon">
-                        <a class="title ms-2" href="deal.php">FLASH SALES MỖI NGÀY</a>
+                        <a class="title ms-2" href="flash-sales">FLASH SALES MỖI NGÀY</a>
                     </div>
                 </div>
                 <div class="col-md-6 col-12">
@@ -99,7 +100,7 @@ $resultDiscountedProducts = $conn->query($sqlDiscountedProducts);
                     } else {
                         if ($resultDiscountedProducts->num_rows > 0) {
                             while ($row = $resultDiscountedProducts->fetch_assoc()) {
-                                $imagePath = 'admin' . $row["background_image"];
+                                $imagePath = 'admin/admin/' . $row["background_image"];
 
                                 // Truy vấn để lấy thông tin quà tặng từ bảng `product_promotions`
                                 $promoQuery = "SELECT promotion_description FROM product_promotions WHERE product_id = " . intval($row['product_id']);
@@ -150,7 +151,7 @@ $resultDiscountedProducts = $conn->query($sqlDiscountedProducts);
 
                                 echo '        <div class="discount-percentage">- ' . htmlspecialchars($row["discount_percentage"]) . '% </div>';
                                 echo '        <div class="card-img-wrapper">';
-                                echo '            <a href="product-detail.php?id=' . htmlspecialchars($row["product_id"]) . '">';
+                                echo '            <a href="/DOAN/' . htmlspecialchars($row["slug"]) . '">';
                                 echo '                <img src="' . htmlspecialchars($imagePath) . '" class="card-img-top product-img" alt="' . htmlspecialchars($row["product_name"]) . '">';
                                 echo '            </a>';
                                 echo '        </div>';
@@ -159,7 +160,7 @@ $resultDiscountedProducts = $conn->query($sqlDiscountedProducts);
                                 echo '        </button>';
                                 echo '        <div class="card-body">';
                                 echo '            <h5 class="card-title">';
-                                echo '                <a href="product-detail.php?id=' . htmlspecialchars($row["product_id"]) . '" class="product-link" title="' . htmlspecialchars($row["product_name"]) . '">';
+                                echo '                <a href="/DOAN/' . htmlspecialchars($row["slug"]) . '" class="product-link" title="' . htmlspecialchars($row["product_name"]) . '">'; // Cập nhật liên kết sản phẩm
                                 echo '                    ' . htmlspecialchars($row["product_name"]) . '';
                                 echo '                </a>';
                                 echo '            </h5>';
@@ -203,7 +204,7 @@ $resultDiscountedProducts = $conn->query($sqlDiscountedProducts);
                 <div class="swiper-button-prev"></div>
             </div>
             <div class="discounted-products-footer">
-                <a href="deal.php" class="btn btn-view-all"><i class="fa-solid fa-right-to-bracket"></i> Xem tất cả</a>
+                <a href="flash-sales" class="btn btn-view-all"><i class="fa-solid fa-right-to-bracket"></i> Xem tất cả</a>
             </div>
 
         </div>
@@ -222,7 +223,7 @@ $resultDiscountedProducts = $conn->query($sqlDiscountedProducts);
                     <?php
                     if ($resultBestSelling->num_rows > 0) {
                         while ($row = $resultBestSelling->fetch_assoc()) {
-                            $imagePath = 'admin' . $row["background_image"];
+                            $imagePath = 'admin/admin/' . $row["background_image"];
                             // Truy vấn để lấy thông tin quà tặng từ bảng product_promotions
                             $promoQuery = "SELECT promotion_description FROM product_promotions WHERE product_id = " . intval($row['product_id']);
                             $promoResult = $conn->query($promoQuery);
@@ -272,7 +273,7 @@ $resultDiscountedProducts = $conn->query($sqlDiscountedProducts);
                                 echo '</div>';
                             }
                             echo '        <div class="card-img-wrapper">';
-                            echo '            <a href="product-detail.php?id=' . htmlspecialchars($row["product_id"]) . '">';
+                            echo '            <a href="/DOAN/' . htmlspecialchars($row["slug"]) . '">';
                             echo '                <img src="' . htmlspecialchars($imagePath) . '" class="card-img-top product-img" alt="' . htmlspecialchars($row["product_name"]) . '">';
                             echo '            </a>';
                             echo '        </div>';
@@ -281,7 +282,7 @@ $resultDiscountedProducts = $conn->query($sqlDiscountedProducts);
                             echo '        </button>';
                             echo '        <div class="card-body">';
                             echo '            <h5 class="card-title">';
-                            echo '                <a href="product-detail.php?id=' . htmlspecialchars($row["product_id"]) . '" class="product-link" title="' . htmlspecialchars($row["product_name"]) . '">';
+                            echo '                <a href="/DOAN/' . htmlspecialchars($row["slug"]) . '" class="product-link" title="' . htmlspecialchars($row["product_name"]) . '">'; // Cập nhật liên kết sản phẩm
                             echo '                    ' . htmlspecialchars($row["product_name"]) . '';
                             echo '                </a>';
                             echo '            </h5>';
@@ -341,7 +342,7 @@ $resultDiscountedProducts = $conn->query($sqlDiscountedProducts);
         <div class="container mt-4">
             <div class="group-title">
                 <div class="new-products-title">
-                    <img width="50" height="50" src="https://zeevector.com/wp-content/uploads/New-Logo-Design-png@zeevector.png" alt="New Products Icon">
+                    <img width="50" height="50" src="https://www.pngmart.com/files/23/New-Icon-PNG-Pic.png" alt="New Products Icon">
                     <a class="title" href="#">SẢN PHẨM MỚI</a>
                 </div>
             </div>
@@ -353,7 +354,7 @@ $resultDiscountedProducts = $conn->query($sqlDiscountedProducts);
                     } else {
                         if ($result->num_rows > 0) {
                             while ($row = $result->fetch_assoc()) {
-                                $imagePath = 'admin' . $row["background_image"];
+                                $imagePath = 'admin/admin/' . $row["background_image"];
                                 // Truy vấn để lấy thông tin quà tặng từ bảng `product_promotions`
                                 $promoQuery = "SELECT promotion_description FROM product_promotions WHERE product_id = " . intval($row['product_id']);
                                 $promoResult = $conn->query($promoQuery);
@@ -399,7 +400,7 @@ $resultDiscountedProducts = $conn->query($sqlDiscountedProducts);
                                     echo '</div>';
                                 }
                                 echo '        <div class="card-img-wrapper">';
-                                echo '            <a href="product-detail.php?id=' . htmlspecialchars($row["product_id"]) . '">';
+                                echo '            <a href="/DOAN/' . htmlspecialchars($row["slug"]) . '">';
                                 echo '                <img src="' . htmlspecialchars($imagePath) . '" class="card-img-top product-img" alt="' . htmlspecialchars($row["product_name"]) . '">';
                                 echo '            </a>';
                                 echo '        </div>';
@@ -408,7 +409,7 @@ $resultDiscountedProducts = $conn->query($sqlDiscountedProducts);
                                 echo '        </button>';
                                 echo '        <div class="card-body">';
                                 echo '            <h5 class="card-title">';
-                                echo '                <a href="product-detail.php?id=' . htmlspecialchars($row["product_id"]) . '" class="product-link" title="' . htmlspecialchars($row["product_name"]) . '">';
+                                echo '                <a href="/DOAN/' . htmlspecialchars($row["slug"]) . '" class="product-link" title="' . htmlspecialchars($row["product_name"]) . '">'; // Cập nhật liên kết sản phẩm
                                 echo '                    ' . htmlspecialchars($row["product_name"]) . '';
                                 echo '                </a>';
                                 echo '            </h5>';
@@ -548,11 +549,11 @@ $resultDiscountedProducts = $conn->query($sqlDiscountedProducts);
             var swiper4 = new Swiper('.swiper-container-discounted-products', {
                 loop: true, // Cho phép lặp lại các slide
                 autoplay: {
-                    delay: 2000, // Thời gian giữa mỗi lần trượt (tính bằng ms)
+                    delay: 2500, // Thời gian giữa mỗi lần trượt (tính bằng ms)
                     disableOnInteraction: false, // Tạm dừng autoplay khi có tương tác, nhưng sẽ tiếp tục sau đó
                     pauseOnMouseEnter: true, // Tạm dừng autoplay khi di chuột vào
                 },
-                speed: 500,
+                speed: 1500,
                 spaceBetween: 10,
                 navigation: {
                     nextEl: '.swiper-button-next',

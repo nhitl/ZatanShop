@@ -5,7 +5,8 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-// Kiểm tra trạng thái đăng nhập
+// Khởi tạo biến tránh lỗi Undefined variable
+$user_id = null; 
 $user_logged_in_header = isset($_SESSION['user_id']);
 $user_full_name_header = '';
 
@@ -23,6 +24,21 @@ if ($user_logged_in_header) {
     $stmt_header->close();
 }
 
+$unread_count = 0;
+
+// Kiểm tra nếu $user_id có giá trị thì mới truy vấn
+if (!is_null($user_id)) {
+    $sql = "SELECT COUNT(*) AS unread_count FROM notification_orders WHERE user_id = ? AND status = 'unread'";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    if ($row = $result->fetch_assoc()) {
+        $unread_count = intval($row['unread_count']);
+    }
+    $stmt->close();
+}
 ?>
 
 
@@ -34,7 +50,8 @@ if ($user_logged_in_header) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="admin/assets/img/favicon.ico.png" type="image/png">
+    <link rel="stylesheet" href="style.css?v=<?php echo time(); ?>">
     <title>Header</title>
 </head>
 
@@ -71,10 +88,10 @@ if ($user_logged_in_header) {
                     </div>
                     <div class="col-lg-3 header-hotline sm-hidden">
                         <i class="fa-solid fa-phone-volume"></i>
-                        <a title="Điện thoại: 1900 0000" href="tel:19000000">
+                        <a title="Điện thoại: 0364 313 062" href="tel:0364313062">
                             <div class="text-box">
                                 <span class="acc-text-small">Tư vấn mua hàng</span>
-                                <span class="acc-text">1900 0000</span>
+                                <span class="acc-text">0364 313 062</span>
                             </div>
                         </a>
                     </div>
@@ -111,7 +128,7 @@ if ($user_logged_in_header) {
                                     </span>
                                     <span class="item-title">Cửa hàng</span>
                                 </a>
-                                <a id="cart-icon" href="cart.php" class="text-center" title="Giỏ hàng">
+                                <a id="cart-icon" href="./gio-hang" class="text-center" title="Giỏ hàng">
                                     <span class="box-icon position-relative">
                                         <i class="fa-solid fa-shopping-cart"></i>
                                         <span class="count item position-absolute top-0 start-100 translate-middle badge">
@@ -120,13 +137,22 @@ if ($user_logged_in_header) {
                                     </span>
                                     <span class="item-title">Giỏ hàng</span>
                                 </a>
-                                <a id="cart-icon" href="<?php echo $user_logged_in_header ? 'info.php' : 'login.php'; ?>" class="text-center" title="Tài khoản">
+                                <a href="<?php echo $user_logged_in_header ? 'tai-khoan' : 'login.php'; ?>" class="text-center" title="Tài khoản">
                                     <span class="box-icon">
                                         <i class="fa-solid fa-user"></i>
                                     </span>
                                     <span class="item-title">
                                         <?php echo $user_logged_in_header ? htmlspecialchars($user_full_name_header) : 'Đăng nhập'; ?>
                                     </span>
+                                </a>
+                                <a id="notifi-icon" href="thongbao.php" class="position-relative text-center">
+                                    <span class="box-icon">
+                                        <i class="fa-regular fa-message"></i>
+                                    </span>
+                                    <span class="item-title">Thông báo</span>
+                                    <?php if ($unread_count > 0): ?>
+                                        <span class="notification-badge"></span>
+                                    <?php endif; ?>
                                 </a>
 
                                 <button class="navbar-toggler pe-0 " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
@@ -154,16 +180,16 @@ if ($user_logged_in_header) {
                                     <a class="nav-link mx-lg-2<?php echo ($current_page == 'index.php') ? ' active' : ''; ?>" href="./index.php"><i class="fa-solid fa-diamond"></i> Trang chủ</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link mx-lg-2<?php echo ($current_page == 'all-products.php') ? ' active' : ''; ?>" href="./all-products.php"><i class="fa-solid fa-diamond"></i> Sản phẩm</a>
+                                    <a class="nav-link mx-lg-2<?php echo ($current_page == 'all-products.php') ? ' active' : ''; ?>" href="./san-pham"><i class="fa-solid fa-diamond"></i> Sản phẩm</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link mx-lg-2 <?php echo ($current_page == 'tra-gop.php') ? ' active' : ''; ?>" href="./tra-gop.php"><i class="fa-solid fa-diamond"></i> Hỗ trợ trả góp</a>
+                                    <a class="nav-link mx-lg-2 <?php echo ($current_page == 'tra-gop.php') ? ' active' : ''; ?>" href="./tra-gop"><i class="fa-solid fa-diamond"></i> Hỗ trợ trả góp</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link mx-lg-2<?php echo ($current_page == 'news.php') ? ' active' : ''; ?>" href="./news.php"><i class="fa-solid fa-diamond"></i> Tin công nghệ</a>
+                                    <a class="nav-link mx-lg-2<?php echo ($current_page == 'news.php') ? ' active' : ''; ?>" href="./tin-tuc-moi-nhat"><i class="fa-solid fa-diamond"></i> Tin công nghệ</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link mx-lg-2<?php echo ($current_page == 'chinh-sach-kinh-doanh.php') ? ' active' : ''; ?>" href="chinh-sach-kinh-doanh.php"><i class="fa-solid fa-diamond"></i> Chính sách</a>
+                                    <a class="nav-link mx-lg-2<?php echo ($current_page == 'chinh-sach-kinh-doanh.php') ? ' active' : ''; ?>" href="chinh-sach"><i class="fa-solid fa-diamond"></i> Chính sách</a>
                                 </li>
                             </ul>
                         </div>
@@ -206,7 +232,7 @@ if ($user_logged_in_header) {
                     $('#modalBody').text('Bạn cần đăng nhập để xem giỏ hàng.');
                     $('#universalModal').modal('show');
                 <?php else: ?>
-                    window.location.href = "./cart.php"; // Nếu đã đăng nhập, điều hướng đến giỏ hàng
+                    window.location.href = "./gio-hang"; // Nếu đã đăng nhập, điều hướng đến giỏ hàng
                 <?php endif; ?>
             });
 
@@ -220,7 +246,20 @@ if ($user_logged_in_header) {
                     $('#modalBody').text('Bạn cần đăng nhập để xem thông tin tài khoản.');
                     $('#universalModal').modal('show');
                 <?php else: ?>
-                    window.location.href = "info.php"; // Nếu đã đăng nhập, điều hướng đến thông tin tài khoản
+                    window.location.href = "tai-khoan"; // Nếu đã đăng nhập, điều hướng đến thông tin tài khoản
+                <?php endif; ?>
+            });
+
+            $('#notifi-icon').click(function(e) {
+                e.preventDefault(); // Ngăn chặn liên kết mặc định
+
+                <?php if (!isset($_SESSION['user_id'])): ?>
+                    // Nếu chưa đăng nhập, hiển thị modal và điều chỉnh nội dung cho giỏ hàng
+                    $('#modalTitle').text('Thông báo');
+                    $('#modalBody').text('Bạn chưa đăng nhập');
+                    $('#universalModal').modal('show');
+                <?php else: ?>
+                    window.location.href = "./thongbao.php"; // Nếu đã đăng nhập, điều hướng đến giỏ hàng
                 <?php endif; ?>
             });
 

@@ -1,0 +1,91 @@
+@media (min-width: 1200px) {
+    .notifi-order .container{
+        width: 80%;
+    }
+}
+
+.notifi-order {
+    background-color: #fff5e2;
+    padding: 20px 0;
+    border-radius: 8px;
+    min-height: 600px;
+}
+
+.notifi-order h3 {
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #015830;
+}
+
+.notifi-order .nav-tabs {
+    justify-content: center;
+    border-bottom: 2px solid #ddd;
+}
+
+.notifi-order .nav-tabs .nav-link {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #333;
+    padding: 10px 20px;
+    border: none;
+}
+
+.notifi-order .nav-tabs .nav-link.active {
+    color: #005e14;
+    border-bottom: 3px solid #0c4d0f;
+    background: none;
+}
+
+.notifi-order .tab-content {
+    margin-top: 15px;
+}
+
+.notifi-order .notification-item {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.notifi-order .notification-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.notifi-order .notification-unread {
+    border-left: 5px solid #327022;
+    font-weight: bold;
+}
+
+.notifi-order .notification-read {
+    border-left: 5px solid #ccc;
+    opacity: 0.8;
+}
+
+.notifi-order .notification-item strong {
+    display: block;
+    font-size: 1.1rem;
+}
+
+.notifi-order .notification-item .text-muted {
+    font-size: 0.9rem;
+    color: #777;
+}
+
+.notifi-order .delete-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    color: red;
+    font-size: 1.2rem;
+    transition: transform 0.2s;
+}
+
+.notifi-order .delete-btn:hover {
+    transform: scale(1.2);
+}

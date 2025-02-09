@@ -11,8 +11,8 @@ if (!isset($_SESSION['user_id'])) {
 // Lấy user_id từ phiên
 $user_id = $_SESSION['user_id'];
 
-// Truy vấn để lấy thông tin người dùng
-$sql = "SELECT full_name, email FROM users WHERE user_id = ?";
+// Truy vấn để lấy thông tin người dùng và role
+$sql = "SELECT full_name, email, role FROM users WHERE user_id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
@@ -24,12 +24,15 @@ if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
     $full_name = $row['full_name'];
     $email = $row['email'];
+    $role = $row['role']; // Lấy role
 } else {
     $full_name = "Không có thông tin";
     $email = "Không có thông tin";
+    $role = 0; // Mặc định role = 0 nếu không có thông tin
 }
 
 $stmt->close();
+
 
 // Xử lý cập nhật tên
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['new_full_name']) && !empty($_POST['new_full_name'])) {
@@ -58,7 +61,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['new_full_name']) && !e
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thông Tin Người Dùng</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="assets/css/styleinfo2.css">
+    <link rel="stylesheet" href="assets/css/styleinfo2.css?v=1.2">
+    <link rel="icon" href="admin/assets/img/favicon.ico.png" type="image/png">
 </head>
 
 <body>
@@ -107,10 +111,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['new_full_name']) && !e
                 </div>
             </div>
             <div class="row justify-content-center mt-1">
+
+            <!-- Nút Admin (chỉ hiển thị khi role = 1) -->
+            <?php if (isset($role) && $role == 1): ?>
+                <div class="col-md-3 col-6 d-flex justify-content-center mb-3">
+                    <a href="/DOAN/admin/index.php" class="btn btn-primary w-100">Admin</a>
+                </div>
+            <?php endif; ?>
+            <!-- Nút Đăng xuất -->
                 <div class="col-md-3 col-6 d-flex justify-content-center mb-3">
                     <a href="logout.php" class="btn btn-primary w-100">Đăng xuất</a>
                 </div>
-            </div>
+</div>
+
 
         </main>
     </section>

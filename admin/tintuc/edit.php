@@ -61,8 +61,10 @@ if (isset($_GET['news_id'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+
     <title>Chỉnh sửa tin tức</title>
     <link rel="stylesheet" href="../assets/css/modal.css">
+    <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
     <style>
         .container {
             margin-top: 80px;
@@ -76,9 +78,9 @@ if (isset($_GET['news_id'])) {
     // Include header
     include_once '../header.php';
     ?>
-    
+
     <div class="container">
-    <a href="index.php" class="btn btn-secondary"><i class="fa-solid fa-left-long"></i></a>
+        <a href="index.php" class="btn btn-secondary"><i class="fa-solid fa-left-long"></i></a>
         <h2 class="my-4 text-center">Chỉnh sửa tin tức</h2>
 
         <form method="POST" enctype="multipart/form-data">
@@ -92,8 +94,11 @@ if (isset($_GET['news_id'])) {
                 <img src="<?php echo htmlspecialchars($news_image); ?>" alt="Ảnh tin tức" width="150" class="mt-2">
             </div>
             <div class="form-group">
-                <label for="content">Nội dung</label>
+                <label for="content">Nội dung tin tức</label>
                 <textarea class="form-control" id="content" name="content" rows="5" required><?php echo htmlspecialchars($content); ?></textarea>
+                <script>
+                    CKEDITOR.replace('content');
+                </script>
             </div>
             <button type="submit" name="update" class="btn btn-primary">Cập nhật tin tức</button>
             <a href="index.php" class="btn btn-secondary">Hủy bỏ</a>

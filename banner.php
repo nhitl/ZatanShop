@@ -75,12 +75,12 @@
                             $subbannerImagePath = 'admin/assets/img/imgsubbanners/' . basename($subbanner['subbanner_image']);
 
                             echo '<div class="col-lg-12 col-md-12 col-6 py-2">';
-                            echo '<a class="banner-right" href="' . $subbanner['link'] . '">';
+                            echo '<div class="banner-right">';
                             echo '<div class="image-wrapper">'; // Thêm lớp wrapper
                             echo '<img src="' . $subbannerImagePath . '" alt="' . $subbanner['subbanner_name'] . '" class="img-fluid">';
                             echo '<div class="overlay-subbanner"></div>'; // Lớp phủ cho subbanner
                             echo '</div>'; // Đóng div.wrapper
-                            echo '</a>';
+                            echo '</div>';
                             echo '</div>';
                         }
 

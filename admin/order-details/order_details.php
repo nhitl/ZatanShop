@@ -12,26 +12,78 @@ $status_mapping = [
     'canceled' => 'Đã hủy'
 ];
 
-// Xử lý cập nhật trạng thái đơn hàng khi form được submit
+// Mảng ánh xạ trạng thái thanh toán
+$payment_status_mapping = [
+    'pending' => 'Chờ thanh toán',
+    'paid' => 'Đã thanh toán',
+    'failed' => 'Thanh toán thất bại',
+    'Pending Refund' => 'Chờ hoàn tiền',
+    'Refund Successful' => 'Hoàn tiền thành công',
+    'Refund Failed' => 'Hoàn tiền thất bại'
+];
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $new_status = $_POST['order_status'];
-    $update_sql = "UPDATE orders SET order_status = '$new_status' WHERE order_id = $order_id";
-    if ($conn->query($update_sql) === TRUE) {
-        $_SESSION['success_message'] = "Cập nhật trạng thái thành công!";
-        // Chuyển hướng về chính trang này để tránh việc submit form khi reload trang
-        header("Location: " . $_SERVER['PHP_SELF'] . "?order_id=$order_id");
-        exit(); // Dừng việc thực thi tiếp sau khi chuyển hướng
+    $order_id = intval($_GET['order_id']); // Đảm bảo order_id là số nguyên
+    $messages = [];
+
+    // Lấy thông tin đơn hàng hiện tại
+    $query_order = "SELECT user_id, order_status FROM orders WHERE order_id = $order_id";
+    $result_order = $conn->query($query_order);
+    
+    if ($result_order->num_rows > 0) {
+        $order_data = $result_order->fetch_assoc();
+        $user_id = intval($order_data['user_id']);
+        $current_order_status = $order_data['order_status']; // Trạng thái đơn hàng hiện tại
+
+        // Kiểm tra nếu trạng thái mới khác với trạng thái cũ mới thực hiện cập nhật
+        if (isset($_POST['order_status']) && $_POST['order_status'] !== $current_order_status) {
+            $new_status = $_POST['order_status'];
+            $update_sql = "UPDATE orders SET order_status = '$new_status' WHERE order_id = $order_id";
+
+            if ($conn->query($update_sql) === TRUE) {
+                $messages[] = "Cập nhật trạng thái đơn hàng thành công!";
+
+                // Chỉ thêm thông báo nếu trạng thái đơn hàng thực sự thay đổi
+                $notification_msg = "Trạng thái đơn hàng #$order_id đã được cập nhật thành: " . $status_mapping[$new_status];
+                $insert_notification_sql = "INSERT INTO notification_orders (user_id, order_id, message, status, created_at) 
+                                            VALUES ($user_id, $order_id, '$notification_msg', 'unread', NOW())";
+                $conn->query($insert_notification_sql);
+            } else {
+                echo "<div class='alert alert-danger'>Lỗi: " . $conn->error . "</div>";
+            }
+        }
     } else {
-        echo "<div class='alert alert-danger'>Lỗi: " . $conn->error . "</div>";
+        echo "<div class='alert alert-danger'>Lỗi: Không tìm thấy đơn hàng này.</div>";
     }
+
+    // Lưu thông báo vào session nếu có
+    if (!empty($messages)) {
+        $_SESSION['success_message'] = implode('<br>', $messages);
+    }
+
+    if (isset($_POST['payment_status'])) {
+        // Cập nhật trạng thái thanh toán
+        $new_payment_status = $_POST['payment_status'];
+        $update_payment_sql = "UPDATE orders SET payment_status = '$new_payment_status' WHERE order_id = $order_id";
+        if ($conn->query($update_payment_sql) === TRUE) {
+            $_SESSION['success_message'] = "Cập nhật trạng thái thanh toán thành công!";
+        } else {
+            echo "<div class='alert alert-danger'>Lỗi: " . $conn->error . "</div>";
+        }
+    }
+    // Chuyển hướng để tránh việc submit lại form khi reload trang
+    header("Location: " . $_SERVER['PHP_SELF'] . "?order_id=$order_id");
+    exit();
 }
 
+
+
 // Lấy thông tin đơn hàng và voucher
-$sql_order = "SELECT orders.*, shipping_addresses.address, shipping_addresses.recipient_name, shipping_addresses.recipient_phone, users.full_name, voucher.description AS voucher_description, voucher.discount_percentage
+$sql_order = "SELECT orders.*, shipping_addresses.address, shipping_addresses.recipient_name, shipping_addresses.recipient_phone, users.full_name, vouchers.description AS voucher_description, vouchers.discount_percentage
               FROM orders
               LEFT JOIN shipping_addresses ON orders.address_id = shipping_addresses.address_id
               LEFT JOIN users ON orders.user_id = users.user_id
-              LEFT JOIN voucher ON orders.voucher_code = voucher.voucher_code
+              LEFT JOIN vouchers ON orders.voucher_code = vouchers.voucher_code
               WHERE orders.order_id = $order_id";
 
 $order_result = $conn->query($sql_order);
@@ -62,7 +114,6 @@ $formatted_discount_total = $discount_total == floor($discount_total) ? number_f
     <title>Chi tiết đơn hàng</title>
     <!-- Cập nhật Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/orders.css">
     <style>
         .container {
@@ -157,18 +208,31 @@ $formatted_discount_total = $discount_total == floor($discount_total) ? number_f
                 <p><strong>Phương thức thanh toán:</strong> <?= $order['payment_method'] == 'online' ? 'Online' : 'Thanh toán khi nhận hàng' ?></p>
                 <p><strong>Trạng thái đơn hàng:</strong> <?= $status_mapping[$order['order_status']] ?></p>
 
-                <!-- Form cập nhật trạng thái đơn hàng -->
+                <!-- Form cập nhật trạng thái đơn hàng và trạng thái thanh toán -->
                 <form action="" method="POST" class="mt-4">
+                    <!-- Cập nhật trạng thái đơn hàng -->
                     <label for="order_status"><strong>Cập nhật trạng thái đơn hàng:</strong></label>
                     <select name="order_status" id="order_status" class="form-select" required>
                         <?php foreach ($status_mapping as $key => $value): ?>
                             <option value="<?= $key ?>" <?= $order['order_status'] == $key ? 'selected' : '' ?>><?= $value ?></option>
                         <?php endforeach; ?>
                     </select>
+
+                    <!-- Cập nhật trạng thái thanh toán -->
+                    <label for="payment_status" class="mt-3"><strong>Cập nhật trạng thái thanh toán:</strong></label>
+                    <select name="payment_status" id="payment_status" class="form-select" required>
+                        <?php foreach ($payment_status_mapping as $key => $value): ?>
+                            <option value="<?= $key ?>" <?= $order['payment_status'] == $key ? 'selected' : '' ?>><?= $value ?></option>
+                        <?php endforeach; ?>
+                    </select>
+
+                    <!-- Nút submit chung cho cả hai trường -->
                     <button type="submit" class="btn btn-primary mt-3">Cập nhật</button>
                 </form>
+
             </div>
         </div>
+
 
 
 

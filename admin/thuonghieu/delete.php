@@ -25,14 +25,14 @@ if (isset($_GET['brand_id'])) {
             // Thiết lập thông báo thành công
             $_SESSION['success_message'] = "Thương hiệu đã được xóa thành công.";
         } else {
-            $_SESSION['success_message'] = "Có lỗi xảy ra khi xóa thương hiệu.";
+            $_SESSION['error_message'] = "Có lỗi xảy ra khi xóa thương hiệu.";
         }
 
     } else {
-        $_SESSION['success_message'] = "Không tìm thấy thương hiệu.";
+        $_SESSION['error_message'] = "Không tìm thấy thương hiệu.";
     }
 } else {
-    $_SESSION['success_message'] = "Không có thương hiệu để xóa.";
+    $_SESSION['error_message'] = "Không có thương hiệu để xóa.";
 }
 
 // Chuyển hướng người dùng về trang danh sách thương hiệu sau khi xóa

@@ -303,3 +303,41 @@
 .history-orders .nav-link i {
     font-size: 0.6rem; /* Kích thước icon */
 }
+
+.history-orders .payment-status {
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+.history-orders .payment-status.pending {
+    background-color: #a58b3d;
+    color: #fff;
+}
+
+.history-orders .payment-status.paid {
+    background-color: #155724;
+    color: #fff;
+}
+
+.history-orders .payment-status.failed {
+    background-color: #721c24;
+    color: #fff;
+}
+
+.history-orders .notification-icon {
+    z-index: 10;
+    border: none;
+    background-color: transparent;
+    color: #ff2600; 
+    font-size: 28px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.history-orders .notification-icon:hover {
+    transform: scale(1.2);
+    color: #ff2600;
+}
+

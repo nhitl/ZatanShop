@@ -31,15 +31,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['editNotification'])) {
 }
 
 // Xử lý xóa thông báo
-if (isset($_GET['delete_id'])) {
-    $id = $_GET['delete_id'];
-    $sql = "DELETE FROM notifications WHERE notification_id=$id";
-    if ($conn->query($sql) === TRUE) {
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete_id'])) {
+    $id = intval($_POST['delete_id']); // Chuyển ID thành số nguyên để tránh lỗi
+
+    $stmt = $conn->prepare("DELETE FROM notifications WHERE notification_id = ?");
+    $stmt->bind_param("i", $id);
+
+    if ($stmt->execute()) {
         $_SESSION['success_message'] = "Thông báo đã được xóa thành công!";
+    } else {
+        $_SESSION['error_message'] = "Lỗi khi xóa thông báo: " . $conn->error;
     }
+
+    $stmt->close();
+    $conn->close();
+
     header("Location: index.php");
     exit();
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -65,9 +75,9 @@ if (isset($_GET['delete_id'])) {
     include_once '../notification.php';
     ?>
     <div class="container">
-        <a href="index.php" class="btn btn-secondary"><i class="fa-solid fa-left-long"></i></a>
+        <a href="../index.php" class="btn btn-secondary"><i class="fa-solid fa-left-long"></i></a>
         <h2 class="mt-2 text-center">Quản lý thông báo</h2>
-        
+
         <!-- Nút thêm thông báo -->
         <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addModal">Thêm thông báo mới</button>
 
@@ -170,7 +180,7 @@ if (isset($_GET['delete_id'])) {
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form method="GET" action="">
+                <form method="POST" action="">
                     <div class="modal-header">
                         <h5 class="modal-title" id="deleteModalLabel">Xác nhận Xóa</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -189,6 +199,7 @@ if (isset($_GET['delete_id'])) {
     </div>
 
 
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // Chuyển dữ liệu vào modal sửa
@@ -204,6 +215,12 @@ if (isset($_GET['delete_id'])) {
             document.getElementById('edit-title').value = title;
             document.getElementById('edit-message').value = message;
             document.getElementById('edit-status').value = status;
+        });
+        var deleteModal = document.getElementById('deleteModal');
+        deleteModal.addEventListener('show.bs.modal', function(event) {
+            var button = event.relatedTarget;
+            var id = button.getAttribute('data-id');
+            document.getElementById('delete-id').value = id;
         });
     </script>
 </body>

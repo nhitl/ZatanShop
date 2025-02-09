@@ -5,14 +5,15 @@ include('dbconnect.php');
 if ($conn->connect_error) {
     die("Kết nối cơ sở dữ liệu thất bại: " . $conn->connect_error);
 }
-// Lấy ID sản phẩm từ tham số GET
-$product_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+// Lấy slug sản phẩm từ tham số GET
+$slug = isset($_GET['slug']) ? $_GET['slug'] : '';
 
 // Khởi tạo biến để lưu trữ dữ liệu sản phẩm và hình ảnh
 $product = null;
 $images = [];
 
-// Truy vấn thông tin sản phẩm 
+
+// Truy vấn thông tin sản phẩm theo slug
 $productQuery = "
     SELECT 
         product_id,
@@ -27,9 +28,9 @@ $productQuery = "
         background_image,
         stock_quantity -- Thêm số lượng tồn kho
     FROM products 
-    WHERE product_id = ?";
+    WHERE slug = ?";
 $stmt = $conn->prepare($productQuery);
-$stmt->bind_param("i", $product_id);
+$stmt->bind_param("s", $slug); // Sử dụng 's' vì slug là chuỗi
 $stmt->execute();
 $productResult = $stmt->get_result();
 if ($productResult->num_rows > 0) {
@@ -43,12 +44,13 @@ if ($productResult->num_rows > 0) {
 // Truy vấn hình ảnh sản phẩm
 $imageQuery = "SELECT image_url FROM product_images WHERE product_id = ?";
 $stmt = $conn->prepare($imageQuery);
-$stmt->bind_param("i", $product_id);
+$stmt->bind_param("i", $product['product_id']); // Sử dụng product_id đã lấy được
 $stmt->execute();
 $imagesResult = $stmt->get_result();
 while ($image = $imagesResult->fetch_assoc()) {
     $images[] = $image['image_url'];
 }
+
 
 // Truy vấn giảm giá nếu có
 $discountQuery = "
@@ -58,7 +60,7 @@ $discountQuery = "
     WHERE product_id = ? 
       AND NOW() BETWEEN start_date AND end_date";
 $stmt = $conn->prepare($discountQuery);
-$stmt->bind_param("i", $product_id);
+$stmt->bind_param("i", $product['product_id']);
 $stmt->execute();
 $discountResult = $stmt->get_result();
 $discount = $discountResult->fetch_assoc();
@@ -111,15 +113,17 @@ $similarProductsQuery = "
         product_id,
         product_name,
         price,
-        background_image 
+        background_image,
+        slug 
     FROM products 
     WHERE category_id = ? 
       AND product_id != ? 
       AND price BETWEEN ? AND ? 
     LIMIT 10"; // Giới hạn số sản phẩm lấy về
 
+
 $stmt = $conn->prepare($similarProductsQuery);
-$stmt->bind_param("iiii", $product['category_id'], $product_id, $minPrice, $maxPrice);
+$stmt->bind_param("iiii", $product['category_id'], $product['product_id'], $minPrice, $maxPrice);
 $stmt->execute();
 $similarProductsResult = $stmt->get_result();
 
@@ -137,7 +141,7 @@ $reviewQuery = "
     WHERE r.product_id = ? 
     ORDER BY r.created_at DESC"; // Sắp xếp theo thời gian tạo, từ cũ đến mới
 $stmt = $conn->prepare($reviewQuery);
-$stmt->bind_param("i", $product_id);
+$stmt->bind_param("i", $product['product_id']);
 $stmt->execute();
 $reviewsResult = $stmt->get_result(); // Lấy kết quả đánh giá
 
@@ -150,7 +154,7 @@ $ratingCountQuery = "
     GROUP BY rating
     ORDER BY rating DESC"; // Sắp xếp theo số sao từ cao đến thấp
 $stmt = $conn->prepare($ratingCountQuery);
-$stmt->bind_param("i", $product_id);
+$stmt->bind_param("i", $product['product_id']);
 $stmt->execute();
 $ratingCountsResult = $stmt->get_result();
 $ratingCounts = [];
@@ -171,7 +175,7 @@ $averageRatingQuery = "
     FROM product_reviews
     WHERE product_id = ?";
 $stmt = $conn->prepare($averageRatingQuery);
-$stmt->bind_param("i", $product_id);
+$stmt->bind_param("i", $product['product_id']);
 $stmt->execute();
 $averageRatingResult = $stmt->get_result();
 $averageRatingRow = $averageRatingResult->fetch_assoc();
@@ -193,7 +197,9 @@ $averageRating = round($averageRatingRow['average_rating'], 1); // Làm tròn đ
     <!-- Thêm Swiper CSS -->
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="assets/css/product-detail.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" />
+    <link rel="stylesheet" href="assets/css/product-detail.css?v=1.0">
+    <link rel="icon" href="admin/assets/img/favicon.ico.png" type="image/png">
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
 </head>
 
@@ -224,8 +230,8 @@ $averageRating = round($averageRatingRow['average_rating'], 1); // Làm tròn đ
                                     <div class="swiper-container gallery-top">
                                         <div class="swiper-wrapper">
                                             <?php foreach ($images as $image): ?>
-                                                <a class="swiper-slide" href="<?php echo 'admin' . htmlspecialchars($image); ?>" title="Click để xem">
-                                                    <img src="<?php echo 'admin' . htmlspecialchars($image); ?>" alt="Hình ảnh sản phẩm" class="img-responsive mx-auto d-block">
+                                                <a class="swiper-slide" href="<?php echo 'admin/admin/' . htmlspecialchars($image); ?>" data-fancybox="gallery" title="Click để xem">
+                                                    <img src="<?php echo 'admin/admin/' . htmlspecialchars($image); ?>" alt="Hình ảnh sản phẩm" class="img-responsive mx-auto d-block">
                                                 </a>
                                             <?php endforeach; ?>
                                         </div>
@@ -235,18 +241,17 @@ $averageRating = round($averageRatingRow['average_rating'], 1); // Làm tròn đ
                                             <?php foreach ($images as $image): ?>
                                                 <div class="swiper-slide">
                                                     <div class="p-100">
-                                                        <img src="<?php echo 'admin' . htmlspecialchars($image); ?>" alt="Hình ảnh sản phẩm" class="swiper-lazy">
+                                                        <img src="<?php echo 'admin/admin/' . htmlspecialchars($image); ?>" alt="Hình ảnh sản phẩm" class="swiper-lazy">
                                                     </div>
                                                 </div>
                                             <?php endforeach; ?>
                                         </div>
-                                        <div class="swiper-button-next">
-                                        </div>
-                                        <div class="swiper-button-prev swiper-button-disabled">
-                                        </div>
+                                        <div class="swiper-button-next"></div>
+                                        <div class="swiper-button-prev swiper-button-disabled"></div>
                                     </div>
                                 </div>
                             </div>
+
 
                             <div class="col-12 col-md-7 col-lg-6 col-xl-5">
                                 <div class="product-info">
@@ -280,7 +285,7 @@ $averageRating = round($averageRatingRow['average_rating'], 1); // Làm tròn đ
 
                                     <?php
                                     // Giả sử bạn có biến $product_id chứa ID của sản phẩm hiện tại
-                                    $product_id = $_GET['id']; // hoặc lấy product_id theo cách bạn sử dụng
+                                    $product_id = $product['product_id']; // hoặc lấy product_id theo cách bạn sử dụng
 
                                     // Truy vấn các khuyến mãi từ bảng product_promotions liên quan đến sản phẩm hiện tại
                                     $promo_query = "SELECT promotion_description FROM product_promotions WHERE product_id = $product_id";
@@ -381,17 +386,9 @@ $averageRating = round($averageRatingRow['average_rating'], 1); // Làm tròn đ
                                                 Để được hỗ trợ tốt nhất. Hãy gọi
                                             </div>
                                             <div class="phone">
-                                                <a href="tel:19006750" title="1900 6750">1900 0000</a>
+                                                <a href="tel:0364313062" title="0364 313 062">0364 313 062</a>
                                             </div>
-                                            <div class="or">
-                                                <span>Hoặc</span>
-                                            </div>
-                                            <div class="title3">
-                                                Chat hỗ trợ trực tuyến
-                                            </div>
-                                            <a title="Chat với chúng tôi" class="chat" href="" target="_blank">
-                                                Chat với chúng tôi
-                                            </a>
+                                            
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-12 col-lg-6 col-xl-12">
@@ -400,7 +397,7 @@ $averageRating = round($averageRatingRow['average_rating'], 1); // Làm tròn đ
                                                 <img width="40" height="40" src="//bizweb.dktcdn.net/100/491/197/themes/917410/assets/chinhsach_1.png?1720274480928" alt="Miễn phí vẫn chuyển">
                                                 <div class="text">
                                                     <span class="title">Miễn phí vẫn chuyển</span>
-                                                    <span class="des">Cho tất cả đơn hàng trong nội thành Hồ Chí Minh</span>
+                                                    <span class="des">Cho tất cả đơn hàng trong nội thành Hà Nội</span>
                                                 </div>
                                             </div>
                                             <div class="item">
@@ -414,16 +411,10 @@ $averageRating = round($averageRatingRow['average_rating'], 1); // Làm tròn đ
                                                 <img width="40" height="40" src="//bizweb.dktcdn.net/100/491/197/themes/917410/assets/chinhsach_3.png?1720274480928" alt="Hỗ trợ nhanh chóng">
                                                 <div class="text">
                                                     <span class="title">Hỗ trợ nhanh chóng</span>
-                                                    <span class="des">Gọi Hotline: 19006750 để được hỗ trợ ngay lập tức</span>
+                                                    <span class="des">Gọi Hotline: 0364 313 062 để được hỗ trợ ngay lập tức</span>
                                                 </div>
                                             </div>
-                                            <div class="item">
-                                                <img width="40" height="40" src="//bizweb.dktcdn.net/100/491/197/themes/917410/assets/chinhsach_4.png?1720274480928" alt="Ưu đãi thành viên">
-                                                <div class="text">
-                                                    <span class="title">Ưu đãi thành viên</span>
-                                                    <span class="des">Đăng ký thành viên để được nhận được nhiều khuyến mãi</span>
-                                                </div>
-                                            </div>
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -445,7 +436,7 @@ $averageRating = round($averageRatingRow['average_rating'], 1); // Làm tròn đ
                                             <div class="product_getcontent-wrapper">
                                                 <div class="rte product_getcontent">
                                                     <div class="ba-text-fpt has-height">
-                                                        <figure><img src="<?php echo 'admin' . htmlspecialchars($product['background_image']); ?>" alt="<?php echo htmlspecialchars($product['product_name']); ?>"></figure>
+                                                        <figure><img src="<?php echo 'admin/admin/' . htmlspecialchars($product['background_image']); ?>" alt="<?php echo htmlspecialchars($product['product_name']); ?>"></figure>
                                                         <h3>Thông tin sản phẩm</h3>
                                                         <p class="pro-info"> <?php echo html_entity_decode($product['product_info']); ?></p>
                                                     </div>
@@ -668,15 +659,18 @@ $averageRating = round($averageRatingRow['average_rating'], 1); // Làm tròn đ
                                             <?php foreach ($similarProducts as $similarProduct): ?>
                                                 <div class="swiper-slide">
                                                     <div class="product-card">
-                                                        <a href="product-detail.php?id=<?php echo $similarProduct['product_id']; ?>">
-                                                            <img src="<?php echo 'admin' . $similarProduct['background_image']; ?>" alt="<?php echo $similarProduct['product_name']; ?>">
-                                                        </a>
-                                                        <a href="product-detail.php?id=<?php echo $similarProduct['product_id']; ?>">
-                                                            <h5 class="product-link"><?php echo $similarProduct['product_name']; ?></h5>
-                                                        </a>
-                                                        <p><?php echo number_format($similarProduct['price'], 2); ?> VNĐ</p>
-                                                        <a href="product-detail.php?id=<?php echo $similarProduct['product_id']; ?>" class="btn btn-primary">Xem chi tiết</a>
-                                                    </div>
+                                                            <!-- Thẻ hình ảnh -->
+                                                            <a href="/<?php echo $similarProduct['slug']; ?>">
+                                                                <img src="<?php echo 'admin/admin/' . $similarProduct['background_image']; ?>" alt="<?php echo $similarProduct['product_name']; ?>">
+                                                            </a>
+                                                            <!-- Thẻ tên sản phẩm -->
+                                                            <a href="/<?php echo $similarProduct['slug']; ?>">
+                                                                <h5 class="product-link"><?php echo $similarProduct['product_name']; ?></h5>
+                                                            </a>
+
+                                                            <!-- Thẻ nút "Xem chi tiết" -->
+                                                            <a href="/<?php echo $similarProduct['slug']; ?>" class="btn btn-primary">Xem chi tiết</a>
+                                                        </div>
 
                                                 </div>
                                             <?php endforeach; ?>
@@ -709,10 +703,7 @@ $averageRating = round($averageRatingRow['average_rating'], 1); // Làm tròn đ
                     </div>
                 </div>
             </div>
-
     </section>
-
-
     <?php
     include_once 'footer.php';
     ?>
@@ -720,6 +711,9 @@ $averageRating = round($averageRatingRow['average_rating'], 1); // Làm tròn đ
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <!-- Thêm Swiper JS -->
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script>
+
     <script>
         var galleryThumbs = new Swiper('.gallery-thumbs', {
             spaceBetween: 10,
@@ -912,7 +906,7 @@ $averageRating = round($averageRatingRow['average_rating'], 1); // Làm tròn đ
                 },
                 // Khi màn hình lớn hơn hoặc bằng 1200px
                 1200: {
-                    slidesPerView: 4, // Hiển thị 4 slide
+                    slidesPerView: 3, // Hiển thị 4 slide
                     spaceBetween: 15, // Khoảng cách giữa các slide
                 }
             }
@@ -1002,6 +996,7 @@ $averageRating = round($averageRatingRow['average_rating'], 1); // Làm tròn đ
                 });
             }
 
+            // Khi form được submit
             $("#reviewForm").on("submit", function(e) {
                 e.preventDefault(); // Ngăn việc reload lại trang
 
@@ -1057,7 +1052,6 @@ $averageRating = round($averageRatingRow['average_rating'], 1); // Làm tròn đ
                     }
                 });
             });
-
         });
 
 
@@ -1082,6 +1076,23 @@ $averageRating = round($averageRatingRow['average_rating'], 1); // Làm tròn đ
                 }
             });
         }
+    </script>
+
+    <script>
+    Fancybox.bind("[data-fancybox='gallery']", {
+        Toolbar: {
+        display: ["zoom", "close"], // Hiển thị nút phóng to và thoát
+        },
+        Zoom: {
+        maxScale: 2, // Tỷ lệ phóng to tối đa (có thể tăng lên 3 hoặc hơn nếu ảnh lớn)
+        },
+        Thumbs: {
+        autoStart: true, // Hiển thị thumbnail
+        },
+        Image: {
+        zoom: true, // Bật chế độ zoom ảnh
+        },
+    });
     </script>
 
 

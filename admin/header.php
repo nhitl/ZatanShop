@@ -19,8 +19,8 @@
             <button class="sidebar-toggle btn btn-dark" type="button">
                 <i class="fas fa-bars"></i>
             </button>
-            <a href="/TEST/index.php">
-                <img src="/TEST/assets/img/logo.png" alt="Logo">
+            <a href="/DOAN/index.php">
+                <img src="/DOAN/assets/img/logo.png" alt="Logo">
             </a>
             <h2>Trang quản trị ADMIN</h2>
         </div>
@@ -30,62 +30,62 @@
             <div class="sidebar-sticky">
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link" href="../admin/index.php">
+                        <a class="nav-link" href="/DOAN/admin/index.php">
                             <i class="fa-solid fa-gauge-high"></i> <span>Dashboard</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../admin/sanpham/index.php">
+                        <a class="nav-link" href="/DOAN/admin/sanpham/index.php">
                             <i class="fas fa-box"></i> <span>Sản Phẩm</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/TEST/admin/thuonghieu/index.php">
+                        <a class="nav-link" href="/DOAN/admin/thuonghieu/index.php">
                             <i class="fas fa-trademark"></i> <span>Thương Hiệu</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/TEST/admin/danhmuc/index.php">
+                        <a class="nav-link" href="/DOAN/admin/danhmuc/index.php">
                             <i class="fa-solid fa-list"></i> <span>Danh Mục SP</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/TEST/admin/danhmucnho/index.php">
+                        <a class="nav-link" href="/DOAN/admin/danhmucnho/index.php">
                             <i class="fab fa-steam-symbol"></i> <span>Danh Mục Nhỏ</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/TEST/admin/banner/index.php">
+                        <a class="nav-link" href="/DOAN/admin/banner/index.php">
                             <i class="fa-solid fa-panorama"></i> <span>Banner</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/TEST/admin/subbanner/index.php">
+                        <a class="nav-link" href="/DOAN/admin/subbanner/index.php">
                             <i class="fas fa-image"></i> <span>Banner Nhỏ</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/TEST/admin/tintuc/index.php">
+                        <a class="nav-link" href="/DOAN/admin/tintuc/index.php">
                             <i class="fa-regular fa-newspaper"></i> <span>Tin Tức</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/TEST/admin/notifications/index.php">
+                        <a class="nav-link" href="/DOAN/admin/notifications/index.php">
                             <i class="fa-regular fa-bell"></i> <span>Thông Báo</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/TEST/admin/voucher/index.php">
+                        <a class="nav-link" href="/DOAN/admin/voucher/index.php">
                             <i class="fa-solid fa-ticket"></i> <span>Vouchers</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/TEST/admin/order-details/index.php">
+                        <a class="nav-link" href="/DOAN/admin/order-details/index.php">
                             <i class="fa-regular fa-note-sticky"></i> <span>Đơn hàng</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/TEST/admin/user/index.php">
+                        <a class="nav-link" href="/DOAN/admin/user/index.php">
                             <i class="fas fa-users"></i> <span>User</span>
                         </a>
                     </li>

@@ -8,7 +8,7 @@ if (isset($_POST['is_ajax']) && $_POST['is_ajax'] == 1) {
     if ($subcategory_id) {
         // Truy vấn sản phẩm kết hợp với bảng discounts
         $product_query = "
-        SELECT p.*, d.discount_percentage 
+        SELECT p.product_id, p.product_name, p.background_image, p.price, p.stock_quantity, p.slug, d.discount_percentage 
         FROM products p
         LEFT JOIN discounts d ON p.product_id = d.product_id 
         WHERE p.subcategory_id = $subcategory_id 
@@ -32,12 +32,12 @@ if (isset($_POST['is_ajax']) && $_POST['is_ajax'] == 1) {
 <div class="col-md-6 col-lg-3 col-12 mb-4 animate__animated animate__fadeIn">
     <div class="card ">
     <div class="img-wrapper">
-        <a href="product_detail.php?id=' . $product['product_id'] . '">
-            <img src="admin' . $product['background_image'] . '" class="card-img-top" alt="' . $product['product_name'] . '">
+        <a href="' . htmlspecialchars($product['slug']) . '">
+            <img src="admin/admin/' . $product['background_image'] . '" class="card-img-top" alt="' . $product['product_name'] . '">
         </a>
         </div>
         <div class="card-body">
-            <a href="product_detail.php?id=' . $product['product_id'] . '" title="' . htmlspecialchars($product['product_name']) . '">
+            <a href="' . htmlspecialchars($product['slug']) . '" title="' . htmlspecialchars($product['product_name']) . '">
                 <h5 class="card-title">' . $product['product_name'] . '</h5>
             </a>';
 
@@ -109,11 +109,11 @@ if (!$subcategory_id) {
 
 // Truy vấn sản phẩm kết hợp với bảng discounts
 $product_query = "
-SELECT p.*, d.discount_percentage 
-FROM products p
-LEFT JOIN discounts d ON p.product_id = d.product_id 
-WHERE p.subcategory_id = $subcategory_id 
-LIMIT 4";
+        SELECT p.product_id, p.product_name, p.background_image, p.price, p.stock_quantity, p.slug, d.discount_percentage 
+        FROM products p
+        LEFT JOIN discounts d ON p.product_id = d.product_id 
+        WHERE p.subcategory_id = $subcategory_id 
+        LIMIT 4";
 
 $product_result = $conn->query($product_query);
 
@@ -161,13 +161,13 @@ $product_result = $conn->query($product_query);
                         <div class="col-md-6 col-lg-3 col-12 mb-4 animate__animated animate__fadeIn">
                             <div class="card">
                                 <div class="img-wrapper">
-                                    <a href="product-detail.php?id=<?= $product['product_id'] ?>">
-                                        <img src="admin<?= $product['background_image'] ?>" class="card-img-top" alt="<?= $product['product_name'] ?>">
+                                    <a href="<?= htmlspecialchars($product['slug']) ?>">
+                                        <img src="admin/admin/<?= $product['background_image'] ?>" class="card-img-top" alt="<?= $product['product_name'] ?>">
                                     </a>
                                 </div>
 
                                 <div class="card-body">
-                                    <a href="product-detail.php?id=<?= $product['product_id'] ?>" title="<?= htmlspecialchars($product['product_name']) ?>">
+                                    <a href="<?= htmlspecialchars($product['slug']) ?>" title="<?= htmlspecialchars($product['product_name']) ?>">
                                         <h5 class="card-title"><?= $product['product_name'] ?></h5>
                                     </a>
 

@@ -11,6 +11,16 @@ $status_mapping = [
     'canceled' => 'Đã hủy'
 ];
 
+$payment_status_mapping = [
+    'pending' => 'Chờ thanh toán',
+    'paid' => 'Đã thanh toán',
+    'failed' => 'Thanh toán thất bại',
+    'Pending Refund' => 'Chờ hoàn tiền',
+    'Refund Successful' => 'Hoàn tiền thành công',
+    'Refund Failed' => 'Hoàn tiền thất bại'
+];
+
+
 // Mảng ánh xạ phương thức thanh toán từ tiếng Anh sang tiếng Việt
 $payment_method_mapping = [
     'online' => 'Thanh toán online',
@@ -278,6 +288,15 @@ if ($result->num_rows > 0) {
 
         });
     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        });
+    </script>
+
 </body>
 
 </html>

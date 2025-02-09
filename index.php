@@ -4,8 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <title>Zatan Shop</title>
+    <meta name="description" content="Zatan Shop - Cung cấp các sản phẩm công nghệ như mainboard, CPU, VGA, RAM, và nhiều sản phẩm khác với giá ưu đãi và dịch vụ chất lượng." />
+    <meta name="keywords" content="Zatan Shop, mainboard, CPU, VGA, RAM, sản phẩm công nghệ, mua sắm trực tuyến" />
+    <link rel="icon" href="admin/assets/img/favicon.ico.png" type="image/png">
+    <link rel="stylesheet" href="style.css?v=<?php echo time(); ?>">
+    <title>Mua Sắm Công Nghệ Tại Zatan Shop - Mainboard, CPU, VGA, RAM</title>
+
 </head>
 
 <body>
@@ -16,14 +20,13 @@
     include_once 'new-products.php';
     include_once 'loading_bar.php';
     include_once 'contact_button.php';
-    include_once 'box_mainboard.php';
-    include_once 'box_cpu.php';
+    include_once 'box_categories.php';
     include_once 'ads.php';
     ?>
     
 
     <section class="news">
-        <a href="news.php">
+        <a href="tin-tuc-moi-nhat">
             <h2 class="text-center mb-4">TIN TỨC CÔNG NGHỆ 2024</h2>
         </a>
 
@@ -42,8 +45,10 @@
                     echo '<img src="admin/admin/' . $row["news_image"] . '" alt="' . $row["news_name"] . '">';
                     echo '</a>';
                     echo '<div class="blog__item__text">';
+                    echo '<a href="blog-details.php?news_id=' . $row['news_id'] . '">';
                     echo '<h5>' . $row['news_name'] . '</h5>';
-                    echo '<a href="blog-details.php?news_id=' . $row['news_id'] . '">Xem Ngay</a>';
+                    echo '</a>';
+                    echo '<a class="view" href="blog-details.php?news_id=' . $row['news_id'] . '">Xem Ngay</a>';
                     echo '</div>';
                     echo '</div>';
                     echo '</div>';
@@ -108,44 +113,44 @@
     </script>
     <script>
         $(document).ready(function() {
-            $('.open-modal-btn').click(function() {
-                var productId = $(this).closest('.card, .product-card').find('a').attr('href').split('id=')[1];
+    $('.open-modal-btn').click(function() {
+        var productSlug = $(this).closest('.card').find('a').attr('href').split('/').pop(); // Lấy slug từ đường dẫn
 
-                $.ajax({
-                    url: 'get_product_details.php',
-                    type: 'GET',
-                    data: {
-                        id: productId
-                    },
-                    dataType: 'json',
-                    success: function(data) {
-                        $('#productModal #product-img').attr('src', 'admin' + data.background_image);
-                        $('#productModal #product-name').text(data.product_name);
+        $.ajax({
+            url: 'get_product_details.php',
+            type: 'GET',
+            data: {
+                slug: productSlug // Truyền slug
+            },
+            dataType: 'json',
+            success: function(data) {
+                $('#productModal #product-img').attr('src', 'admin/admin/' + data.background_image);
+                $('#productModal #product-name').text(data.product_name);
 
-                        // Lấy giá gốc và giá sau giảm
-                        var discountedPrice = parseFloat(data.price * (1 - (data.discount_percentage / 100))).toFixed(0); // Giá sau giảm
-                        var originalPrice = parseFloat(data.price).toFixed(0); // Giá gốc
-                        var savingsPercentage = data.discount_percentage; // Tỷ lệ tiết kiệm
+                // Hiển thị giá
+                var discountedPrice = parseFloat(data.price * (1 - (data.discount_percentage / 100))).toFixed(0);
+                var originalPrice = parseFloat(data.price).toFixed(0);
+                var savingsPercentage = data.discount_percentage;
 
-                        // Hiển thị giá theo định dạng yêu cầu
-                        $('#productModal #product-price').html(
-                            '<strong class="title">Giá:</strong> <span class="discounted-price">' + new Intl.NumberFormat().format(discountedPrice) + ' VNĐ</span> ' +
-                            '<span class="original-price">' + new Intl.NumberFormat().format(originalPrice) + ' VNĐ</span> ' +
-                            '<strong class="title1">(Tiết kiệm: ' + savingsPercentage + '%)</strong>'
-                        );
+                $('#productModal #product-price').html(
+                    '<strong class="title">Giá:</strong> <span class="discounted-price">' + new Intl.NumberFormat().format(discountedPrice) + ' VNĐ</span> ' +
+                    '<span class="original-price">' + new Intl.NumberFormat().format(originalPrice) + ' VNĐ</span> ' +
+                    '<strong class="title1">(Tiết kiệm: ' + savingsPercentage + '%)</strong>'
+                );
 
-                        $('#productModal #product-category').html('<strong class="title">Loại sản phẩm:</strong> ' + data.category_name);
-                        $('#productModal #product-brand').html('<strong class="title">Thương hiệu:</strong> ' + data.brand_name);
-                        $('#productModal #product-sales').html('<strong class="title">Số lượng đã bán:</strong> ' + data.sales_count);
-                        // Hiển thị modal
-                        $('#productModal').modal('show');
-                    },
-                    error: function() {
-                        alert('Không thể lấy thông tin sản phẩm.');
-                    }
-                });
-            });
+                $('#productModal #product-category').html('<strong class="title">Loại sản phẩm:</strong> ' + data.category_name);
+                $('#productModal #product-brand').html('<strong class="title">Thương hiệu:</strong> ' + data.brand_name);
+                $('#productModal #product-sales').html('<strong class="title">Số lượng đã bán:</strong> ' + data.sales_count);
+
+                // Hiển thị modal
+                $('#productModal').modal('show');
+            },
+            error: function() {
+                alert('Không thể lấy thông tin sản phẩm.');
+            }
         });
+    });
+});
     </script>
 
 </body>

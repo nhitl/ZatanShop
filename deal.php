@@ -1,6 +1,6 @@
 <?php
 include_once 'dbconnect.php';
-$sqlFeatured = "SELECT p.product_id, p.product_name, p.price, p.background_image, d.discount_percentage, d.end_date 
+$sqlFeatured = "SELECT p.product_id, p.product_name, p.price, p.slug, p.background_image, d.discount_percentage, d.end_date 
                 FROM products p 
                 JOIN discounts d ON p.product_id = d.product_id 
                 WHERE d.end_date >= CURDATE() 
@@ -12,7 +12,7 @@ $limit = 12; // Số sản phẩm trên mỗi trang
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $offset = ($page - 1) * $limit;
 
-$sqlDeals = "SELECT p.product_id, p.product_name, p.price, p.background_image, d.discount_percentage, d.end_date 
+$sqlDeals = "SELECT p.product_id, p.product_name, p.price, p.background_image, p.slug ,d.discount_percentage, d.end_date 
              FROM products p 
              JOIN discounts d ON p.product_id = d.product_id 
              WHERE d.end_date >= CURDATE() 
@@ -39,6 +39,7 @@ $totalPages = ceil($totalRows / $limit);
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <title>Flash Sale Mỗi Ngày</title>
+    <link rel="icon" href="admin/assets/img/favicon.ico.png" type="image/png">
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
     <script>
         function startCountdown(productId, endDate) {
@@ -101,20 +102,20 @@ $totalPages = ceil($totalRows / $limit);
                             ?>
                                 <div class="swiper-slide">
                                     <div class="deal-card">
-                                        <a href="product-detail.php?id=<?php echo $row['product_id']; ?>" class="deal-card-image position-relative">
-                                            <img src="<?php echo 'admin' . $row['background_image']; ?>" alt="<?php echo $row['product_name']; ?>" class="img-deal-featured">
+                                        <a href="<?php echo $row['slug']; ?>" class="deal-card-image position-relative">
+                                            <img src="<?php echo 'admin/admin/' . $row['background_image']; ?>" alt="<?php echo $row['product_name']; ?>" class="img-deal-featured">
                                             <span class="badge hot-deal"><i class="fa-solid fa-bolt"></i> Hot Deal <i class="fa-regular fa-clock"></i></span> <!-- Mác Hot Deal -->
                                         </a>
 
                                         <div class="deal-card-info">
                                             <h5 class="product-title" title="<?php echo htmlspecialchars($row['product_name']); ?>">
-                                                <a href="product-detail.php?id=<?php echo $row['product_id']; ?>" class="product-link">
+                                                <a href="<?php echo $row['slug']; ?>" class="product-link">
                                                     <?php echo htmlspecialchars($row['product_name']); ?>
                                                 </a>
                                             </h5>
 
-                                            <p class="product-price-discounted"><span class="text-danger"><?php echo number_format($discountedPrice); ?> VNĐ</span></p>
-                                            <p class="product-price"><span class="text-decoration-line-through text-muted"><?php echo number_format($originalPrice); ?> VNĐ</span><span class="text-danger">(Tiết kiệm: <?php echo $discountPercentage; ?>%)</span></p>
+                                            <p class="product-price-discounted"><span class="text-danger"><?php echo number_format($discountedPrice); ?> ₫</span></p>
+                                            <p class="product-price"><span class="text-decoration-line-through text-muted"><?php echo number_format($originalPrice); ?> ₫</span><span class="text-danger">(Tiết kiệm: <?php echo $discountPercentage; ?>%)</span></p>
                                             <div class="button-wrapper">
                                                 <a href="#" onclick="addToCart(<?php echo htmlspecialchars($row['product_id']); ?>, 1); return false;" class="btn btn-danger">MUA GIÁ SỐC</a>
                                             </div>
@@ -162,21 +163,21 @@ $totalPages = ceil($totalRows / $limit);
                     <?php while ($row = $resultDeals->fetch_assoc()): ?>
                         <div class="col-md-3 col-6">
                             <div class="card mb-4">
-                                <a class="img-deal" href="product-detail.php?id=<?php echo $row['product_id']; ?>">
+                                <a class="img-deal" href="<?php echo $row['slug']; ?>">
                                     <!-- Badge hiển thị % giảm giá -->
                                     <div class="discount-badge">
                                         - <?php echo $row['discount_percentage']; ?>%
                                     </div>
-                                    <img src="<?php echo 'admin' . $row['background_image']; ?>" alt="<?php echo $row['product_name']; ?>" class="card-img-top">
+                                    <img src="<?php echo 'admin/admin/' . $row['background_image']; ?>" alt="<?php echo $row['product_name']; ?>" class="card-img-top">
                                 </a>
                                 <div class="card-body">
-                                    <a href="product-detail.php?id=<?php echo $row['product_id']; ?>">
+                                    <a href="<?php echo $row['slug']; ?>">
                                         <h5 class="card-title" title="<?php echo htmlspecialchars($row['product_name']); ?>">
                                             <?php echo htmlspecialchars($row['product_name']); ?>
                                         </h5>
                                     </a>
-                                    <p class="card-text"><span class="text-decoration-line-through"><?php echo number_format($row['price']); ?> VNĐ</span></p>
-                                    <p class="card-text"><span class="text-danger"><?php echo number_format($row['price'] * (1 - $row['discount_percentage'] / 100)); ?> VNĐ</span></p>
+                                    <p class="card-text"><span class="text-decoration-line-through"><?php echo number_format($row['price']); ?> ₫</span></p>
+                                    <p class="card-text"><span class="text-danger"><?php echo number_format($row['price'] * (1 - $row['discount_percentage'] / 100)); ?> ₫</span></p>
 
                                     <!-- Thêm khuyến mãi nếu có -->
                                     <?php

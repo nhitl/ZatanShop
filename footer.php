@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css?v=2.8">
     <title>Document</title>
 </head>
 
@@ -15,8 +16,13 @@
     <section class="myfooter">
         <div class="container">
             <div class="row footer-head py-2 px-5">
-                <div class="col-6">
+                <div class="col-6 d-flex justify-content-center align-items-center text-warning">
+                    <div class="text-center">
+                        <h4>Zatan Shop</h4>
+                        <h5>Uy tín tạo niềm tin!</h5>
+                    </div>
                 </div>
+
                 <div class="col-3 text-warning">
                     <?php
                     // Truy vấn tổng số lượng bán từ cột sales_count
@@ -66,43 +72,30 @@
             </div>
 
             <div class="row footer-body py-3 px-5 text-white">
-                <div class="col-sm-6 col-md-3">
-                    <h4><img src="admin/assets/img/logoshop1.png" alt=""></h4>
+                <div class="col-sm-6 col-md-4">
+                    <h4><img src="admin/assets/img/logoshop1.png" alt="Logo Zatan Shop"></h4>
                     <ul class="list-footer">
-                        <li class="li-footer">Địa chỉ</li>
-                        <li class="li-footer">Số điện thoại</li>
-                        <li class="li-footer">Email</li>
+                        <li class="li-footer">Địa chỉ : Bắc Giang</li>
+                        <li class="li-footer">Số điện thoại: 0364 313 062</li>
+                        <li class="li-footer">Email: nhitran071202@gmail.com</li>
                     </ul>
 
                 </div>
-                <div class="col-sm-6 col-md-3">
-                    <h4>Hỗ trợ khách hàng</h4>
-                    <ul class="list-footer">
-                        <li class="li-footer"><a href="/gioi-thieu.php" title="Giới thiệu">Giới thiệu</a></li>
-                        <li class="li-footer"><a href="/gioi-thieu.php" title="Giới thiệu">Liên hệ</a></li>
-                        <li class="li-footer"><a href="/gioi-thieu.php" title="Giới thiệu">Hướng dẫn trả góp</a></li>
-                        <li class="li-footer"><a href="/gioi-thieu.php" title="Giới thiệu">Hướng đẫn mua hàng Online</a></li>
-                        <li class="li-footer"><a href="/gioi-thieu.php" title="Giới thiệu">Câu hỏi thường gặp</a></li>
-                    </ul>
-                </div>
-                <div class="col-sm-6 col-md-3">
+                <div class="col-sm-6 col-md-4">
                     <h4>Chính sách</h4>
                     <ul class="list-footer">
-                        <li class="li-footer"><a href="/gioi-thieu.php" title="Giới thiệu">Chính sách bảo mật</a></li>
-                        <li class="li-footer"><a href="/gioi-thieu.php" title="Giới thiệu">Chính sách đổi trả</a></li>
-                        <li class="li-footer"><a href="/gioi-thieu.php" title="Giới thiệu">Chính sách bảo hành</a></li>
-                        <li class="li-footer"><a href="/gioi-thieu.php" title="Giới thiệu">Chính sách đặt cọc giữ hàng</a></li>
+                        <li class="li-footer"><a href="/chinh-sach" title="Giới thiệu">Chính sách buôn bán</a></li>
                     </ul>
                 </div>
-                <div class="col-sm-6 col-md-3">
+                <div class="col-sm-6 col-md-4">
                     <h4>Tổng đài hỗ trợ</h4>
                     <ul class="list-footer">
-                        <li class="li-footer">Gọi mua hàng: 19006750 </li>
-                        <li class="li-footer">Gọi bảo hành: 19006750 </li>
-                        <li class="li-footer">Gọi khiếu nại: 19006750 </li>
+                        <li class="li-footer">Gọi mua hàng: 0364 313 062 </li>
+                        <li class="li-footer">Gọi bảo hành: 0364 313 062 </li>
+                        <li class="li-footer">Gọi khiếu nại: 0364 313 062 </li>
                     </ul>
                     <h4>Phương thức thanh toán</h4>
-                    <h5>ảnh</h5>
+                    <h5><img src="admin/assets/img/vnpay.png" alt="VnPay"></h5>
                 </div>
             </div>
             <div class="row footer-footer py-3 px-5">

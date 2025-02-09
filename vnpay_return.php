@@ -70,15 +70,18 @@
                         <div>
                             <div class='mb-3'>
                                 <label class='response-label'>Mã đơn hàng:</label>
-                                <span>{$vnp_TxnRef}</span>
+                                <span>#{$vnp_TxnRef}</span>
                             </div>
                             <div class='mb-3'>
                                 <label class='response-label'>Số tiền:</label>
-                                <span>" . ($vnp_Amount / 100) . " VND</span>
+                                <span>" . number_format($vnp_Amount / 100, 0, ',', '.') . " ₫</span>
                             </div>
                             <div class='mb-3'>
                                 <label class='response-label'>Kết quả:</label>
-                                <span class='response-status success'>GD Thanh công</span>
+                                <span class='response-status success'>Thanh toán thành công!</span>
+                            </div>
+                            <div class='mt-4 text-center'>
+                                <a href='history-orders.php' class='btn btn-green'>Xem chi tiết đơn hàng</a>
                             </div>
                         </div>
                     </div>";
@@ -107,15 +110,15 @@
                 <div>
                     <div class='mb-3'>
                         <label class='response-label'>Mã đơn hàng:</label>
-                        <span>{$vnp_TxnRef}</span>
+                        <span>#{$vnp_TxnRef}</span>
                     </div>
                     <div class='mb-3'>
                         <label class='response-label'>Số tiền:</label>
-                        <span>" . ($vnp_Amount / 100) . " VND</span>
+                        <span>" . number_format($vnp_Amount / 100, 0, ',', '.') . " ₫</span>
                     </div>
                     <div class='mb-3'>
                         <label class='response-label'>Kết quả:</label>
-                        <span class='response-status error'>GD Không thành công</span>
+                        <span class='response-status error'>Thanh toán không thành công!</span>
                     </div>
                 </div>
             </div>";

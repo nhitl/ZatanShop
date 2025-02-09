@@ -43,8 +43,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/modal.css">
     <title>Thêm mới Subbanner</title>
     <style>
@@ -63,8 +63,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <div class="container-fluid">
         <div class="row">
-            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-            <a href="index.php" class="btn btn-secondary"><i class="fa-solid fa-left-long"></i></a>
+            <main role="main" class="col-md-9 ms-sm-auto col-lg-10 px-4">
+                <a href="index.php" class="btn btn-secondary"><i class="fa-solid fa-left-long"></i></a>
                 <h2 class="my-4">Thêm mới Subbanner</h2>
 
                 <?php
@@ -79,20 +79,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <!-- Form thêm mới subbanner -->
                 <form action="create.php" method="post" enctype="multipart/form-data">
                     <!-- Các trường thông tin subbanner -->
-                    <div class="form-group">
-                        <label for="subbanner_name">Tên subbanner:</label>
+                    <div class="mb-3">
+                        <label for="subbanner_name" class="form-label">Tên subbanner:</label>
                         <input type="text" class="form-control" id="subbanner_name" name="subbanner_name" required>
                     </div>
-                    <div class="form-group">
-                        <label for="subbanner_image">Ảnh subbanner:</label>
-                        <input type="file" class="form-control-file" id="subbanner_image" name="subbanner_image" accept="image/*" required>
+                    <div class="mb-3">
+                        <label for="subbanner_image" class="form-label">Ảnh subbanner:</label>
+                        <input type="file" class="form-control" id="subbanner_image" name="subbanner_image" accept="image/*" required>
                     </div>
-                    <div class="form-group">
-                        <label for="content">Nội dung:</label>
+                    <div class="mb-3">
+                        <label for="content" class="form-label">Nội dung:</label>
                         <textarea class="form-control" id="content" name="content"></textarea>
                     </div>
-                    <div class="form-group">
-                        <label for="link">Link:</label>
+                    <div class="mb-3">
+                        <label for="link" class="form-label">Link:</label>
                         <input type="text" class="form-control" id="link" name="link">
                     </div>
                     <!-- Nút thêm mới -->
@@ -102,9 +102,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </main>
         </div>
     </div>
+    
     <?php
     include_once '../footer.php';
     ?>
 </body>
 
 </html>
+

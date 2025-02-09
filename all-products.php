@@ -7,7 +7,7 @@
     <meta name="keywords" content="Male_Fashion, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Zatan Shop</title>
+    <title>Sản Phẩm - Zatan Shop</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     <!-- Bootstrap CSS -->
@@ -15,8 +15,8 @@
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="admin/assets/img/favicon.ico.png" type="image/png">
+    <link rel="stylesheet" href="style.css?v=1.1">
 </head>
 
 <body>
@@ -262,7 +262,7 @@
                     $start_from = ($current_page - 1) * $productsPerPage;
 
                     // Truy vấn CSDL để lấy thông tin sản phẩm, danh mục và thương hiệu và sắp xếp
-                    $query = "SELECT p.product_id, p.product_name, p.price, p.background_image, b.brand_name, p.stock_quantity
+                    $query = "SELECT p.product_id, p.product_name, p.price, p.background_image, b.brand_name, p.stock_quantity, p.slug
                         FROM products p 
                         JOIN brands b ON p.brand_id = b.brand_id 
                         WHERE 1=1"; // WHERE 1=1 để thêm điều kiện một cách dễ dàng
@@ -310,7 +310,7 @@
                             // Lặp qua từng sản phẩm và hiển thị
                             while ($row = $result->fetch_assoc()) {
                                 // Tạo đường dẫn đầy đủ đến hình ảnh
-                                $imagePath = 'admin' . $row["background_image"];
+                                $imagePath = 'admin/admin/' . $row["background_image"];
 
                                 // Tách tên thương hiệu thành các ký tự riêng lẻ và bao bọc chúng trong thẻ <span>
                                 $brand_name_spans = '';
@@ -336,7 +336,7 @@
                                 echo '<div class="col-lg-4 col-md-6 col-6">';
                                 echo '    <div class="card product-all mb-4">';
                                 echo '        <div class="img-container promo-container">';
-                                echo '            <a href="product-detail.php?id=' . $row["product_id"] . '">';
+                                echo '            <a href="/DOAN/' . htmlspecialchars($row["slug"]) . '">';
                                 echo '                <img src="' . $imagePath . '" class="card-img-top product-img" alt="' . htmlspecialchars($row["product_name"]) . '"';
                                 echo '                     data-name="' . htmlspecialchars($row["product_name"]) . '"';
                                 echo '                     data-price="' . number_format($discounted_price) . '"';
@@ -376,18 +376,16 @@
 
                                 // Thân card sản phẩm
                                 echo '        <div class="card-body product-info">';
-                                echo '            <a href="product-detail.php?id=' . $row["product_id"] . '" class="product-link">';
+                                echo '            <a href="/DOAN/' . htmlspecialchars($row["slug"]) . '" class="product-link">';
                                 echo '                <h5 class="card-title product-name" title="' . htmlspecialchars($row["product_name"]) . '">' . htmlspecialchars($row["product_name"]) . '</h5>';
                                 echo '            </a>';
                                 echo '            <p class="product-price">';
-
                                 if ($discount_percentage > 0) {
                                     echo '<span class="original-price">' . number_format($original_price) . ' VNĐ</span><br>';
                                     echo '<span class="discounted-price">' . number_format($discounted_price) . ' VNĐ</span>';
                                 } else {
                                     echo number_format($original_price) . ' VNĐ';
                                 }
-
                                 echo '            </p>';
                                 echo '<div class="stock-and-cart d-flex justify-content-between align-items-center">';
                                 echo '<p class="stock-quantity mb-0">';

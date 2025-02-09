@@ -61,62 +61,52 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <title>Chỉnh sửa thương hiệu</title>
     <link rel="stylesheet" href="../assets/css/modal.css">
     <style>
-        .container-fluid {
-            margin-top: 80px;
+        .ed-brand .container{
+            margin-top: 40px;
         }
     </style>
 </head>
 
 <body>
-
-    <?php
-    // Include header
-    include_once '../header.php';
-    ?>
-
-    <div class="container-fluid">
-        <div class="row">
-            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-                <a href="index.php" class="btn btn-secondary"><i class="fa-solid fa-left-long"></i></a>
-                <h2 class="my-4">Chỉnh sửa thương hiệu</h2>
-
-                <!-- Form chỉnh sửa thương hiệu -->
-                <form action="edit.php?brand_id=<?php echo $brandId; ?>" method="post" enctype="multipart/form-data">
-                    <!-- Các trường thông tin thương hiệu -->
-                    <div class="form-group">
-                        <label for="brand_name">Tên thương hiệu:</label>
-                        <input type="text" class="form-control" id="brand_name" name="brand_name" value="<?php echo htmlspecialchars($row['brand_name']); ?>" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="brand_image">Ảnh thương hiệu:</label>
-                        <input type="file" class="form-control-file" id="brand_image" name="brand_image" accept="image/*">
-                        <img src="<?php echo htmlspecialchars($row['brand_image']); ?>" alt="Ảnh thương hiệu" width="100">
-                    </div>
-                    <!-- Nút cập nhật -->
-                    <button type="submit" class="btn btn-primary">Cập nhật</button>
-                </form>
-
-            </main>
+    <?php include_once '../header.php'; ?>
+    <section class="ed-brand">
+        <div class="container py-5">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <a href="index.php" class="btn btn-secondary mb-3"><i class="fa fa-arrow-left"></i> Quay lại</a>
+                    <h2 class="text-center mb-4">Chỉnh sửa thương hiệu</h2>
+                    <form action="edit.php?brand_id=<?php echo $brandId; ?>" method="post" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="brand_name" class="form-label">Tên thương hiệu:</label>
+                            <input type="text" class="form-control" id="brand_name" name="brand_name" value="<?php echo htmlspecialchars($row['brand_name']); ?>" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="brand_image" class="form-label">Ảnh thương hiệu:</label>
+                            <input type="file" class="form-control" id="brand_image" name="brand_image" accept="image/*">
+                            <div class="mt-3">
+                                <img src="<?php echo htmlspecialchars($row['brand_image']); ?>" alt="Ảnh thương hiệu" class="img-thumbnail" width="150">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-success">Cập nhật</button>
+                    </form>
+                </div>
+            </div>
         </div>
-    </div>
-    <?php
-    include_once '../footer.php';
-    ?>
+    </section>
+    <?php include_once '../footer.php'; ?>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
 
-<?php
-// Đóng kết nối CSDL
-mysqli_close($conn);
-?>
+<?php mysqli_close($conn); ?>

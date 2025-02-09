@@ -9,7 +9,7 @@ if (isset($_GET['subcategory_id'])) {
     if (mysqli_query($conn, $query)) {
         $_SESSION['success_message'] = "Danh mục con đã được xóa thành công.";
     } else {
-        $_SESSION['success_message'] = "Có lỗi xảy ra khi xóa danh mục con.";
+        $_SESSION['error_message'] = "Có lỗi xảy ra khi xóa danh mục con.";
     }
     
     mysqli_close($conn);

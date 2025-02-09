@@ -88,6 +88,7 @@ $has_address = !empty($shipping_info['recipient_name']) && !empty($shipping_info
     <title>Thanh toán</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="assets\css\checkout.css">
+    <link rel="icon" href="admin/assets/img/favicon.ico.png" type="image/png">
 
 </head>
 
@@ -173,7 +174,7 @@ $has_address = !empty($shipping_info['recipient_name']) && !empty($shipping_info
                         ?>
                             <li class="list-group-item d-flex justify-content-between align-items-center" data-price="<?php echo $total_price; ?>">
                                 <div class="d-flex align-items-center">
-                                    <img src="<?php echo 'admin' . $row['background_image']; ?>" alt="<?php echo htmlspecialchars($row['product_name']); ?>" class="img-thumbnail me-3" style="width: 100px;">
+                                    <img src="<?php echo 'admin/admin/' . $row['background_image']; ?>" alt="<?php echo htmlspecialchars($row['product_name']); ?>" class="img-thumbnail me-3" style="width: 100px;">
                                     <div>
                                         <h5><?php echo htmlspecialchars($row['product_name']); ?></h5>
                                         <p><?php echo htmlspecialchars($row['quantity']); ?> x <?php echo number_format($discounted_price, 0, ',', '.'); ?> ₫</p>

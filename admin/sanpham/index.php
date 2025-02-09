@@ -88,7 +88,7 @@ $result = mysqli_query($conn, $query);
                     echo "<strong>Thao tác:</strong> <br>";
                     echo "<a href='#' class='btn btn-info btn-sm view-product' data-bs-toggle='modal' data-bs-target='#productDetailModal' data-product-id='{$row['product_id']}'><i class='fas fa-eye'></i> Xem chi tiết</a> ";
                     echo "<a href='edit.php?product_id={$row['product_id']}' class='btn btn-primary btn-sm'><i class='fas fa-edit'></i> Chỉnh sửa</a> ";
-                    echo "<a href='delete.php?product_id={$row['product_id']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?')\"><i class='fas fa-trash-alt'></i> Xóa</a> ";
+                    echo "<a href='#' class='btn btn-danger btn-sm delete-product' data-product-id='{$row['product_id']}'><i class='fas fa-trash-alt'></i> Xóa</a>";
                     echo "<a href='duplicate.php?product_id={$row['product_id']}' class='btn btn-warning btn-sm'><i class='fas fa-copy'></i> Tạo sản phẩm tương tự</a>";
                     echo "</div>";
                     echo "</div>";
@@ -115,8 +115,25 @@ $result = mysqli_query($conn, $query);
                     </div>
                 </div>
             </div>
+            <!-- Modal xác nhận xóa -->
+            <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deleteConfirmModalLabel">Xác nhận xóa sản phẩm</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Bạn có chắc chắn muốn xóa sản phẩm này không?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                            <a href="#" id="confirmDeleteBtn" class="btn btn-danger">Xóa</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-
         <div class="scroll-to-bottom">
             <i class="fas fa-chevron-down"></i>
         </div>
@@ -184,6 +201,22 @@ $result = mysqli_query($conn, $query);
                     error: function(jqXHR, textStatus, errorThrown) {
                         console.error('Lỗi AJAX:', textStatus, errorThrown);
                     }
+                });
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var deleteButtons = document.querySelectorAll(".delete-product");
+            var confirmDeleteBtn = document.getElementById("confirmDeleteBtn");
+
+            deleteButtons.forEach(function(button) {
+                button.addEventListener("click", function(event) {
+                    event.preventDefault();
+                    var productId = this.getAttribute("data-product-id");
+                    confirmDeleteBtn.href = "delete.php?product_id=" + productId;
+                    var deleteModal = new bootstrap.Modal(document.getElementById("deleteConfirmModal"));
+                    deleteModal.show();
                 });
             });
         });

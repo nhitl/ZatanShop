@@ -10,11 +10,9 @@ if (session_status() === PHP_SESSION_NONE) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../assets/css/modal.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    
 </head>
 <body>
     <!-- Thông báo thành công -->
@@ -23,7 +21,7 @@ if (session_status() === PHP_SESSION_NONE) {
         <div class="success-icon" id="successIcon">
             <div class="border-wrapper"></div>
             <div class="icon-wrapper">
-            <i class="fa-solid fa-check"></i>
+                <i class="fa-solid fa-check"></i>
             </div>
         </div>
         <script>
@@ -42,7 +40,34 @@ if (session_status() === PHP_SESSION_NONE) {
         </script>
         <?php unset($_SESSION['success_message']); ?>
     <?php endif; ?>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Thông báo lỗi (Modal) -->
+    <?php if (isset($_SESSION['error_message'])): ?>
+        <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="errorModalLabel">Lỗi</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <i class="fa-solid fa-exclamation-triangle" style="color: red;"></i>
+                        <span><?php echo $_SESSION['error_message']; ?></span>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
+                errorModal.show();
+            });
+        </script>
+        <?php unset($_SESSION['error_message']); ?>
+    <?php endif; ?>
 
 </body>
 </html>

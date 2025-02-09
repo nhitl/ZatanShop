@@ -85,7 +85,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["login"])) {
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
         if (password_verify($password, $row["password"])) {
-            session_start();
             $_SESSION['user_id'] = $row['user_id'];
             $_SESSION['role'] = $row['role']; // Lưu role vào session
 

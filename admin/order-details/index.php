@@ -3,11 +3,12 @@
 include_once '../dbconnect.php';
 
 // Truy vấn để lấy thông tin đơn hàng và sắp xếp theo thời gian tạo mới nhất trước
-$sql = "SELECT orders.*, users.full_name, users.phone_number, shipping_addresses.address 
+$sql = "SELECT orders.*, users.full_name, shipping_addresses.recipient_phone, shipping_addresses.address 
         FROM orders
         JOIN users ON orders.user_id = users.user_id
         JOIN shipping_addresses ON orders.address_id = shipping_addresses.address_id
         ORDER BY orders.created_at DESC";
+
 
 $result = $conn->query($sql);
 
@@ -18,6 +19,16 @@ $status_mapping = [
     'shipping' => 'Đang vận chuyển',
     'delivered' => 'Đã giao',
     'canceled' => 'Đã hủy'
+];
+
+// Mảng ánh xạ trạng thái thanh toán
+$payment_status_mapping = [
+    'pending' => 'Chờ thanh toán',
+    'paid' => 'Đã thanh toán',
+    'failed' => 'Thanh toán thất bại',
+    'Pending Refund' => 'Chờ hoàn tiền',
+    'Refund Successful' => 'Hoàn tiền thành công',
+    'Refund Failed' => 'Hoàn tiền thất bại'
 ];
 ?>
 
@@ -44,6 +55,8 @@ $status_mapping = [
             <?php while ($row = $result->fetch_assoc()) {
                 $status = strtolower($row['order_status']);
                 $status_text = isset($status_mapping[$status]) ? $status_mapping[$status] : $status;
+                $payment_status = $row['payment_status'];  
+                $payment_status_text = isset($payment_status_mapping[$payment_status]) ? $payment_status_mapping[$payment_status] : $payment_status;
             ?>
                 <div class="col-md-4 mb-4">
                     <div class="order-card">
@@ -56,8 +69,9 @@ $status_mapping = [
                                 </div>
                                 <div class="order-info-item">
                                     <h6 class="order-info-title">Số điện thoại:</h6>
-                                    <p class="order-info-content"><?php echo $row['phone_number']; ?></p>
+                                    <p class="order-info-content"><?php echo $row['recipient_phone']; ?></p>
                                 </div>
+
                                 <div class="order-info-item">
                                     <h6 class="order-info-title">Địa chỉ:</h6>
                                     <div class="order-address">
@@ -75,8 +89,14 @@ $status_mapping = [
                                     <p class="order-info-content"><?php echo date("d-m-Y H:i:s", strtotime($row['created_at'])); ?></p>
                                 </div>
                                 <span class="order-status <?php echo $status; ?>">
-                                    Trạng thái: <?php echo $status_text; ?>
+                                    Trạng thái đơn hàng: <?php echo $status_text; ?>
                                 </span>
+                                <div class="order-payment-status">
+                                    <h6 class="order-info-title">Trạng thái thanh toán:</h6>
+                                    <p class="order-info-content <?php echo $payment_status; ?>">
+                                        <?php echo $payment_status_text; ?>
+                                    </p>
+                                </div>
                             </div>
                         </div>
                         <a href="order_details.php?order_id=<?php echo $row['order_id']; ?>" class="details-button">Chi tiết</a>

@@ -53,65 +53,68 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <title>Chỉnh sửa danh mục con</title>
+
+    <!-- Bootstrap 5 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/modal.css">
+
     <style>
-        .container-fluid{
-            margin-top: 20px;
+        .edit-subcate .container {
+            margin-top: 50px;
+            min-height: 600px;
         }
     </style>
 </head>
 
 <body>
-    <?php
-    // Include header
-    include_once '../header.php';
-    ?>
-    
-    <div class="container-fluid">
-        <div class="row">
-            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-            <a href="index.php" class="btn btn-secondary mt-5"><i class="fa-solid fa-left-long"></i></a>
-                <h2 class="my-4">Chỉnh sửa danh mục con</h2>
+    <?php include_once '../header.php'; ?>
+    <section class="edit-subcate">
+        <div class="container">
+            <div class="row">
+                <main role="main" class="col-md-9 ms-sm-auto col-lg-10 px-4">
+                    <a href="index.php" class="btn btn-secondary mt-5"><i class="fa-solid fa-arrow-left"></i></a>
+                    <h2 class="my-4">Chỉnh sửa danh mục con</h2>
 
-                <!-- Form chỉnh sửa danh mục con -->
-                <form action="edit.php?subcategory_id=<?php echo $subcategoryId; ?>" method="post">
-                    <!-- Trường chỉnh sửa tên danh mục con -->
-                    <div class="form-group">
-                        <label for="subcategory_name">Tên danh mục con:</label>
-                        <input type="text" class="form-control" id="subcategory_name" name="subcategory_name" value="<?php echo $row['subcategory_name']; ?>" required>
-                    </div>
+                    <!-- Form chỉnh sửa danh mục con -->
+                    <form action="edit.php?subcategory_id=<?php echo $subcategoryId; ?>" method="post">
+                        <div class="mb-3">
+                            <label for="subcategory_name" class="form-label">Tên danh mục con:</label>
+                            <input type="text" class="form-control" id="subcategory_name" name="subcategory_name"
+                                value="<?php echo $row['subcategory_name']; ?>" required>
+                        </div>
 
-                    <!-- Trường chọn danh mục cha -->
-                    <div class="form-group">
-                        <label for="category_id">Danh mục cha:</label>
-                        <select class="form-control" id="category_id" name="category_id" required>
-                            <?php
-                            // Truy vấn để lấy danh sách danh mục cha
-                            $categoryQuery = "SELECT * FROM categories";
-                            $categoryResult = mysqli_query($conn, $categoryQuery);
-                            
-                            while ($categoryRow = mysqli_fetch_assoc($categoryResult)) {
-                                $selected = $row['category_id'] == $categoryRow['category_id'] ? 'selected' : '';
-                                echo "<option value='" . $categoryRow['category_id'] . "' $selected>" . $categoryRow['category_name'] . "</option>";
-                            }
-                            ?>
-                        </select>
-                    </div>
+                        <div class="mb-3">
+                            <label for="category_id" class="form-label">Danh mục cha:</label>
+                            <select class="form-select" id="category_id" name="category_id" required>
+                                <?php
+                                $categoryQuery = "SELECT * FROM categories";
+                                $categoryResult = mysqli_query($conn, $categoryQuery);
 
-                    <!-- Nút cập nhật -->
-                    <button type="submit" class="btn btn-primary">Cập nhật</button>
-                </form>
+                                while ($categoryRow = mysqli_fetch_assoc($categoryResult)) {
+                                    $selected = $row['category_id'] == $categoryRow['category_id'] ? 'selected' : '';
+                                    echo "<option value='" . $categoryRow['category_id'] . "' $selected>" . $categoryRow['category_name'] . "</option>";
+                                }
+                                ?>
+                            </select>
+                        </div>
 
-            </main>
+                        <button type="submit" class="btn btn-primary">Cập nhật</button>
+                    </form>
+                </main>
+            </div>
         </div>
-    </div>
-    <?php
-    include_once '../footer.php';
-    ?>
+    </section>
+
+
+    <?php include_once '../footer.php'; ?>
+
+    <!-- Bootstrap 5 JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
+
 
 <?php
 // Giải phóng bộ nhớ

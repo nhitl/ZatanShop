@@ -6,17 +6,25 @@ include_once '../dbconnect.php';
 if (isset($_GET['category_id'])) {
     $categoryId = $_GET['category_id'];
 
-    // Xóa danh mục từ bảng categories
-    $deleteCategoryQuery = "DELETE FROM categories WHERE category_id = $categoryId";
-    
-    if (mysqli_query($conn, $deleteCategoryQuery)) {
-        // Thiết lập thông báo thành công
-        $_SESSION['success_message'] = "Danh mục đã được xóa thành công!";
+    // Kiểm tra xem danh mục có chứa danh mục con hay không
+    $checkSubcategoriesQuery = "SELECT * FROM subcategories WHERE category_id = $categoryId";
+    $result = mysqli_query($conn, $checkSubcategoriesQuery);
+
+    if (mysqli_num_rows($result) > 0) {
+        // Nếu có danh mục con, hiển thị thông báo
+        $_SESSION['error_message'] = "Không thể xóa danh mục này vì nó có liên kết với danh mục con.";
     } else {
-        // Thiết lập thông báo lỗi nếu xóa không thành công
-        $_SESSION['success_message'] = "Đã xảy ra lỗi khi xóa danh mục.";
+        // Nếu không có danh mục con, tiến hành xóa danh mục
+        $deleteCategoryQuery = "DELETE FROM categories WHERE category_id = $categoryId";
+
+        if (mysqli_query($conn, $deleteCategoryQuery)) {
+            // Thiết lập thông báo thành công
+            $_SESSION['success_message'] = "Danh mục đã được xóa thành công!";
+        } else {
+            // Thiết lập thông báo lỗi nếu xóa không thành công
+            $_SESSION['error_message'] = "Đã xảy ra lỗi khi xóa danh mục.";
+        }
     }
-    $_SESSION['success_message'] = 'Thao tác thành công!';
 
     // Chuyển hướng về trang danh sách danh mục sau khi xóa
     header("Location: index.php");

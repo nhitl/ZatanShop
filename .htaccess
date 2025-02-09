@@ -1,8 +1,53 @@
+RewriteEngine On
+RewriteBase /DOAN/
+
+
+#RewriteCond %{HTTPS} !=on
+#RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+
+
+
+
+# Bỏ index.php trong URL và chuyển về trang chủ
+RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ /index\.php\ HTTP/
+RewriteRule ^index\.php$ /DOAN/ [R=301,L]
+
+
+# Nếu truy cập vào trang chủ, load file index.php
+RewriteRule ^$ index.php [L]
+
+# Chuyển hướng /chinh-sach thành chinh-sach-kinh-doanh.php
+RewriteRule ^chinh-sach/?$ chinh-sach-kinh-doanh.php [L]
+
+# Chuyển hướng /tin-tuc-moi-nhat thành news.php
+RewriteRule ^tin-tuc-moi-nhat/?$ news.php [L]
+
+# Chuyển hướng /thanh-toan thành checkout.php
+RewriteRule ^thanh-toan/?$ checkout.php [L]
+
+# Chuyển hướng /tai-khoan thành info.php
+RewriteRule ^tai-khoan/?$ info.php [L]
+
+RewriteRule ^flash-sales/?$ deal.php [L]
+RewriteRule ^tra-gop/?$ tra-gop.php [L]
+RewriteRule ^gio-hang/?$ cart.php [L]
+RewriteRule ^tai-khoan/?$ info.php [L]
+
+# Chuyển hướng san-pham thành all-products.php
+RewriteRule ^san-pham/?$ all-products.php [L]
+
+# Đảm bảo các URL đẹp
+RewriteRule ^product-detail/([0-9]+)$ product-detail.php?id=$1 [L,QSA]
+
+RewriteRule ^([^/]+)-([^/]+)-([^/]+)-([^/]+)-([^/]+)-([^/]+)$ product-detail.php?slug=$1-$2-$3-$4-$5-$6 [QSA,L]
+RewriteRule ^([a-zA-Z0-9\-]+)/?$ product-detail.php?slug=$1 [L]
+
 # Đảm bảo tệp CSS và JS được truy cập đúng
 RewriteCond %{REQUEST_URI} !^/TEST/css/
 RewriteCond %{REQUEST_URI} !^/TEST/js/
 RewriteCond %{REQUEST_URI} !^/TEST/images/
 
-# Đảm bảo các URL đẹp có thể chuyển hướng đúng đến file PHP
-RewriteEngine On
-RewriteRule ^product-detail/([0-9]+)$ /TEST/product-detail.php?id=$1 [L,QSA]
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/css "access plus 1 second"
+</IfModule>

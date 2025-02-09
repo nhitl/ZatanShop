@@ -308,3 +308,81 @@ select.form-control {
 .product-name:hover {
     cursor: default; /* Con trỏ không đổi khi hover */
 }
+
+
+
+
+/* Định dạng phần trạng thái thanh toán */
+.order-payment-status {
+    background-color: #f4fffa; /* Màu nền nhẹ */
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 8px; /* Bo tròn các góc */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Đổ bóng nhẹ cho khối */
+}
+
+/* Định dạng tiêu đề của phần trạng thái thanh toán */
+.order-payment-status h6 {
+    font-weight: bold;
+    color: #333; /* Màu chữ đậm cho tiêu đề */
+    margin-bottom: 5px;
+}
+
+/* Định dạng nội dung trạng thái thanh toán */
+.order-payment-status .order-info-content {
+    font-size: 14px;
+    font-weight: normal;
+    color: #666; /* Màu chữ nhạt cho nội dung */
+    padding: 5px;
+}
+
+/* Các trạng thái thanh toán */
+.order-payment-status .pending {
+    color: #4d4e00; /* Màu vàng cho trạng thái chờ thanh toán */
+}
+
+.order-payment-status .paid {
+    color: #28a745; /* Màu xanh lá cho trạng thái đã thanh toán */
+}
+
+.order-payment-status .failed {
+    color: #dc3545; /* Màu đỏ cho trạng thái thất bại */
+}
+
+.order-payment-status .Pending\ Refund {
+    color: #6c757d; /* Màu xám cho trạng thái chờ hoàn tiền */
+}
+
+.order-payment-status .Refund\ Successful {
+    color: #17a2b8; /* Màu xanh dương cho trạng thái hoàn tiền thành công */
+}
+
+.order-payment-status .Refund\ Failed {
+    color: #dc3545; /* Màu đỏ cho trạng thái hoàn tiền thất bại */
+}
+
+
+
+/* Style cho nút cập nhật */
+.btn-primary {
+    background-color: #000000; /* Màu cam nổi bật */
+    color: white;
+    font-size: 16px;
+    padding: 12px 20px;
+    border-radius: 8px; /* Bo góc */
+    border: none;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+/* Khi hover chuột vào nút */
+.btn-primary:hover {
+    background-color: #e65c00; /* Màu cam đậm hơn */
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2); /* Hiệu ứng đổ bóng */
+    cursor: pointer;
+}
+
+/* Khi nút đang được nhấn */
+.btn-primary:active {
+    background-color: #cc5200; /* Màu cam khi nhấn */
+}

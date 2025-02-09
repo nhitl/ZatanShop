@@ -157,7 +157,7 @@ $conn->close();
 </head>
 
 <body>
-<?php
+    <?php
     include_once 'header.php';
     ?>
     <div class="container mb-5">
@@ -210,7 +210,7 @@ $conn->close();
 
                 <!-- Đồ thị doanh thu -->
                 <div class="chart-container bg-white mt-5 p-4 rounded">
-                    <h5 class="text-center mb-4">Doanh thu năm 2024</h5>
+                    <h5 class="text-center mb-4">Doanh thu năm 2025</h5>
                     <canvas id="revenueChart"></canvas>
                 </div>
 
@@ -236,7 +236,7 @@ $conn->close();
                 <div class="chart-container bg-white mt-5 p-4 rounded">
                     <h5 class="text-center mb-4">Biểu đồ sản phẩm đã bán theo loại</h5>
                     <canvas id="categoryChart" width="400" height="400"></canvas>
-                    </div>
+                </div>
             </main>
         </div>
     </div>
@@ -381,7 +381,7 @@ $conn->close();
                         label: 'Sản phẩm bán chạy theo loại',
                         data: quantities,
                         backgroundColor: [
-                            'rgba(255, 99, 132, 0.6)',
+                            'rgba(86, 216, 103, 0.6)',
                             'rgba(54, 162, 235, 0.6)',
                             'rgba(255, 206, 86, 0.6)',
                             'rgba(75, 192, 192, 0.6)',
@@ -389,7 +389,7 @@ $conn->close();
                             'rgba(255, 159, 64, 0.6)'
                         ],
                         borderColor: [
-                            'rgba(255, 99, 132, 1)',
+                            'rgb(56, 182, 104)',
                             'rgba(54, 162, 235, 1)',
                             'rgba(255, 206, 86, 1)',
                             'rgba(75, 192, 192, 1)',
