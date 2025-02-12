@@ -28,16 +28,16 @@ $unread_count = 0;
 
 // Kiểm tra nếu $user_id có giá trị thì mới truy vấn
 if (!is_null($user_id)) {
-    $sql = "SELECT COUNT(*) AS unread_count FROM notification_orders WHERE user_id = ? AND status = 'unread'";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $user_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
+    $sql_notifi = "SELECT COUNT(*) AS unread_count FROM notification_orders WHERE user_id = ? AND status = 'unread'";
+    $stmt_notifi = $conn->prepare($sql_notifi);
+    $stmt_notifi->bind_param("i", $user_id);
+    $stmt_notifi->execute();
+    $result_notifi = $stmt_notifi->get_result();
     
-    if ($row = $result->fetch_assoc()) {
+    if ($row = $result_notifi->fetch_assoc()) {
         $unread_count = intval($row['unread_count']);
     }
-    $stmt->close();
+    $stmt_notifi->close();
 }
 ?>
 
@@ -122,7 +122,7 @@ if (!is_null($user_id)) {
                         <!-- Right Section -->
                         <div class="col-6 col-lg-3 col-md-8 order-md-2 order-lg-3 header-right">
                             <div class="location-stores d-flex justify-content-end">
-                                <a href="vi-tri-cua-hang.php" class="text-center" title="Cửa hàng">
+                                <a href="vi-tri-cua-hang" class="text-center" title="Cửa hàng">
                                     <span class="box-icon">
                                         <i class="fa-solid fa-location-dot"></i>
                                     </span>
@@ -145,7 +145,7 @@ if (!is_null($user_id)) {
                                         <?php echo $user_logged_in_header ? htmlspecialchars($user_full_name_header) : 'Đăng nhập'; ?>
                                     </span>
                                 </a>
-                                <a id="notifi-icon" href="thongbao.php" class="position-relative text-center">
+                                <a id="notifi-icon" href="thong-bao" class="position-relative text-center">
                                     <span class="box-icon">
                                         <i class="fa-regular fa-message"></i>
                                     </span>
@@ -259,7 +259,7 @@ if (!is_null($user_id)) {
                     $('#modalBody').text('Bạn chưa đăng nhập');
                     $('#universalModal').modal('show');
                 <?php else: ?>
-                    window.location.href = "./thongbao.php"; // Nếu đã đăng nhập, điều hướng đến giỏ hàng
+                    window.location.href = "./thong-bao"; // Nếu đã đăng nhập, điều hướng đến giỏ hàng
                 <?php endif; ?>
             });
 

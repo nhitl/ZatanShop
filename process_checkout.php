@@ -245,7 +245,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             // Các thông số cấu hình VNPAY
             $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html"; // Địa chỉ thanh toán
-            $vnp_Returnurl = "http://localhost:8081/TEST/vnpay_return.php"; // URL trả về sau khi thanh toán
+            $vnp_Returnurl = "http://localhost:8081/DOAN/vnpay_return.php"; // URL trả về sau khi thanh toán
             $vnp_TmnCode = "A477Z1E7"; // Mã website tại VNPAY
             $vnp_HashSecret = "LWIO1UKE8JMYVPP72VQL74UZEPMI3HHK"; // Chuỗi bí mật từ VNPAY
 
@@ -334,7 +334,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             // Chuyển hướng sau 2.5 giây
             setTimeout(function() {
-                window.location.href = 'thank_you.php';
+                window.location.href = 'cam-on';
             }, 2500);
         });
     </script>";

@@ -2,6 +2,9 @@
 .history-orders {
     background-color: #f0fff0; /* Màu nền nhẹ nhàng */
 }
+.history-orders .container{
+    min-height: 500px;
+}
 
 .history-orders h1 {
     color: #2d6a4f; /* Màu xanh lá cây đậm hơn cho tiêu đề */

@@ -78,8 +78,8 @@ $used_vouchers = array_map('trim', $used_vouchers);
                                     <ul>
                                         <li><strong>Giảm giá:</strong> <?php echo $voucher['discount_percentage']; ?>%</li>
                                         <li><strong>HSD:</strong> <?php echo $voucher['expiry_date']; ?></li>
-                                        <li><strong>Đơn tối thiểu:</strong> <?php echo number_format($voucher['min_order_value'], 2); ?> VNĐ</li>
-                                        <li><strong>Giảm tối đa:</strong> <?php echo number_format($voucher['max_discount_value'], 2); ?> VNĐ</li>
+                                        <li><strong>Đơn tối thiểu:</strong> <?php echo number_format($voucher['min_order_value'], 0); ?> VNĐ</li>
+                                        <li><strong>Giảm tối đa:</strong> <?php echo number_format($voucher['max_discount_value'], 0); ?> VNĐ</li>
                                     </ul>
                                     <button class="btn <?php echo $is_used ? 'btn-danger' : 'btn-success'; ?> btn-static w-100">
                                         <?php echo $is_used ? 'Đã sử dụng' : 'Chưa sử dụng'; ?>

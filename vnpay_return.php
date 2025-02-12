@@ -81,7 +81,7 @@
                                 <span class='response-status success'>Thanh toán thành công!</span>
                             </div>
                             <div class='mt-4 text-center'>
-                                <a href='history-orders.php' class='btn btn-green'>Xem chi tiết đơn hàng</a>
+                                <a href='lich-su-don-hang' class='btn btn-green'>Xem chi tiết đơn hàng</a>
                             </div>
                         </div>
                     </div>";

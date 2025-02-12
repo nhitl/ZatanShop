@@ -31,9 +31,12 @@ $sqlDiscountedProducts = "SELECT p.product_id, p.product_name, p.price, p.backgr
                                   (p.price * (1 - d.discount_percentage / 100)) AS discounted_price
                           FROM products p
                           JOIN discounts d ON p.product_id = d.product_id
-                          WHERE d.start_date <= CURDATE() AND d.end_date >= CURDATE()";
+                          WHERE d.start_date <= CURDATE() AND d.end_date >= CURDATE()
+                          ORDER BY d.discount_percentage DESC 
+                          LIMIT 10";
 
 $resultDiscountedProducts = $conn->query($sqlDiscountedProducts);
+
 
 ?>
 
@@ -44,7 +47,7 @@ $resultDiscountedProducts = $conn->query($sqlDiscountedProducts);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <link rel="stylesheet" href="style.css">
@@ -66,148 +69,121 @@ $resultDiscountedProducts = $conn->query($sqlDiscountedProducts);
                         <a class="title ms-2" href="flash-sales">FLASH SALES MỖI NGÀY</a>
                     </div>
                 </div>
-                <div class="col-md-6 col-12">
-                    <div class="count-down">
-                        <div class="timer-view d-flex align-items-center">
-                            <div class="block-timer" id="days">
-                                <div class="time">23</div>
-                                <div class="label">Ngày</div>
-                            </div>
-                            <span class="separator">:</span>
-                            <div class="block-timer" id="hours">
-                                <div class="time">12</div>
-                                <div class="label">Giờ</div>
-                            </div>
-                            <span class="separator">:</span>
-                            <div class="block-timer" id="minutes">
-                                <div class="time">45</div>
-                                <div class="label">Phút</div>
-                            </div>
-                            <span class="separator">:</span>
-                            <div class="block-timer" id="seconds">
-                                <div class="time">30</div>
-                                <div class="label">Giây</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="swiper-container-discounted-products">
-                <div class="swiper-wrapper">
-                    <?php
-                    if ($resultDiscountedProducts === false) {
-                        echo "Lỗi truy vấn: " . $conn->error;
-                    } else {
-                        if ($resultDiscountedProducts->num_rows > 0) {
-                            while ($row = $resultDiscountedProducts->fetch_assoc()) {
-                                $imagePath = 'admin/admin/' . $row["background_image"];
+                <div class="swiper-container-discounted-products">
+                    <div class="swiper-wrapper">
+                        <?php
+                        if ($resultDiscountedProducts === false) {
+                            echo "Lỗi truy vấn: " . $conn->error;
+                        } else {
+                            if ($resultDiscountedProducts->num_rows > 0) {
+                                while ($row = $resultDiscountedProducts->fetch_assoc()) {
+                                    $imagePath = 'admin/admin/' . $row["background_image"];
 
-                                // Truy vấn để lấy thông tin quà tặng từ bảng `product_promotions`
-                                $promoQuery = "SELECT promotion_description FROM product_promotions WHERE product_id = " . intval($row['product_id']);
-                                $promoResult = $conn->query($promoQuery);
+                                    // Truy vấn để lấy thông tin quà tặng từ bảng `product_promotions`
+                                    $promoQuery = "SELECT promotion_description FROM product_promotions WHERE product_id = " . intval($row['product_id']);
+                                    $promoResult = $conn->query($promoQuery);
 
-                                $promotionDescriptions = []; // Mảng để lưu tất cả các mô tả quà tặng
+                                    $promotionDescriptions = []; // Mảng để lưu tất cả các mô tả quà tặng
 
-                                if ($promoResult && $promoResult->num_rows > 0) {
-                                    while ($promoRow = $promoResult->fetch_assoc()) {
-                                        // Lưu từng mô tả vào mảng với dấu '-' trước mỗi mô tả
-                                        $promotionDescriptions[] = '- ' . htmlspecialchars($promoRow['promotion_description']);
+                                    if ($promoResult && $promoResult->num_rows > 0) {
+                                        while ($promoRow = $promoResult->fetch_assoc()) {
+                                            // Lưu từng mô tả vào mảng với dấu '-' trước mỗi mô tả
+                                            $promotionDescriptions[] = '- ' . htmlspecialchars($promoRow['promotion_description']);
+                                        }
                                     }
-                                }
 
-                                // Chuyển mảng mô tả thành một chuỗi để hiển thị trong tooltip, với <br> để xuống dòng
-                                $promotionDescription = implode("<br>", $promotionDescriptions); // Xuống dòng với mỗi mô tả khác nhau
-                                // Truy vấn lấy rating trung bình và số lượt đánh giá
-                                $reviewQuery = "
+                                    // Chuyển mảng mô tả thành một chuỗi để hiển thị trong tooltip, với <br> để xuống dòng
+                                    $promotionDescription = implode("<br>", $promotionDescriptions); // Xuống dòng với mỗi mô tả khác nhau
+                                    // Truy vấn lấy rating trung bình và số lượt đánh giá
+                                    $reviewQuery = "
                                 SELECT 
                                 AVG(rating) AS average_rating, 
                                 COUNT(review_id) AS review_count 
                                 FROM product_reviews 
                                 WHERE product_id = " . intval($row['product_id']);
-                                $reviewResult = $conn->query($reviewQuery);
+                                    $reviewResult = $conn->query($reviewQuery);
 
-                                $averageRating = 0;
-                                $reviewCount = 0;
+                                    $averageRating = 0;
+                                    $reviewCount = 0;
 
-                                if ($reviewResult && $reviewResult->num_rows > 0) {
-                                    $reviewData = $reviewResult->fetch_assoc();
-                                    $averageRating = round($reviewData['average_rating'], 1);
-                                    $reviewCount = $reviewData['review_count'];
+                                    if ($reviewResult && $reviewResult->num_rows > 0) {
+                                        $reviewData = $reviewResult->fetch_assoc();
+                                        $averageRating = round($reviewData['average_rating'], 1);
+                                        $reviewCount = $reviewData['review_count'];
+                                    }
+
+                                    // Tính toán tiến trình bán hàng
+                                    $totalSalesTarget = 300; // Giá trị cố định
+                                    $salesCount = isset($row["sales_count"]) ? intval($row["sales_count"]) : 0;
+                                    $salesPercentage = min(100, ($salesCount / $totalSalesTarget) * 100); // Giới hạn tiến trình tối đa là 100%
+                                    echo '<div class="swiper-slide col-md-4 d-flex justify-content-center">';
+                                    echo '    <div class="card position-relative">';
+
+                                    // Thêm biểu tượng quà tặng vào góc trên bên phải ảnh
+                                    if (!empty($promotionDescription)) {
+                                        echo '<div class="tag-promo" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom" data-bs-offset="-35, 0" title="' . $promotionDescription . '">';
+                                        echo '    <i class="fa-solid fa-gift"></i>';
+                                        echo '</div>';
+                                    }
+
+                                    echo '        <div class="discount-percentage">- ' . htmlspecialchars($row["discount_percentage"]) . '% </div>';
+                                    echo '        <div class="card-img-wrapper">';
+                                    echo '            <a href="/DOAN/' . htmlspecialchars($row["slug"]) . '">';
+                                    echo '                <img src="' . htmlspecialchars($imagePath) . '" class="card-img-top product-img" alt="' . htmlspecialchars($row["product_name"]) . '">';
+                                    echo '            </a>';
+                                    echo '        </div>';
+                                    echo '        <button type="button" class="btn open-modal-btn" title="Xem chi tiết" data-bs-toggle="modal" data-bs-target="#productModal">';
+                                    echo '            <i class="fa-regular fa-eye"></i>';
+                                    echo '        </button>';
+                                    echo '        <div class="card-body">';
+                                    echo '            <h5 class="card-title">';
+                                    echo '                <a href="/DOAN/' . htmlspecialchars($row["slug"]) . '" class="product-link" title="' . htmlspecialchars($row["product_name"]) . '">'; // Cập nhật liên kết sản phẩm
+                                    echo '                    ' . htmlspecialchars($row["product_name"]) . '';
+                                    echo '                </a>';
+                                    echo '            </h5>';
+                                    echo '            <p class="card-text"><span class="text-decoration-line-through">' . htmlspecialchars(number_format($row["price"])) . '₫</span></p>';
+                                    echo '            <p class="card-text-price">' . htmlspecialchars(number_format($row["discounted_price"])) . ' ₫</p>';
+                                    // Rating và số lượt đánh giá
+                                    echo '            <p class="rating-info">';
+                                    echo '                <span>' . htmlspecialchars($averageRating) . ' <i class="fa-solid fa-star"></i> (' . htmlspecialchars($reviewCount) . ' đánh giá)</span>';
+                                    echo '            </p>';
+
+                                    // Thanh tiến trình bán hàng
+                                    echo '            <div class="progress position-relative">';
+                                    echo '                <div class="progress-bar" role="progressbar" style="width: ' . $salesPercentage . '%;" aria-valuenow="' . $salesPercentage . '" aria-valuemin="0" aria-valuemax="100">';
+                                    echo '                    <span class="sales-count text-center position-absolute w-100">Đã bán: ' . htmlspecialchars($salesCount) . '/' . $totalSalesTarget . '</span>';
+                                    echo '                </div>';
+                                    echo '            </div>';
+
+                                    echo '            <div class="d-flex justify-content-between align-items-center">';
+                                    echo '                <p class="stock-quantity mb-0">';
+                                    if ($row['stock_quantity'] > 0) {
+                                        echo '<span class="text-success"><i class="fa-regular fa-circle-check"></i> Còn hàng</span>';
+                                    } else {
+                                        echo '<span class="text-danger"><i class="fa-regular fa-circle-xmark"></i> Đã hết hàng</span>';
+                                    }
+                                    echo '                </p>';
+                                    echo '                <a href="#" onclick="addToCart(' . htmlspecialchars($row['product_id']) . ', 1); return false;" class="btn btn-primary"><i class="fa-sharp fa-solid fa-cart-plus"></i></a>';
+                                    echo '            </div>'; // Kết thúc thẻ div d-flex
+                                    echo '        </div>'; // Kết thúc thẻ div card-body
+                                    echo '    </div>'; // Kết thúc thẻ div card
+                                    echo '</div>'; // Kết thúc thẻ div swiper-slide
                                 }
-
-                                // Tính toán tiến trình bán hàng
-                                $totalSalesTarget = 300; // Giá trị cố định
-                                $salesCount = isset($row["sales_count"]) ? intval($row["sales_count"]) : 0;
-                                $salesPercentage = min(100, ($salesCount / $totalSalesTarget) * 100); // Giới hạn tiến trình tối đa là 100%
-                                echo '<div class="swiper-slide col-md-4 d-flex justify-content-center">';
-                                echo '    <div class="card position-relative">';
-
-                                // Thêm biểu tượng quà tặng vào góc trên bên phải ảnh
-                                if (!empty($promotionDescription)) {
-                                    echo '<div class="tag-promo" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom" data-bs-offset="-35, 0" title="' . $promotionDescription . '">';
-                                    echo '    <i class="fa-solid fa-gift"></i>';
-                                    echo '</div>';
-                                }
-
-                                echo '        <div class="discount-percentage">- ' . htmlspecialchars($row["discount_percentage"]) . '% </div>';
-                                echo '        <div class="card-img-wrapper">';
-                                echo '            <a href="/DOAN/' . htmlspecialchars($row["slug"]) . '">';
-                                echo '                <img src="' . htmlspecialchars($imagePath) . '" class="card-img-top product-img" alt="' . htmlspecialchars($row["product_name"]) . '">';
-                                echo '            </a>';
-                                echo '        </div>';
-                                echo '        <button type="button" class="btn open-modal-btn" title="Xem chi tiết" data-bs-toggle="modal" data-bs-target="#productModal">';
-                                echo '            <i class="fa-regular fa-eye"></i>';
-                                echo '        </button>';
-                                echo '        <div class="card-body">';
-                                echo '            <h5 class="card-title">';
-                                echo '                <a href="/DOAN/' . htmlspecialchars($row["slug"]) . '" class="product-link" title="' . htmlspecialchars($row["product_name"]) . '">'; // Cập nhật liên kết sản phẩm
-                                echo '                    ' . htmlspecialchars($row["product_name"]) . '';
-                                echo '                </a>';
-                                echo '            </h5>';
-                                echo '            <p class="card-text"><span class="text-decoration-line-through">' . htmlspecialchars(number_format($row["price"])) . '₫</span></p>';
-                                echo '            <p class="card-text-price">' . htmlspecialchars(number_format($row["discounted_price"])) . ' ₫</p>';
-                                // Rating và số lượt đánh giá
-                                echo '            <p class="rating-info">';
-                                echo '                <span>' . htmlspecialchars($averageRating) . ' <i class="fa-solid fa-star"></i> (' . htmlspecialchars($reviewCount) . ' đánh giá)</span>';
-                                echo '            </p>';
-
-                                // Thanh tiến trình bán hàng
-                                echo '            <div class="progress position-relative">';
-                                echo '                <div class="progress-bar" role="progressbar" style="width: ' . $salesPercentage . '%;" aria-valuenow="' . $salesPercentage . '" aria-valuemin="0" aria-valuemax="100">';
-                                echo '                    <span class="sales-count text-center position-absolute w-100">Đã bán: ' . htmlspecialchars($salesCount) . '/' . $totalSalesTarget . '</span>';
-                                echo '                </div>';
-                                echo '            </div>';
-
-                                echo '            <div class="d-flex justify-content-between align-items-center">';
-                                echo '                <p class="stock-quantity mb-0">';
-                                if ($row['stock_quantity'] > 0) {
-                                    echo '<span class="text-success"><i class="fa-regular fa-circle-check"></i> Còn hàng</span>';
-                                } else {
-                                    echo '<span class="text-danger"><i class="fa-regular fa-circle-xmark"></i> Đã hết hàng</span>';
-                                }
-                                echo '                </p>';
-                                echo '                <a href="#" onclick="addToCart(' . htmlspecialchars($row['product_id']) . ', 1); return false;" class="btn btn-primary"><i class="fa-sharp fa-solid fa-cart-plus"></i></a>';
-                                echo '            </div>'; // Kết thúc thẻ div d-flex
-                                echo '        </div>'; // Kết thúc thẻ div card-body
-                                echo '    </div>'; // Kết thúc thẻ div card
-                                echo '</div>'; // Kết thúc thẻ div swiper-slide
+                            } else {
+                                echo "<p>Không có sản phẩm giảm giá.</p>";
                             }
-                        } else {
-                            echo "<p>Không có sản phẩm giảm giá.</p>";
                         }
-                    }
-                    ?>
+                        ?>
 
+                    </div>
+                    <!-- Các nút điều hướng -->
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
                 </div>
-                <!-- Các nút điều hướng -->
-                <div class="swiper-button-next"></div>
-                <div class="swiper-button-prev"></div>
+                <div class="discounted-products-footer">
+                    <a href="flash-sales" class="btn btn-view-all"><i class="fa-solid fa-right-to-bracket"></i> Xem tất cả</a>
+                </div>
             </div>
-            <div class="discounted-products-footer">
-                <a href="flash-sales" class="btn btn-view-all"><i class="fa-solid fa-right-to-bracket"></i> Xem tất cả</a>
-            </div>
-
-        </div>
     </section>
 
     <section class="best-selling-products-swiper">
@@ -332,10 +308,8 @@ $resultDiscountedProducts = $conn->query($sqlDiscountedProducts);
                 <div class="swiper-button-prev"></div>
             </div>
             <div class="best-selling-footer">
-                <a href="all-products.php?sort=sales_desc" class="btn btn-view-all"><i class="fa-solid fa-right-to-bracket"></i> Xem tất cả</a>
+                <a href="san-pham?sort=sales_desc" class="btn btn-view-all"><i class="fa-solid fa-right-to-bracket"></i> Xem tất cả</a>
             </div>
-
-
     </section>
 
     <section class="new-products-swiper">
@@ -458,7 +432,7 @@ $resultDiscountedProducts = $conn->query($sqlDiscountedProducts);
                 <div class="swiper-button-prev"></div>
             </div>
             <div class="new-products-footer">
-                <a href="all-products.php" class="btn btn-view-all"><i class="fa-solid fa-right-to-bracket"></i> Xem tất cả</a>
+                <a href="san-pham" class="btn btn-view-all"><i class="fa-solid fa-right-to-bracket"></i> Xem tất cả</a>
             </div>
         </div>
     </section>
@@ -479,17 +453,12 @@ $resultDiscountedProducts = $conn->query($sqlDiscountedProducts);
         </div>
     </div>
 
-    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var swiper2 = new Swiper('.swiper-container-new-products', {
                 loop: true, // Cho phép lặp lại các slide
-                autoplay: {
-                    delay: 2000, // Thời gian giữa mỗi lần trượt (tính bằng ms)
-                    disableOnInteraction: false, // Tạm dừng autoplay khi có tương tác, nhưng sẽ tiếp tục sau đó
-                    pauseOnMouseEnter: true, // Tạm dừng autoplay khi di chuột vào
-                },
-                speed: 1000,
+                speed: 200,
                 spaceBetween: 10,
                 navigation: {
                     nextEl: '.swiper-button-next',
@@ -497,16 +466,16 @@ $resultDiscountedProducts = $conn->query($sqlDiscountedProducts);
                 },
                 breakpoints: {
                     100: {
-                        slidesPerView: 1, // Hiển thị 1 slide trên màn hình nhỏ hơn 100px
+                        slidesPerView: 2,
                     },
                     640: {
-                        slidesPerView: 2, // Hiển thị 2 slides trên màn hình lớn hơn 640px
+                        slidesPerView: 2,
                     },
                     768: {
-                        slidesPerView: 3, // Hiển thị 3 slides trên màn hình lớn hơn 768px
+                        slidesPerView: 3,
                     },
                     1024: {
-                        slidesPerView: 4, // Hiển thị 4 slides trên màn hình lớn hơn 1024px
+                        slidesPerView: 4,
                     },
                 },
             });
@@ -516,12 +485,7 @@ $resultDiscountedProducts = $conn->query($sqlDiscountedProducts);
         document.addEventListener('DOMContentLoaded', function() {
             var swiper3 = new Swiper('.swiper-container-best-selling-products', {
                 loop: true, // Cho phép lặp lại các slide
-                autoplay: {
-                    delay: 2000, // Thời gian giữa mỗi lần trượt (tính bằng ms)
-                    disableOnInteraction: false, // Tạm dừng autoplay khi có tương tác, nhưng sẽ tiếp tục sau đó
-                    pauseOnMouseEnter: true, // Tạm dừng autoplay khi di chuột vào
-                },
-                speed: 1000,
+                speed: 200,
                 spaceBetween: 10,
                 navigation: {
                     nextEl: '.swiper-button-next',
@@ -529,7 +493,7 @@ $resultDiscountedProducts = $conn->query($sqlDiscountedProducts);
                 },
                 breakpoints: {
                     100: {
-                        slidesPerView: 1, // Hiển thị 1 slide trên màn hình nhỏ hơn 100px
+                        slidesPerView: 2, // Hiển thị 1 slide trên màn hình nhỏ hơn 100px
                     },
                     640: {
                         slidesPerView: 2, // Hiển thị 2 slides trên màn hình lớn hơn 640px
@@ -544,16 +508,12 @@ $resultDiscountedProducts = $conn->query($sqlDiscountedProducts);
             });
         });
     </script>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var swiper4 = new Swiper('.swiper-container-discounted-products', {
                 loop: true, // Cho phép lặp lại các slide
-                autoplay: {
-                    delay: 2500, // Thời gian giữa mỗi lần trượt (tính bằng ms)
-                    disableOnInteraction: false, // Tạm dừng autoplay khi có tương tác, nhưng sẽ tiếp tục sau đó
-                    pauseOnMouseEnter: true, // Tạm dừng autoplay khi di chuột vào
-                },
-                speed: 1500,
+                speed: 200,
                 spaceBetween: 10,
                 navigation: {
                     nextEl: '.swiper-button-next',
@@ -561,7 +521,7 @@ $resultDiscountedProducts = $conn->query($sqlDiscountedProducts);
                 },
                 breakpoints: {
                     100: {
-                        slidesPerView: 1, // Hiển thị 1 slide trên màn hình nhỏ hơn 100px
+                        slidesPerView: 2, // Hiển thị 1 slide trên màn hình nhỏ hơn 100px
                     },
                     640: {
                         slidesPerView: 2, // Hiển thị 2 slides trên màn hình lớn hơn 640px
@@ -576,6 +536,7 @@ $resultDiscountedProducts = $conn->query($sqlDiscountedProducts);
             });
         });
     </script>
+
 
     <script>
         // Thiết lập thời gian đếm ngược
@@ -631,18 +592,23 @@ $resultDiscountedProducts = $conn->query($sqlDiscountedProducts);
                 }
             });
         }
-        // Kích hoạt tất cả tooltips khi trang đã tải xong
         document.addEventListener('DOMContentLoaded', function() {
             var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
             var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
-                return new bootstrap.Tooltip(tooltipTriggerEl);
+                return new bootstrap.Tooltip(tooltipTriggerEl, {
+                    trigger: 'click', // Đổi từ hover sang click
+                    html: true // Cho phép HTML trong tooltip
+                });
             });
-        });
-        // Khởi tạo tooltip với hỗ trợ HTML
-        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-        const tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl, {
-                html: true // Cho phép HTML trong tooltip
+
+            // Đóng tooltip khi nhấn ra ngoài
+            document.addEventListener('click', function(e) {
+                tooltipTriggerList.forEach(function(tooltipTriggerEl) {
+                    var tooltipInstance = bootstrap.Tooltip.getInstance(tooltipTriggerEl);
+                    if (tooltipInstance && !tooltipTriggerEl.contains(e.target)) {
+                        tooltipInstance.hide();
+                    }
+                });
             });
         });
     </script>

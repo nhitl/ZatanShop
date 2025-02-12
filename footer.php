@@ -11,6 +11,8 @@
 <body>
     <?php
     include_once 'dbconnect.php';
+    include_once 'track_online.php';
+
     ?>
 
     <section class="myfooter">
@@ -38,11 +40,11 @@
                     }
                     ?>
                     <h5>
-                    <i class="fa-solid fa-chart-line"></i>
-                    <?php echo $total_sales; ?>
-                    <p class="m-0">Sản phẩm đã bán</p>
+                        <i class="fa-solid fa-chart-line"></i>
+                        <?php echo $total_sales; ?>
+                        <p class="m-0">Sản phẩm đã bán</p>
                     </h5>
-                    
+
                 </div>
                 <div class="col-3 text-warning">
                     <?php
@@ -57,17 +59,15 @@
                         $row = $result->fetch_assoc();
                         $total_sales = $row['total_sales'];
                     }
-                    
+
                     ?>
                     <h5>
-                    <i class="fa-solid fa-users-line"></i>
-                    <?php 
-                    echo $total_sales;
-                     
-                    ?>
-                    <p class="m-0">Đang Online</p>
+                        <div class="alert ">
+                        <i class="fa-solid fa-users-line"></i>Online: <span id="onlineUsers">0</span> 
+                        </div>
+
                     </h5>
-                    
+
                 </div>
             </div>
 
@@ -82,10 +82,7 @@
 
                 </div>
                 <div class="col-sm-6 col-md-4">
-                    <h4>Chính sách</h4>
-                    <ul class="list-footer">
-                        <li class="li-footer"><a href="/chinh-sach" title="Giới thiệu">Chính sách buôn bán</a></li>
-                    </ul>
+
                 </div>
                 <div class="col-sm-6 col-md-4">
                     <h4>Tổng đài hỗ trợ</h4>
@@ -109,6 +106,18 @@
         </div>
     </section>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function updateOnlineUsers() {
+            $.get("get_online_users.php", function(data) {
+                $("#onlineUsers").text(data); // Cập nhật số người online
+            });
+        }
+
+        // Cập nhật mỗi 10 giây
+        setInterval(updateOnlineUsers, 10000);
+        updateOnlineUsers(); // Gọi ngay khi trang tải xong
+    </script>
 
 </body>
 

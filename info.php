@@ -98,16 +98,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['new_full_name']) && !e
 
             <div class="row mt-4">
                 <div class="col-md-3 col-6 d-flex justify-content-center mb-3">
-                    <a href="history-orders.php" class="btn btn-secondary w-100">Theo dõi đơn hàng</a>
+                    <a href="lich-su-don-hang" class="btn btn-secondary w-100">Theo dõi đơn hàng</a>
                 </div>
                 <div class="col-md-3 col-6 d-flex justify-content-center mb-3">
-                    <a href="setting-address.php" class="btn btn-secondary w-100">Thiết lập địa chỉ</a>
+                    <a href="thiet-lap-dia-chi" class="btn btn-secondary w-100">Thiết lập địa chỉ</a>
                 </div>
                 <div class="col-md-3 col-6 d-flex justify-content-center mb-3">
-                    <a href="change-password.php" class="btn btn-secondary w-100">Đổi mật khẩu</a>
+                    <a href="doi-mat-khau" class="btn btn-secondary w-100">Đổi mật khẩu</a>
                 </div>
                 <div class="col-md-3 col-6 d-flex justify-content-center mb-3">
-                    <a href="vouchers.php" class="btn btn-secondary w-100">Kho vouchers</a>
+                    <a href="kho-vouchers" class="btn btn-secondary w-100">Kho vouchers</a>
                 </div>
             </div>
             <div class="row justify-content-center mt-1">

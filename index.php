@@ -21,7 +21,6 @@
     include_once 'loading_bar.php';
     include_once 'contact_button.php';
     include_once 'box_categories.php';
-    include_once 'ads.php';
     ?>
     
 
@@ -41,14 +40,14 @@
                 while ($row = mysqli_fetch_assoc($result)) {
                     echo '<div class="col-lg-4 col-md-6 col-sm-6">';
                     echo '<div class="blog__item">';
-                    echo '<a href="blog-details.php?news_id=' . $row['news_id'] . '">';
+                    echo '<a href="chi-tiet-tin-tuc?news_id=' . $row['news_id'] . '">';
                     echo '<img src="admin/admin/' . $row["news_image"] . '" alt="' . $row["news_name"] . '">';
                     echo '</a>';
                     echo '<div class="blog__item__text">';
-                    echo '<a href="blog-details.php?news_id=' . $row['news_id'] . '">';
+                    echo '<a href="chi-tiet-tin-tuc?news_id=' . $row['news_id'] . '">';
                     echo '<h5>' . $row['news_name'] . '</h5>';
                     echo '</a>';
-                    echo '<a class="view" href="blog-details.php?news_id=' . $row['news_id'] . '">Xem Ngay</a>';
+                    echo '<a class="view" href="chi-tiet-tin-tuc?news_id=' . $row['news_id'] . '">Xem Ngay</a>';
                     echo '</div>';
                     echo '</div>';
                     echo '</div>';

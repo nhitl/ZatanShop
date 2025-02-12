@@ -2,32 +2,54 @@
 session_start();
 include 'dbconnect.php'; // Kết nối database
 
+// Kiểm tra xem người dùng đã đăng nhập chưa
+if (!isset($_SESSION['user_id'])) {
+    die("Bạn chưa đăng nhập!");
+}
+
+$currentUserId = $_SESSION['user_id']; // Lấy user_id của người dùng hiện tại
+
 // Xử lý cập nhật trạng thái hoặc xóa thông báo
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id']) && isset($_POST['action'])) {
-    $id = intval($_POST['id']);
+    $notificationId = intval($_POST['id']);
 
     if ($_POST['action'] === 'update') {
-        $sql = "UPDATE notification_orders SET status = 'read' WHERE id = ?";
+        $sql = "UPDATE notification_orders SET status = 'read' WHERE id = ? AND user_id = ?";
     } elseif ($_POST['action'] === 'delete') {
-        $sql = "DELETE FROM notification_orders WHERE id = ?";
+        $sql = "DELETE FROM notification_orders WHERE id = ? AND user_id = ?";
     }
 
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $id);
+    $stmt->bind_param("ii", $notificationId, $currentUserId);
     echo ($stmt->execute()) ? 'success' : 'error';
     exit;
 }
 
-// Lấy danh sách thông báo từ database
-$result = $conn->query("SELECT * FROM notification_orders ORDER BY created_at DESC");
-$notifications = $result->fetch_all(MYSQLI_ASSOC);
+// Lấy danh sách thông báo của người dùng hiện tại
+$stmtNotifications = $conn->prepare("SELECT * FROM notification_orders WHERE user_id = ? ORDER BY created_at DESC");
+$stmtNotifications->bind_param("i", $currentUserId);
+$stmtNotifications->execute();
+$resultNotifications = $stmtNotifications->get_result();
+$notifications = $resultNotifications->fetch_all(MYSQLI_ASSOC);
 
-// Đếm số lượng thông báo
-$totalCount = $conn->query("SELECT COUNT(*) as count FROM notification_orders")->fetch_assoc()['count'];
-$unreadCount = $conn->query("SELECT COUNT(*) as count FROM notification_orders WHERE status = 'unread'")->fetch_assoc()['count'];
-$readCount = $conn->query("SELECT COUNT(*) as count FROM notification_orders WHERE status = 'read'")->fetch_assoc()['count'];
+// Đếm số lượng thông báo của user hiện tại
+$stmtTotalCount = $conn->prepare("SELECT COUNT(*) as count FROM notification_orders WHERE user_id = ?");
+$stmtTotalCount->bind_param("i", $currentUserId);
+$stmtTotalCount->execute();
+$totalCount = $stmtTotalCount->get_result()->fetch_assoc()['count'];
+
+$stmtUnreadCount = $conn->prepare("SELECT COUNT(*) as count FROM notification_orders WHERE user_id = ? AND status = 'unread'");
+$stmtUnreadCount->bind_param("i", $currentUserId);
+$stmtUnreadCount->execute();
+$unreadCount = $stmtUnreadCount->get_result()->fetch_assoc()['count'];
+
+$stmtReadCount = $conn->prepare("SELECT COUNT(*) as count FROM notification_orders WHERE user_id = ? AND status = 'read'");
+$stmtReadCount->bind_param("i", $currentUserId);
+$stmtReadCount->execute();
+$readCount = $stmtReadCount->get_result()->fetch_assoc()['count'];
 
 ?>
+
 
 <!DOCTYPE html>
 <html lang="vi">
@@ -37,7 +59,6 @@ $readCount = $conn->query("SELECT COUNT(*) as count FROM notification_orders WHE
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thông báo</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="assets/css/notifi-order.css">
 </head>

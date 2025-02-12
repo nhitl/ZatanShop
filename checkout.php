@@ -112,7 +112,7 @@ $has_address = !empty($shipping_info['recipient_name']) && !empty($shipping_info
                 <?php endif; ?>
             <?php else: ?>
                 <!-- Thông tin nhận hàng -->
-                <form id="checkout-form" method="POST" action="process_checkout.php">
+                <form id="checkout-form" method="POST" action="check-out2">
                     <h2>Thông tin nhận hàng</h2>
                     <!-- Địa chỉ mặc định -->
                     <div class="card mb-3">
